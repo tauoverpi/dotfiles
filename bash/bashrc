@@ -1,0 +1,134 @@
+# Bash initialization for interactive non-login shells and
+# for remote shells (info "(bash) Bash Startup Files").
+
+# Export 'SHELL' to child processes.  Programs such as 'screen'
+# honor it and otherwise use /bin/sh.
+export SHELL
+
+if [[ $- != *i* ]]
+then
+    # We are being invoked from a non-interactive shell.  If this
+    # is an SSH session (as in "ssh host command"), source
+    # /etc/profile so we get PATH and other essential variables.
+    [[ -n "$SSH_CLIENT" ]] && source /etc/profile
+
+    # Don't do anything else.
+    return
+fi
+
+# Source the system-wide file.
+eval $(thefuck --alias)
+source /etc/bashrc
+
+# Adjust the prompt depending on whether we're in 'guix environment'.
+if [ -n "$GUIX_ENVIRONMENT" ]
+then
+    PS1='\u@\h \w [env] λ '
+else
+    PS1='\u@\h \w λ '
+fi
+alias ls='ls -p -F --color=none'
+alias ll='ls -l'
+alias grep='grep --color=none'
+
+# still need to rewrite this...
+export MPD_HOST=127.0.0.1
+# export GUIX_PACKAGE_PATH=$HOME/projects/packages
+export IDRIS_CC=gcc
+export EDITOR=nvim
+export PATH=$HOME/.local/bin:$PATH
+
+alias reconfigure='sudo -E guix system reconfigure $HOME/projects/sr.ht/dotfiles/guix/config.scm'
+
+toWav ()
+{
+	sox -r 8000 -e unsigned -b 8 -c 1 $1 $2
+}
+
+share ()
+{
+	uri=$(curl -F"file=@$1" https://0x0.st)
+	echo $uri | xclip -sel clip
+	echo $uri
+}
+
+shareclip() {
+	xclip -sel clip -o > /tmp/shareclip
+	share /tmp/shareclip
+}
+
+shorten ()
+{
+	uri=$(curl -F"shorten=$1" https://0x0.st)
+	echo $uri | xclip -sel clip
+	echo $uri
+}
+
+url()
+{
+	uri=$(curl -F"url=$1" https://0x0.st)
+	echo $uri | xclip -sel clip
+	echo $uri
+}
+
+ytdl ()
+{
+	youtube-dl -io '%(title)s.%(ext)s' \
+		--external-downloader=aria2c \
+		--geo-bypass \
+		$@
+}
+
+wcap ()
+{
+	target="/tmp/tmp.png"
+	[ -z $1 ] || target=$1
+	scrot -s $target
+	share $target
+}
+
+scap ()
+{
+	target="/tmp/tmp.png"
+	[ -z $1 ] || target=$1
+	scrot $target
+	share $target
+}
+
+search ()
+{
+	links "searx.me/?q=$(echo $@ | sed 's/ /%20/g')"
+}
+alias s=search
+
+build ()
+{
+	ssh builder /home/nyberg/.config/guix/current/bin/guix archive --export $@ | guix archive --import
+}
+
+b4 ()
+{
+	echo -e "#include <stdio.h>\nint main(void) { for(int t = 0;; t++) { int x = $@; putchar(x); } return 0; }" > /tmp/bb.c
+        gcc /tmp/bb.c -o /tmp/bb
+        /tmp/bb | aplay -
+}
+
+undecorate()
+{
+	 xprop -f _MOTIF_WM_HINTS 32c -set _MOTIF_WM_HINTS "0x2, 0x0, 0x0, 0x0, 0x0"
+}
+
+machinecode()
+{
+	pushd /tmp
+	while read l
+	do
+		echo -e "format ELF64 executable 3\n$l" > c4.asm
+		fasm c4.asm
+		echo
+		hexdump -C -s 120 c4
+		echo
+		echo -n "> "
+	done
+	popd
+}

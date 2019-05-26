@@ -9,6 +9,7 @@ set conceallevel=2
 set concealcursor=ni
 set directory=~/.config/nvim/tmp/swap
 set hlsearch!
+set signcolumn=yes
 set ignorecase
 set incsearch
 set lazyredraw
@@ -18,6 +19,7 @@ set magic
 set mat=1
 set mouse=a
 set nohlsearch
+set dg
 set number
 set scrolloff=5
 set shiftwidth=2
@@ -42,161 +44,84 @@ set laststatus=2
 set foldlevelstart=99
 set clipboard=unnamedplus
 
-let g:theme = "dark"
+let g:theme = "light"
 
-function Link()
-	hi link String         Constant
-	hi link Character      Constant
-	hi link Number         Constant
-	hi link Boolean        Constant
-	hi link Float          Number
-	hi link Function       Identifier
-	hi link Conditional    Statement
-	hi link Repeat         Statement
-	hi link Label          Statement
-	hi link Operator       Statement
-	hi link Keyword        Statement
-	hi link Exception      Statement
-	hi link Include        PreProc
-	hi link Define         PreProc
-	hi link Macro          PreProc
-	hi link PreCondit      PreProc
-	hi link StorageClass   Type
-	hi link Structure      Type
-	hi link Typedef        Type
-	hi link SpecialChar    Special
-	hi link Delimiter      Special
-	hi link SpecialComment Special
-	hi link Debug          Special
+" blue 27303a
+" gray f3f8fd
+" black 1a2027
+function! LightTheme()
+	hi Comment      guifg=#bbbbbb gui=italic
+	hi CursorLine   guifg=none guibg=#f3f8fd gui=none
+	hi CursorLineNr guibg=#f3f8fd guifg=#1a2027 gui=none
+	hi Delimiter    guifg=#111111
+	hi Float        guifg=#888888 gui=none
+	hi Number       guifg=#888888 gui=none
+	hi Function     guifg=#111111
+	hi Identifier   guifg=#111111
+	hi Operator     guifg=#444444 gui=none
+	hi String       guifg=#E1A126
+	hi Include      guifg=#333333
+	hi Statement    guifg=#D81735 gui=none
+	hi Structure    guifg=#D81735 gui=none
+	hi Type         guifg=#aaaaaa gui=none
+	hi GitGutterAdd guibg=#27303a guifg=#eeeeee
+	hi GitGutterChange guibg=#27303a guifg=#eeeeee
+	hi GitGutterDelete guibg=#27303a guifg=#eeeeee
+	hi Keyword                                  gui=none
+	hi LineNr       guifg=#1a2027 guibg=#f3f8fd
+	hi NonText      guifg=#e3e8ed guibg=#ffffff
+	hi Normal       guifg=#1a2027 guibg=#FFFFFF
+	hi Directory    guifg=#27303a
+	hi Title        guifg=#1a2027
+	hi Pmenu        guifg=#1a2027 guibg=#f3f8fd
+	hi PmenuSel     guifg=#27303a guibg=#e3e8ed
+	hi PreProc      guifg=#D81735 gui=none
+	hi QuickFixLine guifg=#33373e
+	hi SignColumn   guibg=#27303a guifg=#eeeeee
+	hi StatusLine   guibg=#27303a guifg=#eeeeee gui=none
+	hi StatusLineNC guibg=#27303a guifg=#eeeeee gui=none
+	hi TabLine      guibg=#27303a guifg=#eeeeee gui=none
+	hi TabLineFill  guibg=#27303a guifg=#eeeeee gui=none
+	hi TabLineSel   guibg=#27303a guifg=#eeeeee gui=none
+	hi VertSplit    guibg=#27303a guifg=#27303a gui=none
+	hi Visual                     guibg=#eeeeee
+	hi idrisMetaVar guifg=#FF5800 gui=underline
 endfunction
 
-function Red()
-	hi Normal       guifg=#d00000  guibg=#100000
-	hi ErrorMsg     guifg=#ffffff  guibg=#ff0000
-	hi Visual       guifg=#100000  guibg=#900000
-	hi Todo         guifg=#100000  guibg=#ff0000
-	hi NonText      guifg=#ff6060
-	hi Search       guifg=#100000  guibg=#ff6060
-	hi Question     guifg=#ff8080
-	hi MatchParen   guifg=#ff9090  guibg=bg       gui=bold
-	hi LineNr       guifg=#ff6060
-	hi Directory    guifg=#d04040
-	hi Folded       guifg=#100000  guibg=#600000
-	hi ColorColumn  guibg=#300000
-	hi Error        guibg=#ff8000
-	hi CursorLine                  guibg=#200000
-	hi CursorLineNr guifg=#ff6060  guibg=#200000
-
-	" Splitter
-	hi StatusLine   guifg=#ff2020
-	hi StatusLineNC guifg=#ff2020
-	hi VertSplit    guifg=#ff2020
-
-	" Popup menu
-	hi Pmenu        guifg=#ff8080  guibg=#200000
-	hi PmenuSel     guifg=#100000  guibg=#ff8080
-	hi PmenuSbar    guibg=#401010
-	hi PmenuThumb   guibg=#a04040
-
-	" Code colors
-	hi Comment      guifg=#a04040
-	hi Constant     guifg=#800000
-	hi Special      guifg=#ff3030
-	hi Identifier   guifg=#700000
-	hi Statement    guifg=#ff4040
-	hi PreProc      guifg=#c00000
-	hi Type         guifg=#ff3030
-	hi Underlined                 term=underline
-	hi Ignore       guifg=bg
-	hi Operator     guifg=#ff3030
-
-	call Link()
-endfunction
-
-function Green()
-	hi Normal       guifg=#00d000  guibg=#001000
-	hi ErrorMsg     guifg=#ffffff  guibg=#ff0000
-	hi Visual       guifg=#001000  guibg=#009000
-	hi Todo         guifg=#001000  guibg=#00ff00
-	hi NonText      guifg=#60ff60
-	hi Search       guifg=#001000  guibg=#60ff60
-	hi Question     guifg=#80ff80
-	hi MatchParen   guifg=#90ff90  guibg=bg      gui=bold
-	hi LineNr       guifg=#60ff60
-	hi Directory    guifg=#40d040
-	hi Folded       guifg=#001000  guibg=#006000
-	hi ColorColumn  guibg=#003000
-	hi Error        guibg=#ff8000
-	hi CursorLine                  guibg=#002000
-	hi CursorLineNr guifg=#60ff60  guibg=#002000
-
-	" Splitter
-	hi StatusLine   guifg=#20ff20
-	hi StatusLineNC guifg=#20ff20
-	hi VertSplit    guifg=#20ff20
-
-	" Popup menu
-	hi Pmenu        guifg=#80ff80  guibg=#002000
-	hi PmenuSel     guifg=#001000  guibg=#80ff80
-	hi PmenuSbar    guibg=#104010
-	hi PmenuThumb   guibg=#40a040
-
-	" Code colors
-	hi Comment      guifg=#40a040
-	hi Constant     guifg=#008000
-	hi Special      guifg=#30ff30
-	hi Identifier   guifg=#007000
-	hi Statement    guifg=#40ff40
-	hi PreProc      guifg=#00c000
-	hi Type         guifg=#30ff30
-	hi Underlined                  term=underline
-	hi Ignore       guifg=bg
-	hi Operator     guifg=#30ff30
-
-	call Link()
-endfunction
-
-function Yellow()
-	hi Normal       guifg=#d0d000  guibg=#101000
-	hi ErrorMsg     guifg=#ffffff  guibg=#0000ff
-	hi Visual       guifg=#101000  guibg=#909000
-	hi Todo         guifg=#101000  guibg=#ffff00
-	hi NonText      guifg=#ffff60
-	hi Search       guifg=#101000  guibg=#ffff60
-	hi Question     guifg=#ffff80
-	hi MatchParen   guifg=#ffff90  guibg=bg      gui=bold
-	hi LineNr       guifg=#ffff60
-	hi Directory    guifg=#d0d040
-	hi Folded       guifg=#101000  guibg=#606000
-	hi ColorColumn  guibg=#303000
-	hi Error        guibg=#8080ff
-	hi CursorLine                  guibg=#202000
-	hi CursorLineNr guifg=#ffff60  guibg=#202000
-
-	" Splitter
-	hi StatusLine   guifg=#ffff20
-	hi StatusLineNC guifg=#ffff20
-	hi VertSplit    guifg=#ffff20
-
-	" Popup menu
-	hi Pmenu        guifg=#ffff80  guibg=#202000
-	hi PmenuSel     guifg=#101000  guibg=#ffff80
-	hi PmenuSbar    guibg=#404010
-	hi PmenuThumb   guibg=#a0a040
-
-	" Code colors
-	hi Comment      guifg=#a0a040
-	hi Constant     guifg=#808000
-	hi Special      guifg=#ffff30
-	hi Identifier   guifg=#707000
-	hi Statement    guifg=#ffff40
-	hi PreProc      guifg=#c0c000
-	hi Type         guifg=#ffff30
-	hi Underlined                  term=underline
-	hi Ignore       guifg=bg
-	hi Operator     guifg=#ffff30
-
-	call Link()
+function! DarkTheme()
+	hi Comment      guifg=#33373e gui=italic
+	hi CursorLine   guifg=none guibg=#080e0e gui=none
+	hi CursorLineNr guifg=#33373e guibg=#00090
+	hi Delimiter    guifg=#111111
+	hi Float        guifg=#16B1FB
+	hi Function     guifg=#2aa889
+	hi GitGutterAdd guifg=#22262d guibg=#000909
+	hi GitGutterChange guifg=#22262d guibg=#000900
+	hi GitGutterDelete guifg=#22262d guibg=#000900
+	hi Identifier   guifg=#111111
+	hi Include      guifg=#97D01A
+	hi Keyword                                  gui=none
+	hi LineNr       guifg=#22262d guibg=#000909
+	hi NonText      guifg=#000909
+	hi Normal       guifg=#ABABAB guibg=#000909
+	hi Number       guifg=#16B1FB
+	hi Operator     guifg=#dddddd gui=none
+	hi Pmenu        guifg=#33373e guibg=#000909
+	hi PmenuSel     guifg=#000909 guibg=#222622
+	hi PreProc      guifg=#D81735 gui=bold
+	hi QuickFixLine guifg=#33373e
+	hi SignColumn   guifg=#22262d guibg=#000909
+	hi Statement    guifg=#D81735 gui=bold
+	hi StatusLine   guifg=#22262d guibg=#000909 gui=none
+	hi StatusLineNC guifg=#22262d guibg=#000909 gui=none
+	hi String       guifg=#E1A126
+	hi Structure    guifg=#D81735 gui=bold
+	hi TabLine      guifg=#22262d guibg=#000909 gui=none
+	hi TabLineFill  guifg=#22262d guibg=#000909 gui=none
+	hi TabLineSel   guifg=#33373e guibg=#000909 gui=none
+	hi VertSplit    guifg=#111317 guibg=#000909 gui=none
+	hi Visual                     guibg=#111511
+	hi idrisMetaVar guifg=#FF5800 gui=underline
 endfunction
 
 hi QuickFixLine guifg=#60ff60
@@ -256,7 +181,7 @@ function! ToggleGoyo()
 		Goyo!
 	endif
 	if (g:theme == "dark")
-		call Green()
+		call DarkTheme()
 	else
 		call LightTheme()
 	endif
@@ -308,9 +233,9 @@ au BufNewFile,BufRead *.texi,*.idr,*.hs,*.scm,*.rkt,*.lhs,*.lidr,*.sats,*.ipkg,*
 au BufNewFile,BufRead *.rkt hi error guibg=none
 au BufWrite * call CleanFile()
 au BufNewFile,BufRead *.lidr set filetype=idris | set filetype=lidris
-" au BufNewFile,BufRead *.scm,*.clj,*.lisp RainbowToggleOn
+au BufNewFile,BufRead *.scm,*.clj,*.lisp RainbowToggleOn
 au BufEnter *.idr call Categories() | call ToggleLime()
-au VimEnter * call Green() | RainbowToggleOff
+au VimEnter * call LightTheme() | RainbowToggleOn
 au VimEnter *.txt call ToggleGoyo()
 
 let g:syntastic_error_symbol = '✗'

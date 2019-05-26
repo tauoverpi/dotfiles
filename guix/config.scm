@@ -31,6 +31,7 @@
   gtk
   gnunet
   chez
+  lxqt
   rust
   emacs-xyz
   audio
@@ -183,6 +184,7 @@
 
     (packages
       (cons* ;; VIM
+        qterminal
         neovim
         neovim-asyncrun
         neovim-gitgutter
@@ -190,39 +192,15 @@
         neovim-idris
         neovim-lastplace
         neovim-limelight
+        neovim-nerdtree
         neovim-rainbow
         neovim-supertab
         neovim-tabular
         neovim-syntastic
         neovim-paredit
-        ; neovim-mercury
-        vis
-        ghostwriter
         ;; EMACS
-        emacs-xwidgets
-        emacs-rainbow-delimiters
-        emacs-monotropic-theme
-        emacs-evil
-        emacs-evil-mu4e
-        emacs-mu4e-alert
-        emacs-mu4e-conversation
-        emacs-mbsync
-        emacs-evil-magit
-        emacs-evil-surround
-        emacs-evil-commentary
-        emacs-evil-anzu
-        emacs-evil-collection
-        emacs-evil-quickscope
-        emacs-evil-smartparens
-        emacs-guix
-        emacs-geiser
-        emacs-flycheck
-        emacs-graphviz-dot-mode
-        emacs-alchemist
-        emacs-doom-themes
-        emacs-company
-        emacs-ats2
-        emacs-idris-mode
+        emacs
+        emacs-slack
         ;; DEVELOPMENT
         inotify-tools
         gnu-make
@@ -236,35 +214,20 @@
         ; mercury-rotd
         smalltalk-custom
         gprolog
-        squeak-vm
-        ;erlang
+        erlang
         gcc-toolchain
-        ghc ghc-parallel ghc-profunctors ghc-alex ghc-happy
         ;icedtea
-        polyml
-        idris
-        ;agda
         node
         guile-readline
         chibi-scheme
         gforth
         ats2
-        ;guile-xcb
-        ;guile-minikanren
-        ;guile-8sync
-        ;guile-git
-        racket
-        ;chez-sockets
-        ;chez-srfi
+        ;racket
         chez-scheme
-        elixir
-        ;chez-web
-        ;chez-matchable
-        ;chez-irregex
         ;; UTILS
         weechat
         asciinema
-        ;dtach
+        dtach
         espeak
         gnu:acpi
         gnupg
@@ -279,13 +242,19 @@
         tree
         unzip
         zip
+        ;; GAMES
+        0ad
+        thefuck
+        cataclysm-dda
+        gnugo
+        ;pioneer
+        xonotic
         ;; DESKTOP
-        ;0ad
-        pioneer
+        polybar
         xprop
-        ;bspwm
-        compton
-        rofi
+        bspwm
+        ;compton
+        dmenu
         scrot
         sxhkd
         xclip
@@ -296,16 +265,6 @@
         xmodmap
         xrandr
         ;; GNOME
-        evolution-data-server
-        evolution
-        gnome-tweak-tool
-        gnome-shell-extensions
-        gnome-maps
-        gnome-calendar
-        gnome-dictionary
-        jami-client-gnome
-        ;glade3
-        claws-mail
         ;; MAIL
         fetchmail
         ;procmail
@@ -314,15 +273,17 @@
         ;mbsync
         ;; DOCUMENT PROCESSING
         aspell
+        aspell-dict-en
+        aspell-dict-sv
         diction
         dot2tex
         ;ghc-pandoc
-        gnuplot
+        ;gnuplot
         graphviz
         ;libreoffice
         haunt
         ; texinfo
-        texlive
+        ;texlive
         zathura
         zathura-cb
         zathura-djvu
@@ -337,17 +298,15 @@
         font-hack
         font-ibm-plex
         font-inconsolata
-        font-iosevka
         font-lato
         font-liberation
         font-linuxlibertine
         font-ubuntu
         ;; NETWORKING
         aria2
-        gnunet
+        ;gnunet
         curl
-        gnunet
-        icecat
+        epiphany
         links
         openssh
         rsync
@@ -356,7 +315,7 @@
         ;; GRAPHICS
         feh
         gimp
-        krita
+        ; krita
         imagemagick
         inkscape
         ;; MEDIA
@@ -376,7 +335,7 @@
     (name-service-switch %mdns-host-lookup-nss)
 
     (services
-     (cons* (service gnome-desktop-service-type)
+     (cons*
 
             (service mpd-service-type
                      (mpd-configuration
@@ -394,17 +353,13 @@
                       (mcron-configuration
                        (jobs (list garbage-collector-job))))
 
-             (service gdm-service-type)
-
              (service tlp-service-type
                       (tlp-configuration
                        (cpu-boost-on-ac? #t)))
 
              (service thermald-service-type)
 
-             (modify-services (remove (lambda (s)
-                                        (eq? (service-kind s) slim-service-type))
-                                      %desktop-services)
+             (modify-services %desktop-services
                               (network-manager-service-type
                                config => (network-manager-configuration
                                           (inherit config)
