@@ -3,6 +3,10 @@
         (url "https://git.sr.ht/~tauoverpi/packages")
         (branch "master"))
 
+      ;(channel
+      ;  (name 'bavier)
+      ;  (url "https://notabug.org/bavier/guix-bavier.git")l)
+
       (channel
         (name 'guix)
         (url "https://git.savannah.gnu.org/git/guix.git")

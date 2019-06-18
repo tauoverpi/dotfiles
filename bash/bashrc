@@ -97,7 +97,7 @@ scap ()
 
 search ()
 {
-	links "searx.me/?q=$(echo $@ | sed 's/ /%20/g')"
+	links "https://searx.me/?preferences=eJx1VUuP1DAM_jX0Ug3iceDUAwIhkJAWMQvXyE08rWkalzid2fLrcWb7WnY4TEdN7O_hxG5EGX0Sw8EEvJgEdfUJvGDhmExEYX_GWImlQzvWL9Ol8BCaERqsMBx-HAvPFnx-KRwJ1B6dGfzYUJDqJ_UHTx2allOHk7x48-FuwJBRldJ4Ct3KW0e-CMbMn-O-hBMFSmjERvZ-yXxvLYqYj3dfFOQSNaCgXrWYIfLDNAuHMbHlfvCYsCoETigI0bbVqyK12GPFYiEWGJ6qPaI_GeXl2EMiDlnGfQTbqaof378qYc9aCl39fH__7bgI0PfjFT47sZCw4TgZQY82bSXBoBwoVUe2A3VgTuQxM5wiYil8SheIWDqKmpYBDCXdPTMkY4QtgS97dAS6SAGMOZNDzgARnaPnQWOQwYO0CpQLlCMb5sZjqctTCcOwE_FxdFpc02DACLnYjpo6bfsNNWoDJO1jFmI9vasRF5nclhMmgB35anwVvpfTj0LWmOufbllrD-l8w-TG3iB2iXqUuVKPdAvArH_NB9sIj_8j5zPhXtnrh51wQXQD6h1YwXv-peR7MQv8msR6WSMOvKvxhvPM1ZqG2gS5hhvyCSLzWuMW6gj5MZvO147OWJLcUrPorSnVo17jNGdN0GbMHUnUTiSwz-7KDSXbAqap56BN_CQscTdxYmm5g7BpeDye1fkpQg-e6oizpn7qtb3iVKYIQby2kbtlaSlmTgWNzhHy1L1Tq_nXcPno5uZZPr2ly9s_4le583VazPwTtp3wnwD9XotcSMTqYNtrsBBiKSmONo0xy9PZisHiFSGfqGWHZX7MtdmhbNCv375997C_0JQ81EtGgpiGPBf3hXFN6fA6VvN022-tzXl1uE7GZWhNEBw-3C7yfvX3BcLWpEWPqWVXfbs73hfzYNQ-q5bt6xQ-SJr06-G5oez4_BfilHiF&q=$(echo $@ | sed 's/ /%20/g')"
 }
 alias s=search
 
@@ -131,4 +131,9 @@ machinecode()
 		echo -n "> "
 	done
 	popd
+}
+
+spoiler()
+{
+	links http://1novels.com/243724-fifty-shades-freed.html
 }

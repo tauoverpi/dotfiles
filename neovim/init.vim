@@ -14,7 +14,7 @@ set ignorecase
 set incsearch
 set lazyredraw
 set lbr
-set listchars=tab:\|\ ,eol:¬,extends:❯,precedes:❮,nbsp:▩
+" set listchars=tab:\|\ ,eol:¬,extends:❯,precedes:❮,nbsp:▩
 set magic
 set mat=1
 set mouse=a
@@ -26,6 +26,7 @@ set shiftwidth=2
 set showmatch
 set si
 set smartcase
+" set colorcolumn=64
 set smarttab
 set t_Co=256
 set tabstop=2
@@ -44,7 +45,7 @@ set laststatus=2
 set foldlevelstart=99
 set clipboard=unnamedplus
 
-let g:theme = "light"
+let g:theme = "dark"
 
 " blue 27303a
 " gray f3f8fd
@@ -86,42 +87,47 @@ function! LightTheme()
 	hi VertSplit    guibg=#27303a guifg=#27303a gui=none
 	hi Visual                     guibg=#eeeeee
 	hi idrisMetaVar guifg=#FF5800 gui=underline
+  hi ColorColumn  guibg=#f3f8fd
 endfunction
 
 function! DarkTheme()
-	hi Comment      guifg=#33373e gui=italic
-	hi CursorLine   guifg=none guibg=#080e0e gui=none
-	hi CursorLineNr guifg=#33373e guibg=#00090
-	hi Delimiter    guifg=#111111
-	hi Float        guifg=#16B1FB
-	hi Function     guifg=#2aa889
-	hi GitGutterAdd guifg=#22262d guibg=#000909
-	hi GitGutterChange guifg=#22262d guibg=#000900
-	hi GitGutterDelete guifg=#22262d guibg=#000900
-	hi Identifier   guifg=#111111
-	hi Include      guifg=#97D01A
-	hi Keyword                                  gui=none
-	hi LineNr       guifg=#22262d guibg=#000909
-	hi NonText      guifg=#000909
-	hi Normal       guifg=#ABABAB guibg=#000909
-	hi Number       guifg=#16B1FB
-	hi Operator     guifg=#dddddd gui=none
-	hi Pmenu        guifg=#33373e guibg=#000909
-	hi PmenuSel     guifg=#000909 guibg=#222622
-	hi PreProc      guifg=#D81735 gui=bold
-	hi QuickFixLine guifg=#33373e
-	hi SignColumn   guifg=#22262d guibg=#000909
-	hi Statement    guifg=#D81735 gui=bold
-	hi StatusLine   guifg=#22262d guibg=#000909 gui=none
-	hi StatusLineNC guifg=#22262d guibg=#000909 gui=none
+	hi Comment      guifg=#bbbbbb gui=italic
+	hi CursorLine   guifg=none guibg=#27303a gui=none
+	hi CursorLineNr guibg=#27303a guifg=#eeeeee gui=none
+	hi Delimiter    guifg=#eeeeee
+	hi Float        guifg=#888888 gui=none
+	hi Number       guifg=#888888 gui=none
+	hi Function     guifg=#eeeeee
+	hi Identifier   guifg=#eeeeee
+	hi Operator     guifg=#666666 gui=none
 	hi String       guifg=#E1A126
-	hi Structure    guifg=#D81735 gui=bold
-	hi TabLine      guifg=#22262d guibg=#000909 gui=none
-	hi TabLineFill  guifg=#22262d guibg=#000909 gui=none
-	hi TabLineSel   guifg=#33373e guibg=#000909 gui=none
-	hi VertSplit    guifg=#111317 guibg=#000909 gui=none
-	hi Visual                     guibg=#111511
+	hi Include      guifg=#666666
+	hi Statement    guifg=#D81735 gui=none
+	hi Structure    guifg=#D81735 gui=none
+	hi Type         guifg=#aaaaaa gui=none
+	hi GitGutterAdd guibg=#27303a guifg=#eeeeee
+	hi GitGutterChange guibg=#27303a guifg=#eeeeee
+	hi GitGutterDelete guibg=#27303a guifg=#eeeeee
+	hi Keyword                                  gui=none
+	hi LineNr       guifg=#eeeeee guibg=#17202a
+	hi NonText      guifg=#27303a guibg=#1a2027
+	hi Normal       guifg=#ffffff guibg=#1a2027
+	hi Directory    guifg=#27303a
+	hi Title        guifg=#1a2027
+	hi Pmenu        guifg=#1a2027 guibg=#f3f8fd
+	hi PmenuSel     guifg=#27303a guibg=#e3e8ed
+	hi PreProc      guifg=#D81735 gui=none
+	hi QuickFixLine guifg=#33373e
+	hi SignColumn   guibg=#27303a guifg=#eeeeee
+	hi StatusLine   guibg=#27303a guifg=#eeeeee gui=none
+	hi StatusLineNC guibg=#27303a guifg=#eeeeee gui=none
+	hi TabLine      guibg=#27303a guifg=#eeeeee gui=none
+	hi TabLineFill  guibg=#27303a guifg=#eeeeee gui=none
+	hi TabLineSel   guibg=#27303a guifg=#eeeeee gui=none
+	hi VertSplit    guibg=#27303a guifg=#27303a gui=none
+	hi Visual                     guibg=#eeeeee
 	hi idrisMetaVar guifg=#FF5800 gui=underline
+  hi ColorColumn  guibg=#27303a
 endfunction
 
 hi QuickFixLine guifg=#60ff60
@@ -234,8 +240,8 @@ au BufNewFile,BufRead *.rkt hi error guibg=none
 au BufWrite * call CleanFile()
 au BufNewFile,BufRead *.lidr set filetype=idris | set filetype=lidris
 au BufNewFile,BufRead *.scm,*.clj,*.lisp RainbowToggleOn
-au BufEnter *.idr call Categories() | call ToggleLime()
-au VimEnter * call LightTheme() | RainbowToggleOn
+au BufEnter *.idr call ToggleLime()
+au VimEnter * call DarkTheme() | RainbowToggleOn
 au VimEnter *.txt call ToggleGoyo()
 
 let g:syntastic_error_symbol = '✗'

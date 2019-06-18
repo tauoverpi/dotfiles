@@ -11,6 +11,7 @@
   (guix channels)
   (levy packages firmware)
   (levy packages smalltalk)
+  (levy packages drawpile)
   (levy packages fonts)
   (levy packages linux)
   (levy packages neovim)
@@ -23,6 +24,7 @@
 (use-package-modules
   admin
   assembly
+  tmux
   aspell
   man
   gprolog
@@ -184,7 +186,6 @@
 
     (packages
       (cons* ;; VIM
-        qterminal
         neovim
         neovim-asyncrun
         neovim-gitgutter
@@ -199,8 +200,6 @@
         neovim-syntastic
         neovim-paredit
         ;; EMACS
-        emacs
-        emacs-slack
         ;; DEVELOPMENT
         inotify-tools
         gnu-make
@@ -208,19 +207,18 @@
         git
         gdb
         man-pages
-        ;pkg-config
+        tmux
         ;; COMPILERS & INTERPRETERS
         fasm
-        ; mercury-rotd
         smalltalk-custom
         gprolog
-        erlang
         gcc-toolchain
-        ;icedtea
         node
         guile-readline
         chibi-scheme
         gforth
+        ghc
+        idris
         ats2
         ;racket
         chez-scheme
@@ -243,52 +241,23 @@
         unzip
         zip
         ;; GAMES
-        0ad
         thefuck
         cataclysm-dda
         gnugo
-        ;pioneer
-        xonotic
         ;; DESKTOP
-        polybar
-        xprop
-        bspwm
-        ;compton
-        dmenu
-        scrot
-        sxhkd
-        xclip
-        xdotool
-        xdpyinfo
-        xev
-        xkill
-        xmodmap
-        xrandr
         ;; GNOME
+        gnome-calendar
         ;; MAIL
         fetchmail
-        ;procmail
         isync
-        ;sendmail
-        ;mbsync
         ;; DOCUMENT PROCESSING
         aspell
         aspell-dict-en
         aspell-dict-sv
         diction
         dot2tex
-        ;ghc-pandoc
-        ;gnuplot
         graphviz
-        ;libreoffice
         haunt
-        ; texinfo
-        ;texlive
-        zathura
-        zathura-cb
-        zathura-djvu
-        zathura-pdf-poppler
-        zathura-ps
         ;; FONTS
         font-comic-neue
         font-dejavu
@@ -304,26 +273,19 @@
         font-ubuntu
         ;; NETWORKING
         aria2
-        ;gnunet
         curl
-        epiphany
         links
         openssh
         rsync
-        surf
-        torsocks
         ;; GRAPHICS
-        feh
-        gimp
-        ; krita
+        fbida
         imagemagick
-        inkscape
+        ;inkscape
         ;; MEDIA
         ffmpeg
         gnu:alsa-utils
-        mpd
-        mpd-mpc
         mpv
+        youtube-viewer
         sox
         ;; CERTS
         nss-certs
@@ -336,14 +298,6 @@
 
     (services
      (cons*
-
-            (service mpd-service-type
-                     (mpd-configuration
-                      (user "levy")
-                      (music-dir "~/media/music")
-                      (playlist-dir "~/.config/mpd/playlists")))
-
-            (service tor-service-type)
 
             (service openssh-service-type
                      (openssh-configuration
@@ -359,7 +313,8 @@
 
              (service thermald-service-type)
 
-             (modify-services %desktop-services
+             (modify-services (remove (lambda (service) (eq? (service-kind service) gdm-service-type) )
+                                      %desktop-services)
                               (network-manager-service-type
                                config => (network-manager-configuration
                                           (inherit config)
@@ -369,7 +324,6 @@
                                           (inherit config)
                                           (substitute-urls
                                            (list "https://berlin.guixsd.org"
-                                                 "https://mirror.hydra.gnu.org"
-                                                 "https://hydra.gnu.org")))))))))
+                                                 )))))))))
 
 laptop
