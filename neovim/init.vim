@@ -53,38 +53,38 @@ let g:theme = "dark"
 function! LightTheme()
 	hi Comment      guifg=#bbbbbb gui=italic
 	hi CursorLine   guifg=none guibg=#f3f8fd gui=none
-	hi CursorLineNr guibg=#f3f8fd guifg=#1a2027 gui=none
+	hi CursorLineNr guibg=#f3f8fd guifg=#aaaaaa gui=none
 	hi Delimiter    guifg=#111111
-	hi Float        guifg=#888888 gui=none
-	hi Number       guifg=#888888 gui=none
+	hi Float        guifg=#444444 gui=none
+	hi Number       guifg=#444444 gui=none
 	hi Function     guifg=#111111
 	hi Identifier   guifg=#111111
 	hi Operator     guifg=#444444 gui=none
 	hi String       guifg=#E1A126
 	hi Include      guifg=#333333
-	hi Statement    guifg=#D81735 gui=none
-	hi Structure    guifg=#D81735 gui=none
-	hi Type         guifg=#aaaaaa gui=none
+	hi Statement    guifg=#222222 gui=none
+	hi Structure    guifg=#222222 gui=none
+	hi Type         guifg=#555555 gui=none
 	hi GitGutterAdd guibg=#27303a guifg=#eeeeee
 	hi GitGutterChange guibg=#27303a guifg=#eeeeee
 	hi GitGutterDelete guibg=#27303a guifg=#eeeeee
 	hi Keyword                                  gui=none
-	hi LineNr       guifg=#1a2027 guibg=#f3f8fd
+	hi LineNr       guifg=#aaaaaa guibg=#ffffff
 	hi NonText      guifg=#e3e8ed guibg=#ffffff
-	hi Normal       guifg=#1a2027 guibg=#FFFFFF
+	hi Normal       guifg=#000000 guibg=#FFFFFF
 	hi Directory    guifg=#27303a
-	hi Title        guifg=#1a2027
+	hi Title        guifg=#000000
 	hi Pmenu        guifg=#1a2027 guibg=#f3f8fd
 	hi PmenuSel     guifg=#27303a guibg=#e3e8ed
 	hi PreProc      guifg=#D81735 gui=none
 	hi QuickFixLine guifg=#33373e
-	hi SignColumn   guibg=#27303a guifg=#eeeeee
-	hi StatusLine   guibg=#27303a guifg=#eeeeee gui=none
-	hi StatusLineNC guibg=#27303a guifg=#eeeeee gui=none
-	hi TabLine      guibg=#27303a guifg=#eeeeee gui=none
-	hi TabLineFill  guibg=#27303a guifg=#eeeeee gui=none
-	hi TabLineSel   guibg=#27303a guifg=#eeeeee gui=none
-	hi VertSplit    guibg=#27303a guifg=#27303a gui=none
+	hi SignColumn   guibg=#ffffff guifg=#000000
+	hi StatusLine   guibg=#ffffff guifg=#000000 gui=none
+	hi StatusLineNC guibg=#ffffff guifg=#000000 gui=none
+	hi TabLine      guibg=#ffffff guifg=#000000 gui=none
+	hi TabLineFill  guibg=#ffffff guifg=#000000 gui=none
+	hi TabLineSel   guibg=#ffffff guifg=#000000 gui=none
+	hi VertSplit    guibg=#ffffff guifg=#ffffff gui=none
 	hi Visual                     guibg=#eeeeee
 	hi idrisMetaVar guifg=#FF5800 gui=underline
   hi ColorColumn  guibg=#f3f8fd
@@ -109,7 +109,7 @@ function! DarkTheme()
 	hi GitGutterChange guibg=#27303a guifg=#eeeeee
 	hi GitGutterDelete guibg=#27303a guifg=#eeeeee
 	hi Keyword                                  gui=none
-	hi LineNr       guifg=#eeeeee guibg=#17202a
+	hi LineNr       guifg=#27303a guibg=#17202a
 	hi NonText      guifg=#27303a guibg=#1a2027
 	hi Normal       guifg=#ffffff guibg=#1a2027
 	hi Directory    guifg=#27303a
@@ -127,7 +127,47 @@ function! DarkTheme()
 	hi VertSplit    guibg=#27303a guifg=#27303a gui=none
 	hi Visual                     guibg=#eeeeee
 	hi idrisMetaVar guifg=#FF5800 gui=underline
-  hi ColorColumn  guibg=#27303a
+	hi ColorColumn  guibg=#27303a
+endfunction
+
+function! BlackTheme()
+	hi Comment      guifg=#bbbbbb gui=italic
+	hi CursorLine   guifg=none guibg=#000000 gui=none
+	hi CursorLineNr guibg=#000000 guifg=#27303a gui=none
+	hi Delimiter    guifg=#eeeeee
+	hi Float        guifg=#888888 gui=none
+	hi Number       guifg=#888888 gui=none
+	hi Function     guifg=#eeeeee
+	hi Identifier   guifg=#eeeeee
+	hi Operator     guifg=#666666 gui=none
+	hi String       guifg=#E1A126
+	hi Include      guifg=#666666
+	hi Statement    guifg=#D81735 gui=none
+	hi Structure    guifg=#D81735 gui=none
+	hi Type         guifg=#aaaaaa gui=none
+	hi GitGutterAdd guibg=#000000 guifg=#eeeeee
+	hi GitGutterChange guibg=#000000 guifg=#eeeeee
+	hi GitGutterDelete guibg=#000000 guifg=#eeeeee
+	hi Keyword                                  gui=none
+	hi LineNr       guifg=#17202a guibg=#000000
+	hi NonText      guifg=#1a2027 guibg=#000000
+	hi Normal       guifg=#ffffff guibg=#000000
+	hi Directory    guifg=#000000
+	hi Title        guifg=#1a2027
+	hi Pmenu        guifg=#1a2027 guibg=#f3f8fd
+	hi PmenuSel     guifg=#000000 guibg=#e3e8ed
+	hi PreProc      guifg=#D81735 gui=none
+	hi QuickFixLine guifg=#33373e
+	hi SignColumn   guibg=#000000 guifg=#eeeeee
+	hi StatusLine   guibg=#000000 guifg=#eeeeee gui=none
+	hi StatusLineNC guibg=#000000 guifg=#eeeeee gui=none
+	hi TabLine      guibg=#000000 guifg=#eeeeee gui=none
+	hi TabLineFill  guibg=#000000 guifg=#eeeeee gui=none
+	hi TabLineSel   guibg=#000000 guifg=#eeeeee gui=none
+	hi VertSplit    guibg=#000000 guifg=#000000 gui=none
+	hi Visual                     guibg=#eeeeee
+	hi idrisMetaVar guifg=#FF5800 gui=underline
+	hi ColorColumn  guibg=#000000
 endfunction
 
 hi QuickFixLine guifg=#60ff60
@@ -241,7 +281,7 @@ au BufWrite * call CleanFile()
 au BufNewFile,BufRead *.lidr set filetype=idris | set filetype=lidris
 au BufNewFile,BufRead *.scm,*.clj,*.lisp RainbowToggleOn
 au BufEnter *.idr call ToggleLime()
-au VimEnter * call DarkTheme() | RainbowToggleOn
+au VimEnter * call BlackTheme()
 au VimEnter *.txt call ToggleGoyo()
 
 let g:syntastic_error_symbol = '✗'

@@ -17,7 +17,7 @@ then
 fi
 
 # Source the system-wide file.
-eval $(thefuck --alias)
+# eval $(thefuck --alias)
 source /etc/bashrc
 
 # Adjust the prompt depending on whether we're in 'guix environment'.
