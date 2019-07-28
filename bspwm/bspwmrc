@@ -1,10 +1,10 @@
 #!/bin/sh
 bspc config border_width            0
-bspc config window_gap              2
-bspc config top_padding             2
-bspc config left_padding            2
-bspc config right_padding           2
-bspc config bottom_padding          2
+bspc config window_gap              0
+bspc config top_padding             0
+bspc config left_padding            0
+bspc config right_padding           0
+bspc config bottom_padding          0
 # bspc config border_radius           5
 bspc config split_ratio             0.60
 bspc config focus_follows_pointer   true
@@ -12,5 +12,6 @@ bspc config pointer_follows_monitor true
 
 bspc rule -a emacs manage=on
 bspc rule -a surf manage=on
+bspc rule -a icecat manage=on
 
 bspc monitor -d . . . . . . . . . .

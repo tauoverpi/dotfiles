@@ -30,6 +30,7 @@ fi
 alias ls='ls -p -F --color=none'
 alias ll='ls -l'
 alias grep='grep --color=none'
+alias vga='xrandr --output VGA-1 --auto'
 
 # still need to rewrite this...
 export MPD_HOST=127.0.0.1
@@ -37,6 +38,7 @@ export MPD_HOST=127.0.0.1
 export IDRIS_CC=gcc
 export EDITOR=nvim
 export PATH=$HOME/.local/bin:$PATH
+export SSL_CERT_DIR=/run/current-system/profile/etc/ssl/certs/
 
 alias reconfigure='sudo -E guix system reconfigure $HOME/projects/sr.ht/dotfiles/guix/config.scm'
 
@@ -123,7 +125,7 @@ machinecode()
 	pushd /tmp
 	while read l
 	do
-		echo -e "format ELF64 executable 3\n$l" > c4.asm
+		echo -e "format $1 executable $2\n$l" > c4.asm
 		fasm c4.asm
 		echo
 		hexdump -C -s 120 c4
@@ -133,7 +135,100 @@ machinecode()
 	popd
 }
 
-spoiler()
+wh()
 {
-	links http://1novels.com/243724-fifty-shades-freed.html
+#	curl -L "https://wallhaven.cc/api/v1/search?$1" | sed 's,\\,,g' | egrep -o "https://w.wallhaven.cc/full/[a-z0-9]+/wallhaven-[a-z0-9]+.jpg"
+	comm=""
+	q=""
+	cell=""
+	category=0
+	purity=0
+	for i in $@
+	do
+		case $і in
+			"-")
+				q+="-$cell"
+				;;
+			"+")
+				q+="+$cell"
+				;;
+			"id")
+				comm="&id=$cell"
+				;;
+			"toplist")
+				comm+="&sorting=toplist"
+				;;
+			"type")
+				comm+="&type=$cell"
+				;;
+			"sketchy")
+				purity=$((purity | (1 << 1)))
+				;;
+			"sfw")
+				purity=$((purity | (1 << 2)))
+				;;
+			"people")
+				category=$((category | 1))
+				;;
+			"anime")
+				category=$((category | (1 << 1)))
+				;;
+			"general")
+				category=$((category | (1 << 2)))
+				;;
+			"1d")
+				comm+="&topRange=1d"
+				;;
+			"1w")
+				comm+="&topRange=1w"
+				;;
+			"like")
+				comm+="&like=$cell"
+				;;
+			*)
+				cell+=$i
+				;;
+		esac
+	done
+	curl -L "https://wallhaven.cc/api/v1/search?q=$q$comm" | sed 's,\\,,g' | egrep -o "https://w.wallhaven.cc/full/[a-z0-9]+/wallhaven-[a-z0-9]+.jpg"
+}
+
+cprint()
+{
+	cat << EOF > /tmp/cprint.c
+#include <stdio.h>
+$1
+int main(void) {
+	printf("%x\n", $2);
+	return 0;
+}
+EOF
+	clang /tmp/cprint.c -o /tmp/cprint
+	/tmp/cprint
+}
+
+recon()
+{
+	GUIX_PACKAGE_PATH=$HOME/projects/packages sudo -E guix system reconfigure $HOME/projects/dotfiles/guix/config.scm $@
+}
+
+crf()
+{
+	foo=(https://chalmersrobotics.se/status/api/image/crf_webcam_outer \
+		https://chalmersrobotics.se/status/api/image/crf_webcam_inner \
+		https://chalmersrobotics.se/status/api/image/crf_webcam_platform)
+	echo ${foo[*]} | xargs mpv
+}
+
+repeatedly()
+{
+    while true
+    do
+        if [[ $(stat -c "%Y" $3) < $(stat -c "%Y" $4) ]]
+        then
+            echo -e "\x1b[2J\x1b[0;0H"
+            $2
+        fi
+        sleep $1
+    done
 }

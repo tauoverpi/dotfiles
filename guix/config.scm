@@ -3,27 +3,66 @@
              (levy packages neovim)
              (levy packages fonts)
              (levy packages nheko)
+             (levy packages emacs)
+             (levy packages haskell)
+             (levy packages solvespace)
+             (levy packages mercury)
+             (levy packages ats)
+             (bavier packages openspades)
+             (gnu packages avr)
              (guix)
+             (guix packages)
+             (guix git-download)
              (guix gexp))
+
 (use-service-modules networking ssh xorg desktop sddm xorg mcron
                      cups pm dns cuirass cgit dict)
+
 (use-package-modules pdf vim linux certs curl llvm forth guile-xyz
                      assembly web-browsers version-control admin
                      idris haskell node gnome terminals xdisorg
                      fonts games rsync web libreoffice gdb man pv
                      databases readline compression mail aspell
                      dictionaries video gimp bittorrent gnuzilla
-                     dico)
+                     dico scheme graphviz commencement image-viewers
+                     wine virtualization tor emacs emacs-xyz ocaml
+                     erlang tex coq wm suckless gprolog pkg-config
+                     gl haskell-apps game-development graphics xorg
+                     inkscape android)
 
 (define garbage-collector-job
   #~(job '(next-hour '(1))
          (lambda ()
            (guix-gc))))
 
+(define godot-3.1
+  (package
+    (inherit godot)
+    (name "godot-3.1")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                     (url "https://github.com/godotengine/godot")
+                     (commit "320f49f204cfbf9b480fe62aaa7718afb74920a5")))
+              (sha256
+                (base32
+                  "1z37znqzbn0x8s04pb9dxzni9jzl8m59nfrr14vypww42f9l5i7i"))))))
+
 (define %cuirass-specs
   #~(list
       ; TBD add build jobs for projects
       '()))
+
+(define %atmel-udev-rule
+  (udev-rule
+    "99-avr.rules"
+    (string-append
+      ; Atmel Corp. AVRISP mkII
+      "ATTRS{idVendor}==\"03eb\", ATTRS{idProduct}==\"2104\", MODE=\"660\", GROUP=\"dialout\""
+      ; Atmel Corp.JTAG ICE mkII
+      "ATTRS{idVendor}==\"03eb\", ATTRS{idProduct}==\"2103\", MODE=\"660\", GROUP=\"dialout\""
+      ; Atmel Corp. Dragon
+      "ATTRS{idVendor}==\"03eb\", ATTRS{idProduct}==\"2107\", MODE=\"660\", GROUP=\"dialout\"")))
 
 (define-public laptop
   (operating-system
@@ -66,32 +105,75 @@
                    (comment "levy")
                    (group "users")
                    (supplementary-groups '("wheel" "netdev"
-                                           "audio" "video")))
+                                           "audio" "video"
+                                           "dialout")))
                  %base-user-accounts))
 
-    (packages (cons* neovim neovim-limelight neovim-idris neovim-tabular
+    (packages (cons* ;; NEOVIM
+                     neovim neovim-limelight neovim-idris neovim-tabular
                      neovim-asyncrun neovim-lastplace neovim-supertab
-                     neovim-nerdtree neovim-syntastic
-                     nss-certs
-                     iproute
-                     curl links git tcpdump rsync aria2 icecat
-                     darkhttpd
-                     fbida zathura zathura-ps zathura-djvu zathura-pdf-mupdf
-                     libreoffice ghc-pandoc
-                     clang gforth fasm idris ghc node
-                     gnu-make gdb man-pages
+                     neovim-nerdtree neovim-syntastic neovim-rainbow
+
+                     ;; EMACS
+                     emacs-xwidgets emacs-slack emacs-guix emacs-geiser
+                     emacs-neotree emacs-multiple-cursors
+                     emacs-matrix-client emacs-irony-mode emacs-haskell-mode
+                     emacs-google-maps emacs-google-translate emacs-arduino-mode
+                     emacs-which-key emacs-tuareg emacs-flycheck emacs-erlang
+                     emacs-doom-themes emacs-ats2 emacs-pdf-tools
+                     emacs-paredit emacs-hackernews emacs-ws-butler emacs-undo-tree
+                     emacs-typo emacs-rainbow-blocks emacs-org emacs-org-bullets
+                     emacs-idle-highlight emacs-graphviz-dot-mode
+                     emacs-god-mode emacs-git-gutter emacs-darkroom proof-general
+                     emacs-racket-mode emacs-all-the-icons emacs-exwm
+                     emacs-solaire-mode emacs-org-contrib
+
+                     ;; FONT
                      font-fira-code font-dotsies font-hack font-ibm-plex
                      font-lato font-liberation font-google-noto font-google-roboto
                      font-linuxlibertine font-mononoki font-ubuntu font-dejavu
                      font-comic-neue font-inconsolata
-                     kitty
-                     acpi pv recutils rlwrap tree unzip zip alsa-utils htop
-                     manaplus gnugo thefuck minetest
-                     claws-mail nheko-reborn
-                     mpv ffmpeg youtube-viewer
+
+                     ;; UTIL
+                     acpi pv recutils rlwrap tree unzip zip alsa-utils htop fdupes
+                     scrot xclip graphviz sxiv bspwm sxhkd dmenu adb
+
+                     ;; GRAPHICS
+                     inkscape gimp solvespace blender
+
+                     ;; NET
+                     curl links git tcpdump rsync aria2 icecat
+                     darkhttpd
+                     iproute
+
+                     ;; GAME
+                     gnugo thefuck ; openspades
+                     wesnoth
+
+                     claws-mail ; nheko-reborn
+
+                     ;; DEV
+                     godot-3.1
+
+                     ;; VIDEO
+                     mpv ffmpeg youtube-viewer xrandr
+
+                     ;; TEXT
                      aspell aspell-dict-en aspell-dict-sv diction
-                     scrot xclip gimp
-                     guile-minikanren
+                     fbida zathura zathura-ps zathura-djvu zathura-pdf-mupdf
+                     ; libreoffice
+
+                     ;; LANG
+                     ats2
+                     clang gforth fasm node avr-toolchain-5 gcc-toolchain coq ; idris
+                     ghc ghc-opengl ghc-sdl2 ghc-pandoc ; ghc-godot
+                     gprolog ; mercury-rotd
+
+                     ;; MISC
+                     nss-certs le-certs
+                     gnu-make gdb man-pages
+                     kitty sicp wine qemu
+
                      %base-packages))
 
     (services (cons* (service wpa-supplicant-service-type)
@@ -113,14 +195,16 @@
                      (service tlp-service-type
                               (tlp-configuration
                                 (tlp-default-mode "BAT")))
-                     (service xfce-desktop-service-type)
+
                      (service mcron-service-type
                               (mcron-configuration
                                 (jobs (list garbage-collector-job))))
+
                      (service cuirass-service-type
                               (cuirass-configuration
                                 (specifications %cuirass-specs)
                                 (use-substitutes? #t)))
+
                      (service cgit-service-type
                               (cgit-configuration
                                 (enable-commit-graph? #t)
@@ -128,16 +212,24 @@
                                 (repository-directory "/home/lucy/projects/")
                                 (nocache? #t)
                                 (readme "nothing to see here")))
+
                      (service openssh-service-type
                               (openssh-configuration
                                 (port-number 2222)))
+
                      (extra-special-file
-                       "/usr/bin/env"
-                       (file-append coreutils "/bin/env"))
+                      "/usr/bin/env"
+                      (file-append coreutils "/bin/env"))
+
                      (extra-special-file
-                       "/etc/resolv.conf"
-                       (plain-file "" "nameserver 127.0.0.1"))
-                     %base-services))
+                      "/etc/resolv.conf"
+                      (plain-file "" "nameserver 127.0.0.1"))
+
+                     (modify-services %base-services
+                      (udev-service-type config =>
+                        (udev-configuration (inherit config)
+                        (rules (append (udev-configuration-rules config)
+                                       (list %atmel-udev-rule))))))))
 
     (name-service-switch %mdns-host-lookup-nss)))
 
