@@ -6,8 +6,10 @@
              (levy packages emacs)
              (levy packages haskell)
              (levy packages solvespace)
+             (levy packages xorg)
              (levy packages mercury)
              (levy packages ats)
+             (levy packages gimp)
              (bavier packages openspades)
              (gnu packages avr)
              (guix)
@@ -109,6 +111,12 @@
                                            "dialout")))
                  %base-user-accounts))
 
+    (sudoers-file
+      (plain-file "sudoers" "\
+root ALL=(ALL) ALL
+%wheel ALL=(ALL) ALL
+Defaults 	insults\n"))
+
     (packages (cons* ;; NEOVIM
                      neovim neovim-limelight neovim-idris neovim-tabular
                      neovim-asyncrun neovim-lastplace neovim-supertab
@@ -136,13 +144,15 @@
 
                      ;; UTIL
                      acpi pv recutils rlwrap tree unzip zip alsa-utils htop fdupes
-                     scrot xclip graphviz sxiv bspwm sxhkd dmenu adb
+                     scrot xclip graphviz sxiv bspwm sxhkd dmenu adb xmodmap setxkbmap
+                     bgs asciinema
 
                      ;; GRAPHICS
-                     inkscape gimp solvespace blender
+                     inkscape solvespace blender-2.79
+                     gimp gimp-normalmap
 
                      ;; NET
-                     curl links git tcpdump rsync aria2 icecat
+                     curl links git tcpdump rsync aria2 icecat qutebrowser
                      darkhttpd
                      iproute
 
@@ -172,7 +182,7 @@
                      ;; MISC
                      nss-certs le-certs
                      gnu-make gdb man-pages
-                     kitty sicp wine qemu
+                     kitty sicp wine wine64 qemu
 
                      %base-packages))
 
