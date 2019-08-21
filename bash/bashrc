@@ -33,12 +33,13 @@ alias grep='grep --color=none'
 alias vga='xrandr --output VGA-1 --auto'
 
 # still need to rewrite this...
-export MPD_HOST=127.0.0.1
+export MPD_HOST=$HOME/.mpd/socket
 # export GUIX_PACKAGE_PATH=$HOME/projects/packages
 export IDRIS_CC=gcc
 export EDITOR=nvim
 export PATH=$HOME/.local/bin:$PATH
 export SSL_CERT_DIR=/run/current-system/profile/etc/ssl/certs/
+export _JAVA_AWT_WM_NONREPARENTING=1
 
 alias reconfigure='sudo -E guix system reconfigure $HOME/projects/sr.ht/dotfiles/guix/config.scm'
 
@@ -103,9 +104,14 @@ search ()
 }
 alias s=search
 
+hibernate()
+{
+	sudo su -c 'echo mem >> /sys/power/state'
+}
+
 build ()
 {
-	ssh builder /home/nyberg/.config/guix/current/bin/guix archive --export $@ | guix archive --import
+  GUIX_PACKAGE_PATH=$HOME/projects/packages guix build $@
 }
 
 b4 ()
@@ -135,62 +141,14 @@ machinecode()
 	popd
 }
 
+song()
+{
+	mpc current -f "%artist% - %album% - %title%" >> ~/.songs
+}
+
 wh()
 {
-#	curl -L "https://wallhaven.cc/api/v1/search?$1" | sed 's,\\,,g' | egrep -o "https://w.wallhaven.cc/full/[a-z0-9]+/wallhaven-[a-z0-9]+.jpg"
-	comm=""
-	q=""
-	cell=""
-	category=0
-	purity=0
-	for i in $@
-	do
-		case $і in
-			"-")
-				q+="-$cell"
-				;;
-			"+")
-				q+="+$cell"
-				;;
-			"id")
-				comm="&id=$cell"
-				;;
-			"toplist")
-				comm+="&sorting=toplist"
-				;;
-			"type")
-				comm+="&type=$cell"
-				;;
-			"sketchy")
-				purity=$((purity | (1 << 1)))
-				;;
-			"sfw")
-				purity=$((purity | (1 << 2)))
-				;;
-			"people")
-				category=$((category | 1))
-				;;
-			"anime")
-				category=$((category | (1 << 1)))
-				;;
-			"general")
-				category=$((category | (1 << 2)))
-				;;
-			"1d")
-				comm+="&topRange=1d"
-				;;
-			"1w")
-				comm+="&topRange=1w"
-				;;
-			"like")
-				comm+="&like=$cell"
-				;;
-			*)
-				cell+=$i
-				;;
-		esac
-	done
-	curl -L "https://wallhaven.cc/api/v1/search?q=$q$comm" | sed 's,\\,,g' | egrep -o "https://w.wallhaven.cc/full/[a-z0-9]+/wallhaven-[a-z0-9]+.jpg"
+	curl -L "https://wallhaven.cc/api/v1/search?$1" | sed 's,\\,,g' | egrep -o "https://w.wallhaven.cc/full/[a-z0-9]+/wallhaven-[a-z0-9]+.jpg"
 }
 
 cprint()

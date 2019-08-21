@@ -8,10 +8,7 @@ XF86Audio{Prev,Next,Play,Stop}
 	mpc {prev,next,toggle,stop}
 
 super + shift + Return
-	emacs -fs
-
-super + shift + Menu
-	icecat
+	kitty
 
 super + Escape
 	pkill -USR1 -x sxhkd
@@ -19,11 +16,17 @@ super + Escape
 super + alt + Escape
 	bspc quit
 
-super + shift + f
+super + {_,shift +}c
+	bspc node -{c,k}
+
+super + f
 	bspc node -t fullscreen
 
-super + shift + g
+super + g
 	bspc node -s biggest
+
+super + {_,shift}{h,j,k,l}
+	bspc node -{f,s} {west,south,north,east}
 
 super + {_,Shift}Tab
 	bspc node -f {next,prev}
@@ -31,8 +34,20 @@ super + {_,Shift}Tab
 super + {_,shift +}{1-9,0}
 	bspc {desktop -f,node -d} '^{1-9,10}'
 
-super + {_,shift +, alt +} space
-	bspc node -t {tiled, floating, fullscreen}
+super + Menu
+	surf -s -g -N https://yandex.com
+
+shift + Menu
+	L=$(mpc ls | dmenu | tr -d '\n'); test -n "$L" && mpc clear && mpc load "$L"
+
+Menu
+	mpc playlist | nl -v 1 -n ln | dmenu | egrep -o "^[0-9]+" | xargs mpc play
+
+super + {_,shift +} space
+	bspc node -t {tiled, floating}
+
+super + v
+  mpv $(xclip -o -sel clip)
 
 super + p
 	dmenu_run

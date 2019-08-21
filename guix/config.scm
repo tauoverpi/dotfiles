@@ -5,11 +5,15 @@
              (levy packages nheko)
              (levy packages emacs)
              (levy packages haskell)
+             (levy packages purescript)
              (levy packages solvespace)
              (levy packages xorg)
              (levy packages mercury)
+             (levy packages mono)
              (levy packages ats)
              (levy packages gimp)
+             (levy packages godot)
+             (levy packages olive)
              (bavier packages openspades)
              (gnu packages avr)
              (guix)
@@ -18,7 +22,7 @@
              (guix gexp))
 
 (use-service-modules networking ssh xorg desktop sddm xorg mcron
-                     cups pm dns cuirass cgit dict)
+                     cups pm dns cuirass cgit dict audio)
 
 (use-package-modules pdf vim linux certs curl llvm forth guile-xyz
                      assembly web-browsers version-control admin
@@ -30,25 +34,11 @@
                      wine virtualization tor emacs emacs-xyz ocaml
                      erlang tex coq wm suckless gprolog pkg-config
                      gl haskell-apps game-development graphics xorg
-                     inkscape android)
+                     inkscape android java audio disk kde text-editors
+                     mpd chez python-xyz cmake compton chromium file)
 
 (define garbage-collector-job
-  #~(job '(next-hour '(1))
-         (lambda ()
-           (guix-gc))))
-
-(define godot-3.1
-  (package
-    (inherit godot)
-    (name "godot-3.1")
-    (source (origin
-              (method git-fetch)
-              (uri (git-reference
-                     (url "https://github.com/godotengine/godot")
-                     (commit "320f49f204cfbf9b480fe62aaa7718afb74920a5")))
-              (sha256
-                (base32
-                  "1z37znqzbn0x8s04pb9dxzni9jzl8m59nfrr14vypww42f9l5i7i"))))))
+  #~(job '(next-hour '(1)) (lambda () (guix-gc))))
 
 (define %cuirass-specs
   #~(list
@@ -121,12 +111,12 @@ Defaults 	insults\n"))
                      neovim neovim-limelight neovim-idris neovim-tabular
                      neovim-asyncrun neovim-lastplace neovim-supertab
                      neovim-nerdtree neovim-syntastic neovim-rainbow
+                     neovim-gdscript3 neovim-purescript neovim-psc-ide
 
                      ;; EMACS
                      emacs-xwidgets emacs-slack emacs-guix emacs-geiser
                      emacs-neotree emacs-multiple-cursors
                      emacs-matrix-client emacs-irony-mode emacs-haskell-mode
-                     emacs-google-maps emacs-google-translate emacs-arduino-mode
                      emacs-which-key emacs-tuareg emacs-flycheck emacs-erlang
                      emacs-doom-themes emacs-ats2 emacs-pdf-tools
                      emacs-paredit emacs-hackernews emacs-ws-butler emacs-undo-tree
@@ -145,44 +135,58 @@ Defaults 	insults\n"))
                      ;; UTIL
                      acpi pv recutils rlwrap tree unzip zip alsa-utils htop fdupes
                      scrot xclip graphviz sxiv bspwm sxhkd dmenu adb xmodmap setxkbmap
-                     bgs asciinema
+                     bgs asciinema dosfstools compton feh file ghc-tldr
 
                      ;; GRAPHICS
                      inkscape solvespace blender-2.79
-                     gimp gimp-normalmap
+                     gimp gimp-normalmap krita
+
+                     ;; AUDIO
+                     ardour mpd-mpc mpd
 
                      ;; NET
-                     curl links git tcpdump rsync aria2 icecat qutebrowser
+                     curl links git rsync aria2
+                     ungoogled-chromium surf
                      darkhttpd
-                     iproute
+                     iproute tcpdump
 
                      ;; GAME
                      gnugo thefuck ; openspades
                      wesnoth
 
-                     claws-mail ; nheko-reborn
+                     claws-mail nheko-reborn
 
                      ;; DEV
-                     godot-3.1
+                     godot-3.1.1 (list icedtea "jdk")
 
                      ;; VIDEO
-                     mpv ffmpeg youtube-viewer xrandr
+                     mpv ffmpeg youtube-viewer xrandr olive
 
                      ;; TEXT
                      aspell aspell-dict-en aspell-dict-sv diction
                      fbida zathura zathura-ps zathura-djvu zathura-pdf-mupdf
-                     ; libreoffice
+                     libreoffice texmacs
 
                      ;; LANG
-                     ats2
-                     clang gforth fasm node avr-toolchain-5 gcc-toolchain coq ; idris
+                     ats2 racket ocaml
+                     clang gforth fasm node avr-toolchain-5 gcc-toolchain coq chez-scheme
                      ghc ghc-opengl ghc-sdl2 ghc-pandoc ; ghc-godot
-                     gprolog ; mercury-rotd
+                     gprolog mercury-rotd
+                     texlive erlang
+                     purescript
+                     purescript-native
+                     mono-6.0.0.319
 
                      ;; MISC
                      nss-certs le-certs
                      gnu-make gdb man-pages
                      kitty sicp wine wine64 qemu
+                     scons
+                     linux-libre-headers
+                     cmake
+                     psc-package
+                     ghc-ghcid
+                     ocaml-merlin
 
                      %base-packages))
 
@@ -196,7 +200,8 @@ Defaults 	insults\n"))
                      (service dnsmasq-service-type
                               (dnsmasq-configuration
                                 (no-resolv? #t)
-                                (servers '("9.9.9.9"
+                                (servers '("217.27.188.3"
+                                           "9.9.9.9"
                                            "149.112.112.112"
                                            "208.67.222.222"
                                            "208.67.220.220"
@@ -214,6 +219,12 @@ Defaults 	insults\n"))
                               (cuirass-configuration
                                 (specifications %cuirass-specs)
                                 (use-substitutes? #t)))
+
+                     (service mpd-service-type
+                              (mpd-configuration
+                                (user "lucy")
+                                (music-dir "~/media/music")
+                                (address "/home/lucy/.mpd/socket")))
 
                      (service cgit-service-type
                               (cgit-configuration
@@ -236,10 +247,15 @@ Defaults 	insults\n"))
                       (plain-file "" "nameserver 127.0.0.1"))
 
                      (modify-services %base-services
+                      (guix-service-type config =>
+                        (guix-configuration (inherit config)
+                          (substitute-urls '("http://ci.guix.gnu.org"
+                                             "https://bayfront.guixsd.org"
+                                             "https://berlin.guixsd.org"))))
                       (udev-service-type config =>
                         (udev-configuration (inherit config)
-                        (rules (append (udev-configuration-rules config)
-                                       (list %atmel-udev-rule))))))))
+                          (rules (append (udev-configuration-rules config)
+                                         (list %atmel-udev-rule))))))))
 
     (name-service-switch %mdns-host-lookup-nss)))
 

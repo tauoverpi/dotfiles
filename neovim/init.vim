@@ -110,8 +110,10 @@ function! DarkTheme()
 	hi GitGutterDelete guibg=#27303a guifg=#eeeeee
 	hi Keyword                                  gui=none
 	hi LineNr       guifg=#27303a guibg=#17202a
-	hi NonText      guifg=#27303a guibg=#1a2027
-	hi Normal       guifg=#ffffff guibg=#1a2027
+	hi NonText      guifg=#27303a
+"guibg=#1a2027
+	hi Normal       guifg=#ffffff
+"guibg=#1a2027
 	hi Directory    guifg=#27303a
 	hi Title        guifg=#1a2027
 	hi Pmenu        guifg=#1a2027 guibg=#f3f8fd
@@ -245,7 +247,7 @@ function! ToggleLime()
 endfunction
 let g:paredit_shortmaps = 1
 
-nm <F10> :AsyncRun mmc --infer-all % <CR>
+nm <F10> :AsyncRun make <CR>
 nm <F7> :call ToggleLime()<CR>
 nm <F8> :call ToggleGoyo()<CR>
 nm <S-h> <C-w><
@@ -274,14 +276,14 @@ ino <Down> <NOP>
 ino <Right> <NOP>
 ino <Left> <NOP>
 
-au BufNewFile,BufRead *.texi,*.idr,*.hs,*.scm,*.rkt,*.lhs,*.lidr,*.sats,*.ipkg,*.txt,*.m set expandtab
+au BufNewFile,BufRead *.texi,*.idr,*.hs,*.scm,*.rkt,*.lhs,*.lidr,*.sats,*.ipkg,*.txt,*.m,*.purs set expandtab
 "whitespace
 au BufNewFile,BufRead *.rkt hi error guibg=none
 au BufWrite * call CleanFile()
 au BufNewFile,BufRead *.lidr set filetype=idris | set filetype=lidris
 au BufNewFile,BufRead *.scm,*.clj,*.lisp RainbowToggleOn
 au BufEnter *.idr call ToggleLime()
-au VimEnter * call BlackTheme()
+au VimEnter * call DarkTheme()
 au VimEnter *.txt call ToggleGoyo()
 
 let g:syntastic_error_symbol = '✗'
