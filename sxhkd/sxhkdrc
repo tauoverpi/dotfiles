@@ -35,19 +35,10 @@ super + {_,shift +}{1-9,0}
 	bspc {desktop -f,node -d} '^{1-9,10}'
 
 super + Menu
-	surf -s -g -N https://yandex.com
-
-shift + Menu
-	L=$(mpc ls | dmenu | tr -d '\n'); test -n "$L" && mpc clear && mpc load "$L"
-
-Menu
-	mpc playlist | nl -v 1 -n ln | dmenu | egrep -o "^[0-9]+" | xargs mpc play
+	chromium
 
 super + {_,shift +} space
 	bspc node -t {tiled, floating}
 
 super + v
   mpv $(xclip -o -sel clip)
-
-super + p
-	dmenu_run

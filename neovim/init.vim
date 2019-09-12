@@ -1,7 +1,7 @@
 set nocompatible
 set list
 set ai
-set cursorline
+"set cursorline
 set autochdir
 set backspace=eol,start,indent
 set backupdir=~/.config/nvim/tmp/backup/
@@ -19,8 +19,7 @@ set magic
 set mat=1
 set mouse=a
 set nohlsearch
-set dg
-set number
+"set dg
 set scrolloff=5
 set shiftwidth=2
 set showmatch
@@ -36,12 +35,13 @@ set noshowmode
 set tw=500
 set undodir=~/.config/nvim/tmp/undo/
 set termguicolors
-set relativenumber number
+"set number
+"set relativenumber number
 set undofile
 set whichwrap+=<,>,h,l
-set showtabline=2
+"set showtabline=2
 set wrap
-set laststatus=2
+"set laststatus=2
 set foldlevelstart=99
 set clipboard=unnamedplus
 
@@ -93,7 +93,7 @@ endfunction
 function! DarkTheme()
 	hi Comment      guifg=#bbbbbb gui=italic
 	hi CursorLine   guifg=none guibg=#27303a gui=none
-	hi CursorLineNr guibg=#27303a guifg=#eeeeee gui=none
+	hi CursorLineNr guibg=none guifg=#3d4651 gui=none
 	hi Delimiter    guifg=#eeeeee
 	hi Float        guifg=#888888 gui=none
 	hi Number       guifg=#888888 gui=none
@@ -102,31 +102,31 @@ function! DarkTheme()
 	hi Operator     guifg=#666666 gui=none
 	hi String       guifg=#E1A126
 	hi Include      guifg=#666666
-	hi Statement    guifg=#D81735 gui=none
-	hi Structure    guifg=#D81735 gui=none
+	hi Statement    guifg=#f92a32 gui=none gui=bold
+	hi Structure    guifg=#f92a32 gui=none
 	hi Type         guifg=#aaaaaa gui=none
-	hi GitGutterAdd guibg=#27303a guifg=#eeeeee
-	hi GitGutterChange guibg=#27303a guifg=#eeeeee
-	hi GitGutterDelete guibg=#27303a guifg=#eeeeee
+	hi GitGutterAdd guibg=none guifg=#eeeeee
+	hi GitGutterChange guibg=none guifg=#eeeeee
+	hi GitGutterDelete guibg=none guifg=#eeeeee
 	hi Keyword                                  gui=none
-	hi LineNr       guifg=#27303a guibg=#17202a
-	hi NonText      guifg=#27303a
+	hi LineNr       guifg=#27303a guibg=none
+	hi NonText      guibg=none guifg=#27303a
 "guibg=#1a2027
 	hi Normal       guifg=#ffffff
 "guibg=#1a2027
-	hi Directory    guifg=#27303a
-	hi Title        guifg=#1a2027
+	hi Directory    guifg=#3d4651
+	hi Title        guifg=#3d4651
 	hi Pmenu        guifg=#1a2027 guibg=#f3f8fd
 	hi PmenuSel     guifg=#27303a guibg=#e3e8ed
-	hi PreProc      guifg=#D81735 gui=none
-	hi QuickFixLine guifg=#33373e
-	hi SignColumn   guibg=#27303a guifg=#eeeeee
-	hi StatusLine   guibg=#27303a guifg=#eeeeee gui=none
-	hi StatusLineNC guibg=#27303a guifg=#eeeeee gui=none
-	hi TabLine      guibg=#27303a guifg=#eeeeee gui=none
-	hi TabLineFill  guibg=#27303a guifg=#eeeeee gui=none
-	hi TabLineSel   guibg=#27303a guifg=#eeeeee gui=none
-	hi VertSplit    guibg=#27303a guifg=#27303a gui=none
+	hi PreProc      guifg=#f92a32 gui=none
+	hi QuickFixLine guifg=none
+	hi SignColumn   guibg=none guifg=#eeeeee
+	hi StatusLine   guibg=none guifg=#3d4651 gui=none
+	hi StatusLineNC guibg=none guifg=#3d4651 gui=none
+	hi TabLine      guibg=none guifg=#3d4651 gui=none
+	hi TabLineFill  guibg=none guifg=#3d4651 gui=none
+	hi TabLineSel   guibg=none guifg=#3d4651 gui=none
+	hi VertSplit    guibg=none guifg=#27303a gui=none
 	hi Visual                     guibg=#eeeeee
 	hi idrisMetaVar guifg=#FF5800 gui=underline
 	hi ColorColumn  guibg=#27303a
@@ -176,11 +176,11 @@ hi QuickFixLine guifg=#60ff60
 
 let g:rainbow_active = 1
 let g:rainbow_conf = {
-\ 'guifgs': ['#d81735', '#97d01a', '#ffa800', '16b1fb', 'ff2491', '0fdcb6', '38252c', '76b639', 'e1a126', '289cd5', 'ff2491', '0a9b81']
+\ 'guifgs': ['#f92a32', '#97d01a', '#ffa800', '16b1fb', 'ff2491', '0fdcb6', '38252c', '76b639', 'e1a126', '289cd5', 'ff2491', '0a9b81']
 \}
 
-let g:limelight_conceal_ctermfg = '#33373e'
-let g:limelight_conceal_guifg   = '#33373e'
+let g:limelight_conceal_ctermfg = '#3d4651'
+let g:limelight_conceal_guifg   = '#3d4651'
 let g:limelight_priority = 10
 
 function! Tab_Or_Complete()
@@ -214,6 +214,13 @@ function! s:goyo_leave()
 			qa
 		endif
 	endif
+endfunction
+
+function! SynesthesiaMode()
+	syntax off
+	set ft=synesthesia
+	syntax on
+	source /home/lucy/projects/dotfiles/neovim/synesthesia.vim
 endfunction
 
 autocmd! User GoyoEnter call <SID>goyo_enter()
@@ -276,7 +283,7 @@ ino <Down> <NOP>
 ino <Right> <NOP>
 ino <Left> <NOP>
 
-au BufNewFile,BufRead *.texi,*.idr,*.hs,*.scm,*.rkt,*.lhs,*.lidr,*.sats,*.ipkg,*.txt,*.m,*.purs set expandtab
+au BufNewFile,BufRead *.texi,*.idr,*.hs,*.scm,*.rkt,*.lhs,*.lidr,*.sats,*.ipkg,*.txt,*.m,*.purs,*.md set expandtab
 "whitespace
 au BufNewFile,BufRead *.rkt hi error guibg=none
 au BufWrite * call CleanFile()

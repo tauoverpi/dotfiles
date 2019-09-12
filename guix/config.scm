@@ -3,14 +3,18 @@
              (levy packages neovim)
              (levy packages fonts)
              (levy packages nheko)
+             (levy packages purple)
              (levy packages emacs)
              (levy packages haskell)
              (levy packages purescript)
              (levy packages solvespace)
              (levy packages xorg)
              (levy packages mercury)
+             (levy packages firmware)
+             (levy packages linux)
              (levy packages mono)
              (levy packages ats)
+             (levy packages python)
              (levy packages gimp)
              (levy packages godot)
              (levy packages olive)
@@ -35,7 +39,8 @@
                      erlang tex coq wm suckless gprolog pkg-config
                      gl haskell-apps game-development graphics xorg
                      inkscape android java audio disk kde text-editors
-                     mpd chez python-xyz cmake compton chromium file)
+                     mpd chez python-xyz cmake compton chromium file
+                     messaging perl irc kodi elixir gperf)
 
 (define garbage-collector-job
   #~(job '(next-hour '(1)) (lambda () (guix-gc))))
@@ -62,6 +67,8 @@
     (timezone "Europe/Stockholm")
     (locale "en_US.utf8")
 
+    (kernel linux-nonfree)
+    (firmware (list iwlwifi-firmware-nonfree))
     (kernel-arguments
       (list "modprobe.blacklist=pcspkr,snd_pcsp"
             "modprobe.iwlwifi.11n_disable=1"
@@ -130,37 +137,42 @@ Defaults 	insults\n"))
                      font-fira-code font-dotsies font-hack font-ibm-plex
                      font-lato font-liberation font-google-noto font-google-roboto
                      font-linuxlibertine font-mononoki font-ubuntu font-dejavu
-                     font-comic-neue font-inconsolata
+                     font-comic-neue font-inconsolata font-euclid-initials font-dotsies
+
+                     ;; COMMS
+                     claws-mail ; nheko-reborn
+                     matrix-purple
+                     slack-purple
+                     telegram-purple
+                     weechat
 
                      ;; UTIL
-                     acpi pv recutils rlwrap tree unzip zip alsa-utils htop fdupes
+                     acpi pv recutils rlwrap tree unzip zip alsa-utils fdupes
                      scrot xclip graphviz sxiv bspwm sxhkd dmenu adb xmodmap setxkbmap
                      bgs asciinema dosfstools compton feh file ghc-tldr
 
                      ;; GRAPHICS
-                     inkscape solvespace blender-2.79
+                     inkscape ; solvespace blender-2.79
                      gimp gimp-normalmap krita
 
                      ;; AUDIO
-                     ardour mpd-mpc mpd
+                     ardour mpd-mpc mpd supercollider
 
                      ;; NET
                      curl links git rsync aria2
                      ungoogled-chromium surf
-                     darkhttpd
+                     darkhttpd elixir
                      iproute tcpdump
 
                      ;; GAME
-                     gnugo thefuck ; openspades
-                     wesnoth
-
-                     claws-mail nheko-reborn
+                     gnugo thefuck minetest 0ad ; openspades
+                     ; wesnoth
 
                      ;; DEV
-                     godot-3.1.1 (list icedtea "jdk")
+                     ; godot-3.1.1 (list icedtea "jdk")
 
                      ;; VIDEO
-                     mpv ffmpeg youtube-viewer xrandr olive
+                     mpv ffmpeg youtube-viewer xrandr olive kodi
 
                      ;; TEXT
                      aspell aspell-dict-en aspell-dict-sv diction
@@ -168,25 +180,25 @@ Defaults 	insults\n"))
                      libreoffice texmacs
 
                      ;; LANG
-                     ats2 racket ocaml
+                     ats2 racket ocaml ocaml-earley ocaml-parsexp
                      clang gforth fasm node avr-toolchain-5 gcc-toolchain coq chez-scheme
-                     ghc ghc-opengl ghc-sdl2 ghc-pandoc ; ghc-godot
-                     gprolog mercury-rotd
-                     texlive erlang
-                     purescript
-                     purescript-native
-                     mono-6.0.0.319
+                     gprolog ; mercury-rotd
+                     texlive erlang idris
+                     ; purescript
+                     ; purescript-native
+                     ; mono-6.0.0.319
+                     perl
 
                      ;; MISC
                      nss-certs le-certs
                      gnu-make gdb man-pages
                      kitty sicp wine wine64 qemu
+                     dune python-glad
                      scons
                      linux-libre-headers
                      cmake
-                     psc-package
-                     ghc-ghcid
-                     ocaml-merlin
+                     ; psc-package
+                     ocaml-merlin glfw gperf pkg-config glu
 
                      %base-packages))
 

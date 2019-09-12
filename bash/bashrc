@@ -34,12 +34,14 @@ alias vga='xrandr --output VGA-1 --auto'
 
 # still need to rewrite this...
 export MPD_HOST=$HOME/.mpd/socket
-# export GUIX_PACKAGE_PATH=$HOME/projects/packages
+export GUIX_PACKAGE_PATH=$HOME/projects/packages
 export IDRIS_CC=gcc
 export EDITOR=nvim
 export PATH=$HOME/.local/bin:$PATH
 export SSL_CERT_DIR=/run/current-system/profile/etc/ssl/certs/
 export _JAVA_AWT_WM_NONREPARENTING=1
+export GUILE_AUTO_COMPILE=0
+export CC=gcc
 
 alias reconfigure='sudo -E guix system reconfigure $HOME/projects/sr.ht/dotfiles/guix/config.scm'
 
@@ -146,6 +148,11 @@ song()
 	mpc current -f "%artist% - %album% - %title%" >> ~/.songs
 }
 
+current()
+{
+	mpc current -f "%artist% - %album% - %title%" | xclip -sel clip
+}
+
 wh()
 {
 	curl -L "https://wallhaven.cc/api/v1/search?$1" | sed 's,\\,,g' | egrep -o "https://w.wallhaven.cc/full/[a-z0-9]+/wallhaven-[a-z0-9]+.jpg"
@@ -165,9 +172,35 @@ EOF
 	/tmp/cprint
 }
 
+radio() {
+	case $1 in
+		"cafe")
+			mpc clear
+			mpc add http://lainon.life:8000/cafe.ogg
+			;;
+		"cyberia")
+			mpc clear
+			mpc add http://lainon.life:8000/cyberia.ogg
+			;;
+		"everything")
+			mpc clear
+			mpc add http://lainon.life:8000/everything.ogg
+			;;
+		*)
+			;;
+	esac
+	mpc stop; mpc play
+}
+
 recon()
 {
-	GUIX_PACKAGE_PATH=$HOME/projects/packages sudo -E guix system reconfigure $HOME/projects/dotfiles/guix/config.scm $@
+	GUIX_PACKAGE_PATH=$HOME/projects/packages sudo -E guix system reconfigure $HOME/projects/dotfiles/guix/config.scm --verbosity=3 $@
+}
+
+iwlwifi()
+{
+	sudo modprobe -r iwldvm
+	sudo modprobe iwlwifi
 }
 
 crf()
