@@ -22,13 +22,13 @@ super + {_,shift +}c
 super + f
 	bspc node -t fullscreen
 
-super + g
+super + alt + g
 	bspc node -s biggest
 
 super + {_,shift}{h,j,k,l}
 	bspc node -{f,s} {west,south,north,east}
 
-super + {_,Shift}Tab
+super + {_,shift}Tab
 	bspc node -f {next,prev}
 
 super + {_,shift +}{1-9,0}
@@ -36,6 +36,15 @@ super + {_,shift +}{1-9,0}
 
 super + Menu
 	chromium
+
+super + shift + Menu
+	zathura
+
+super + k
+	krita
+
+super + g
+	gimp
 
 super + {_,shift +} space
 	bspc node -t {tiled, floating}
