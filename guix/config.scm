@@ -1,12 +1,9 @@
 (use-modules (gnu)
-             (gnu system nss)
              (levy packages neovim)
              (levy packages fonts)
              (levy packages nheko)
              (levy packages purple)
              (levy packages emacs)
-             (levy packages haskell)
-             (levy packages purescript)
              (levy packages solvespace)
              (levy packages xorg)
              (levy packages mercury)
@@ -19,14 +16,11 @@
              (levy packages godot)
              (levy packages olive)
              (bavier packages openspades)
-             (gnu packages avr)
+             (gnu system nss)
              (guix)
              (guix packages)
              (guix git-download)
              (guix gexp))
-
-(use-service-modules networking ssh xorg desktop sddm xorg mcron
-                     cups pm dns cuirass cgit dict audio)
 
 (use-package-modules pdf vim linux certs curl llvm forth guile-xyz
                      assembly web-browsers version-control admin
@@ -40,7 +34,11 @@
                      gl haskell-apps game-development graphics xorg
                      inkscape android java audio disk kde text-editors
                      mpd chez python-xyz cmake compton chromium file
-                     messaging perl irc kodi elixir gperf)
+                     messaging perl irc kodi elixir gperf samba speech
+                     figlet gnupg rust avr haskell-xyz synergy)
+
+(use-service-modules networking ssh xorg desktop sddm xorg mcron
+                     cups pm dns cuirass cgit dict audio)
 
 (define garbage-collector-job
   #~(job '(next-hour '(1)) (lambda () (guix-gc))))
@@ -114,93 +112,108 @@ root ALL=(ALL) ALL
 %wheel ALL=(ALL) ALL
 Defaults 	insults\n"))
 
-    (packages (cons* ;; NEOVIM
-                     neovim neovim-limelight neovim-idris neovim-tabular
-                     neovim-asyncrun neovim-lastplace neovim-supertab
-                     neovim-nerdtree neovim-syntastic neovim-rainbow
-                     neovim-gdscript3 neovim-purescript neovim-psc-ide
+    (packages
+      (cons*
+        ;; NEOVIM
+         neovim neovim-limelight neovim-idris neovim-tabular
+         neovim-asyncrun neovim-lastplace neovim-supertab
+         neovim-nerdtree neovim-syntastic neovim-rainbow
+         neovim-gdscript3 neovim-purescript neovim-psc-ide
+         neovim-goyo neovim-alchemist
 
-                     ;; EMACS
-                     emacs-xwidgets emacs-slack emacs-guix emacs-geiser
-                     emacs-neotree emacs-multiple-cursors
-                     emacs-matrix-client emacs-irony-mode emacs-haskell-mode
-                     emacs-which-key emacs-tuareg emacs-flycheck emacs-erlang
-                     emacs-doom-themes emacs-ats2 emacs-pdf-tools
-                     emacs-paredit emacs-hackernews emacs-ws-butler emacs-undo-tree
-                     emacs-typo emacs-rainbow-blocks emacs-org emacs-org-bullets
-                     emacs-idle-highlight emacs-graphviz-dot-mode
-                     emacs-god-mode emacs-git-gutter emacs-darkroom proof-general
-                     emacs-racket-mode emacs-all-the-icons emacs-exwm
-                     emacs-solaire-mode emacs-org-contrib
+        ;; EMACS
+         emacs-xwidgets emacs-slack emacs-guix emacs-geiser
+         emacs-neotree emacs-multiple-cursors
+         emacs-matrix-client emacs-irony-mode emacs-haskell-mode
+         emacs-which-key emacs-tuareg emacs-flycheck emacs-erlang
+         emacs-doom-themes emacs-ats2 emacs-pdf-tools
+         emacs-paredit emacs-hackernews emacs-ws-butler emacs-undo-tree
+         emacs-typo emacs-rainbow-blocks emacs-org emacs-org-bullets
+         emacs-idle-highlight emacs-graphviz-dot-mode
+         emacs-god-mode emacs-git-gutter emacs-darkroom proof-general
+         emacs-racket-mode emacs-all-the-icons emacs-exwm
+         emacs-solaire-mode emacs-org-contrib
 
-                     ;; FONT
-                     font-fira-code font-dotsies font-hack font-ibm-plex
-                     font-lato font-liberation font-google-noto font-google-roboto
-                     font-linuxlibertine font-mononoki font-ubuntu font-dejavu
-                     font-comic-neue font-inconsolata font-euclid-initials font-dotsies
+        ;; FONT
+         font-fira-code font-dotsies font-hack font-ibm-plex
+         font-lato font-liberation font-google-noto font-google-roboto
+         font-linuxlibertine font-mononoki font-ubuntu font-dejavu
+         font-comic-neue font-inconsolata font-euclid-initials
 
-                     ;; COMMS
-                     claws-mail ; nheko-reborn
-                     matrix-purple
-                     slack-purple
-                     telegram-purple
-                     weechat
+        ;; COMMS
+         claws-mail neomutt ; nheko-reborn
+         matrix-purple
+         slack-purple
+         telegram-purple
+         weechat
 
-                     ;; UTIL
-                     acpi pv recutils rlwrap tree unzip zip alsa-utils fdupes
-                     scrot xclip graphviz sxiv bspwm sxhkd dmenu adb xmodmap setxkbmap
-                     bgs asciinema dosfstools compton feh file ghc-tldr
+        ;; UTIL
+         acpi pv recutils rlwrap tree unzip zip alsa-utils fdupes
+         scrot xclip graphviz sxiv bspwm sxhkd dmenu adb xmodmap setxkbmap
+         bgs asciinema dosfstools compton feh file ghc-tldr
 
-                     ;; GRAPHICS
-                     inkscape ; solvespace blender-2.79
-                     gimp gimp-normalmap krita
+        ;; GRAPHICS
+         inkscape ; blender-2.79
+         gimp gimp-normalmap krita
 
-                     ;; AUDIO
-                     ardour mpd-mpc mpd supercollider
+        ;; AUDIO
+         ardour mpd-mpc mpd supercollider
 
-                     ;; NET
-                     curl links git rsync aria2
-                     ungoogled-chromium surf
-                     darkhttpd elixir
-                     iproute tcpdump
+        ;; NET
+         curl links git rsync aria2
+         ungoogled-chromium surf
+         darkhttpd elixir
+         iproute tcpdump samba
 
-                     ;; GAME
-                     gnugo thefuck minetest 0ad ; openspades
-                     ; wesnoth
+        ;; GAME
+         gnugo thefuck minetest 0ad ; openspades
+         sent fortune-mod espeak
+         ; wesnoth
 
-                     ;; DEV
-                     ; godot-3.1.1 (list icedtea "jdk")
+        ;; DEV
+         godot-3.1.1
+         (list icedtea "jdk")
 
-                     ;; VIDEO
-                     mpv ffmpeg youtube-viewer xrandr olive kodi
+        ;; VIDEO
+         mpv ffmpeg youtube-viewer xrandr olive kodi
 
-                     ;; TEXT
-                     aspell aspell-dict-en aspell-dict-sv diction
-                     fbida zathura zathura-ps zathura-djvu zathura-pdf-mupdf
-                     libreoffice texmacs
+        ;; TEXT
+         aspell aspell-dict-en aspell-dict-sv diction
+         fbida zathura zathura-ps zathura-djvu zathura-pdf-mupdf
+         libreoffice texmacs
 
-                     ;; LANG
-                     ats2 racket ocaml ocaml-earley ocaml-parsexp
-                     clang gforth fasm node avr-toolchain-5 gcc-toolchain coq chez-scheme
-                     gprolog ; mercury-rotd
-                     texlive erlang idris
-                     ; purescript
-                     ; purescript-native
-                     ; mono-6.0.0.319
-                     perl
+        ;; LANG
+         ats2 racket ocaml ocaml-earley ocaml-parsexp
+         clang gforth fasm node avr-toolchain-5 gcc-toolchain coq chez-scheme
+         gprolog ;mercury-rotd
+         (list rust "cargo") rust
+         texlive erlang idris
+         ; purescript
+         ; purescript-native
+         mono-6.0.0.319
+         perl
 
-                     ;; MISC
-                     nss-certs le-certs
-                     gnu-make gdb man-pages
-                     kitty sicp wine wine64 qemu
-                     dune python-glad
-                     scons
-                     linux-libre-headers
-                     cmake
-                     ; psc-package
-                     ocaml-merlin glfw gperf pkg-config glu
+        ;; MISC
+         redshift
+         sshfs
+         nss-certs le-certs
+         gnu-make gdb man-pages
+         synergy
+         obs
+         kitty sicp wine wine64 qemu
+         dune python-glad
+         gnupg pinentry
+         python-matrix-dl
+         slock
+         scons
+         linux-libre-headers
+         cmake
+         solvespace
+         ; psc-package
+         ocaml-merlin glfw gperf pkg-config glu
+         figlet
 
-                     %base-packages))
+         %base-packages))
 
     (services (cons* (service wpa-supplicant-service-type)
                      (service network-manager-service-type

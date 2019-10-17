@@ -9,11 +9,8 @@
         (branch "master"))
 
       (channel
-        (name 'home-manager)
-        (url "https://framagit.org/tyreunom/guix-home-manager.git"))
-
-      (channel
         (name 'guix)
         (url "https://git.savannah.gnu.org/git/guix.git")
-        (commit "2f57fa10f4ee09c74e57fd968d24dc657fa45be2")))
+        (commit "ccbc1c5eb2f3cc1979902b6bfd3e7b31aa66e661")))
+        ;(commit "2f57fa10f4ee09c74e57fd968d24dc657fa45be2")))
 

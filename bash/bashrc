@@ -38,10 +38,18 @@ export GUIX_PACKAGE_PATH=$HOME/projects/packages
 export IDRIS_CC=gcc
 export EDITOR=nvim
 export PATH=$HOME/.local/bin:$PATH
-export SSL_CERT_DIR=/run/current-system/profile/etc/ssl/certs/
+export SSL_CERT_DIR=/run/current-system/profile/etc/ssl/certs
+export CURL_CA_BUNDLE=$SSL_CERT_DIR/ca-certificates.crt
 export _JAVA_AWT_WM_NONREPARENTING=1
 export GUILE_AUTO_COMPILE=0
 export CC=gcc
+
+# MAIL
+export EMAIL='tauoverpi@yandex.com'
+# export MAIL='
+export MAILDIR="${HOME}/.mail"
+export RANDFILE="${HOME}/.cache/neomutt/rnd"
+export VISUAL='nvim'
 
 alias reconfigure='sudo -E guix system reconfigure $HOME/projects/sr.ht/dotfiles/guix/config.scm'
 
@@ -211,6 +219,21 @@ crf()
 	echo ${foo[*]} | xargs mpv
 }
 
+lexivga()
+{
+	case $1 in
+		"bright")
+			xrandr --output VGA-1 --brightness $2
+			;;
+		"off")
+			xrandr --output VGA-1 --off
+			;;
+		*)
+			xrandr --output VGA-1 --mode 1920x1080 --left-of LVDS-1
+			;;
+	esac
+}
+
 repeatedly()
 {
     while true
@@ -223,3 +246,6 @@ repeatedly()
         sleep $1
     done
 }
+
+fortune
+echo

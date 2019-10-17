@@ -43,6 +43,7 @@ set whichwrap+=<,>,h,l
 set wrap
 "set laststatus=2
 set foldlevelstart=99
+set foldmethod=syntax
 set clipboard=unnamedplus
 
 let g:theme = "dark"
