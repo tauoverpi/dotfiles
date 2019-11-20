@@ -1,0 +1,67 @@
+# $FreeBSD: releng/12.1/share/skel/dot.cshrc 337497 2018-08-08 19:24:20Z asomers $
+#
+# .cshrc - csh resource script, read at beginning of execution by each shell
+#
+# see also csh(1), environ(7).
+# more examples available at /usr/share/examples/csh/
+#
+alias fuck 'setenv TF_SHELL tcsh && setenv TF_ALIAS fuck && set fucked_cmd=`history -h 2 | head -n 1` && eval `thefuck ${fucked_cmd}`'
+alias h  history 25
+alias j  jobs -l
+alias la ls -aF
+alias lf ls -FA
+alias ll ls -lAF
+alias s s -p duckduckgo -b elinks
+alias github s -p github -b elinks
+alias news s -p hackernws -b elinks
+alias scap 'scrot -o /tmp/cap.png && curl -F"file=@/tmp/cap.png" https://0x0.st | xclip -sel clip && xclip -sel clip -o'
+alias wcap 'scrot -s -o /tmp/cap.png && curl -F"file=@/tmp/cap.png" https://0x0.st | xclip -sel clip && xclip -sel clip -o'
+alias weather curl wttr.in
+alias song 'mpc current >> ~/.songs'
+alias play 'mpc stop; mpc play'
+alias cafe 'mpc stop; mpc clear; mpc load cafe; mpc play'
+alias swing 'mpc stop; mpc clear; mpc load swing; mpc play'
+alias cyberia 'mpc stop; mpc clear; mpc load cyberia; mpc play'
+
+# These are normally set through /etc/login.conf.  You may override them here
+# if wanted.
+# set path = (/sbin /bin /usr/sbin /usr/bin /usr/local/sbin /usr/local/bin $HOME/bin)
+# setenv	BLOCKSIZE	K
+# A righteous umask
+# umask 22
+
+setenv SXHKD_SHELL sh # this speeds things up considerably
+setenv LC_ALL en_US.UTF-8
+setenv EDITOR nvim
+setenv PAGER less
+setenv SURF_USERAGENT "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US) AppleWebKit/525.19 (KHTML, like Gecko) Chrome/1.0.154.53 Safari/525.19"
+setenv PATH $HOME/.cabal/bin:$HOME/.local/bin:$HOME/.cargo/bin:$PATH
+setenv PATSHOME /usr/home/tau/build/ATS2-Postiats-gmp-0.3.13
+setenv MPD_HOST ${HOME}/.mpd/socket
+
+if (! $?TMUX && $?DISPLAY) then
+	setenv TERM xterm-256color
+	tmux
+endif
+
+if ($?prompt) then
+	# An interactive shell -- set some stuff up
+	set prompt = "%~ "
+	set promptchars = "%#"
+	set filec
+	set history = 1000
+	set savehist = (1000 merge)
+	set autolist = ambiguous
+	# Use history to aid expansion
+	set autoexpand
+	set autorehash
+	set mail = (/var/mail/$USER)
+	if ( $?tcsh ) then
+		bindkey "^W" backward-delete-word
+		bindkey -k up history-search-backward
+		bindkey -k down history-search-forward
+	endif
+endif
+
+# opam configuration
+source /usr/home/tau/.opam/opam-init/init.csh >& /dev/null || true

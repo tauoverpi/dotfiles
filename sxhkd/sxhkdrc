@@ -1,14 +1,14 @@
 XF86Audio{Lower,Raise}Volume
-	amixer -c 0 set PCM 10{-,+}
+	mixer vol {-,+}5
 
 XF86AudioMute
-	amixer set PCM 0%
+	mixer vol 0:0
 
 XF86Audio{Prev,Next,Play,Stop}
 	mpc {prev,next,toggle,stop}
 
 super + shift + Return
-	kitty
+	cool-retro-term
 
 super + Escape
 	pkill -USR1 -x sxhkd

@@ -1,7 +1,7 @@
 set nocompatible
 set list
 set ai
-"set cursorline
+set number
 set autochdir
 set backspace=eol,start,indent
 set backupdir=~/.config/nvim/tmp/backup/
@@ -9,29 +9,32 @@ set conceallevel=2
 set concealcursor=ni
 set directory=~/.config/nvim/tmp/swap
 set hlsearch!
+set sw=4
+set ts=4
+set cursorline
 set signcolumn=yes
 set ignorecase
 set incsearch
 set lazyredraw
 set lbr
-" set listchars=tab:\|\ ,eol:¬,extends:❯,precedes:❮,nbsp:▩
+set listchars=tab:\▏\ ,eol:¬,extends:❯
 set magic
 set mat=1
 set mouse=a
 set nohlsearch
-"set dg
 set scrolloff=5
 set shiftwidth=2
 set showmatch
 set si
 set smartcase
-" set colorcolumn=64
 set smarttab
 set t_Co=256
 set tabstop=2
 set tags=tags;
 set textwidth=100
 set noshowmode
+set laststatus=0
+set noruler
 set tw=500
 set undodir=~/.config/nvim/tmp/undo/
 set termguicolors
@@ -41,223 +44,23 @@ set undofile
 set whichwrap+=<,>,h,l
 "set showtabline=2
 set wrap
+set linebreak
 "set laststatus=2
 set foldlevelstart=99
 set foldmethod=syntax
 set clipboard=unnamedplus
 
-let g:theme = "dark"
-
-" blue 27303a
-" gray f3f8fd
-" black 1a2027
-function! LightTheme()
-	hi Comment      guifg=#bbbbbb gui=italic
-	hi CursorLine   guifg=none guibg=#f3f8fd gui=none
-	hi CursorLineNr guibg=#f3f8fd guifg=#aaaaaa gui=none
-	hi Delimiter    guifg=#111111
-	hi Float        guifg=#444444 gui=none
-	hi Number       guifg=#444444 gui=none
-	hi Function     guifg=#111111
-	hi Identifier   guifg=#111111
-	hi Operator     guifg=#444444 gui=none
-	hi String       guifg=#E1A126
-	hi Include      guifg=#333333
-	hi Statement    guifg=#222222 gui=none
-	hi Structure    guifg=#222222 gui=none
-	hi Type         guifg=#555555 gui=none
-	hi GitGutterAdd guibg=#27303a guifg=#eeeeee
-	hi GitGutterChange guibg=#27303a guifg=#eeeeee
-	hi GitGutterDelete guibg=#27303a guifg=#eeeeee
-	hi Keyword                                  gui=none
-	hi LineNr       guifg=#aaaaaa guibg=#ffffff
-	hi NonText      guifg=#e3e8ed guibg=#ffffff
-	hi Normal       guifg=#000000 guibg=#FFFFFF
-	hi Directory    guifg=#27303a
-	hi Title        guifg=#000000
-	hi Pmenu        guifg=#1a2027 guibg=#f3f8fd
-	hi PmenuSel     guifg=#27303a guibg=#e3e8ed
-	hi PreProc      guifg=#D81735 gui=none
-	hi QuickFixLine guifg=#33373e
-	hi SignColumn   guibg=#ffffff guifg=#000000
-	hi StatusLine   guibg=#ffffff guifg=#000000 gui=none
-	hi StatusLineNC guibg=#ffffff guifg=#000000 gui=none
-	hi TabLine      guibg=#ffffff guifg=#000000 gui=none
-	hi TabLineFill  guibg=#ffffff guifg=#000000 gui=none
-	hi TabLineSel   guibg=#ffffff guifg=#000000 gui=none
-	hi VertSplit    guibg=#ffffff guifg=#ffffff gui=none
-	hi Visual                     guibg=#eeeeee
-	hi idrisMetaVar guifg=#FF5800 gui=underline
-  hi ColorColumn  guibg=#f3f8fd
-endfunction
-
-function! DarkTheme()
-	hi Comment      guifg=#bbbbbb gui=italic
-	hi CursorLine   guifg=none guibg=#27303a gui=none
-	hi CursorLineNr guibg=none guifg=#3d4651 gui=none
-	hi Delimiter    guifg=#eeeeee
-	hi Float        guifg=#888888 gui=none
-	hi Number       guifg=#888888 gui=none
-	hi Function     guifg=#eeeeee
-	hi Identifier   guifg=#eeeeee
-	hi Operator     guifg=#666666 gui=none
-	hi String       guifg=#E1A126
-	hi Include      guifg=#666666
-	hi Statement    guifg=#f92a32 gui=none gui=bold
-	hi Structure    guifg=#f92a32 gui=none
-	hi Type         guifg=#aaaaaa gui=none
-	hi GitGutterAdd guibg=none guifg=#eeeeee
-	hi GitGutterChange guibg=none guifg=#eeeeee
-	hi GitGutterDelete guibg=none guifg=#eeeeee
-	hi Keyword                                  gui=none
-	hi LineNr       guifg=#27303a guibg=none
-	hi NonText      guibg=none guifg=#27303a
-"guibg=#1a2027
-	hi Normal       guifg=#ffffff
-"guibg=#1a2027
-	hi Directory    guifg=#3d4651
-	hi Title        guifg=#3d4651
-	hi Pmenu        guifg=#1a2027 guibg=#f3f8fd
-	hi PmenuSel     guifg=#27303a guibg=#e3e8ed
-	hi PreProc      guifg=#f92a32 gui=none
-	hi QuickFixLine guifg=none
-	hi SignColumn   guibg=none guifg=#eeeeee
-	hi StatusLine   guibg=none guifg=#3d4651 gui=none
-	hi StatusLineNC guibg=none guifg=#3d4651 gui=none
-	hi TabLine      guibg=none guifg=#3d4651 gui=none
-	hi TabLineFill  guibg=none guifg=#3d4651 gui=none
-	hi TabLineSel   guibg=none guifg=#3d4651 gui=none
-	hi VertSplit    guibg=none guifg=#27303a gui=none
-	hi Visual                     guibg=#eeeeee
-	hi idrisMetaVar guifg=#FF5800 gui=underline
-	hi ColorColumn  guibg=#27303a
-endfunction
-
-function! BlackTheme()
-	hi Comment      guifg=#bbbbbb gui=italic
-	hi CursorLine   guifg=none guibg=#000000 gui=none
-	hi CursorLineNr guibg=#000000 guifg=#27303a gui=none
-	hi Delimiter    guifg=#eeeeee
-	hi Float        guifg=#888888 gui=none
-	hi Number       guifg=#888888 gui=none
-	hi Function     guifg=#eeeeee
-	hi Identifier   guifg=#eeeeee
-	hi Operator     guifg=#666666 gui=none
-	hi String       guifg=#E1A126
-	hi Include      guifg=#666666
-	hi Statement    guifg=#D81735 gui=none
-	hi Structure    guifg=#D81735 gui=none
-	hi Type         guifg=#aaaaaa gui=none
-	hi GitGutterAdd guibg=#000000 guifg=#eeeeee
-	hi GitGutterChange guibg=#000000 guifg=#eeeeee
-	hi GitGutterDelete guibg=#000000 guifg=#eeeeee
-	hi Keyword                                  gui=none
-	hi LineNr       guifg=#17202a guibg=#000000
-	hi NonText      guifg=#1a2027 guibg=#000000
-	hi Normal       guifg=#ffffff guibg=#000000
-	hi Directory    guifg=#000000
-	hi Title        guifg=#1a2027
-	hi Pmenu        guifg=#1a2027 guibg=#f3f8fd
-	hi PmenuSel     guifg=#000000 guibg=#e3e8ed
-	hi PreProc      guifg=#D81735 gui=none
-	hi QuickFixLine guifg=#33373e
-	hi SignColumn   guibg=#000000 guifg=#eeeeee
-	hi StatusLine   guibg=#000000 guifg=#eeeeee gui=none
-	hi StatusLineNC guibg=#000000 guifg=#eeeeee gui=none
-	hi TabLine      guibg=#000000 guifg=#eeeeee gui=none
-	hi TabLineFill  guibg=#000000 guifg=#eeeeee gui=none
-	hi TabLineSel   guibg=#000000 guifg=#eeeeee gui=none
-	hi VertSplit    guibg=#000000 guifg=#000000 gui=none
-	hi Visual                     guibg=#eeeeee
-	hi idrisMetaVar guifg=#FF5800 gui=underline
-	hi ColorColumn  guibg=#000000
-endfunction
-
-hi QuickFixLine guifg=#60ff60
-
-let g:rainbow_active = 1
-let g:rainbow_conf = {
-\ 'guifgs': ['#f92a32', '#97d01a', '#ffa800', '16b1fb', 'ff2491', '0fdcb6', '38252c', '76b639', 'e1a126', '289cd5', 'ff2491', '0a9b81']
-\}
-
-let g:limelight_conceal_ctermfg = '#3d4651'
-let g:limelight_conceal_guifg   = '#3d4651'
-let g:limelight_priority = 10
-
-function! Tab_Or_Complete()
-	if col('.')>1 && strpart( getline('.'), col('.')-2, 3 ) =~ '^\w'
-		return "\<C-x>\<C-o>"
-	else
-		return "\<Tab>"
-	endif
-endfunction
-
 function! CleanFile()
+	if (&ft == "text")
+		:%!fmt
+	endif
 	normal mZ
 	:%s/\s\+$//e
 	:%s/\n\{3,}/\r\r/e
 	normal `Z
 endfunction
 
-function! s:goyo_enter()
-	let b:quitting = 0
-	let b:quitting_bang = 0
-	autocmd QuitPre <buffer> let b:quitting = 1
-	cabbrev <buffer> q! let b:quitting_bang = 1 <bar> q!
-endfunction
-
-function! s:goyo_leave()
-	" Quit Vim if this is the only remaining buffer
-	if b:quitting && len(filter(range(1, bufnr('$')), 'buflisted(v:val)')) == 1
-		if b:quitting_bang
-			qa!
-		else
-			qa
-		endif
-	endif
-endfunction
-
-function! SynesthesiaMode()
-	syntax off
-	set ft=synesthesia
-	syntax on
-	source /home/lucy/projects/dotfiles/neovim/synesthesia.vim
-endfunction
-
-autocmd! User GoyoEnter call <SID>goyo_enter()
-autocmd! User GoyoLeave call <SID>goyo_leave()
-
-let g:toggle_goyo = 0
-function! ToggleGoyo()
-	if (g:toggle_goyo == 0)
-		let g:toggle_goyo = 1
-		Goyo 60%
-	else
-		let g:toggle_goyo = 0
-		Goyo!
-	endif
-	if (g:theme == "dark")
-		call DarkTheme()
-	else
-		call LightTheme()
-	endif
-endfunction
-
-let g:toggle_lime = 0
-function! ToggleLime()
-	if (g:toggle_lime == 0)
-		Limelight
-		let g:toggle_lime = 1
-	else
-		let g:toggle_lime = 0
-		Limelight!
-	endif
-endfunction
-let g:paredit_shortmaps = 1
-
 nm <F10> :AsyncRun make <CR>
-nm <F7> :call ToggleLime()<CR>
-nm <F8> :call ToggleGoyo()<CR>
 nm <S-h> <C-w><
 nm <S-j> <C-w>-
 nm <S-k> <C-w>+
@@ -267,7 +70,6 @@ nm <Up> <C-w>k
 nm <Left> <C-w>h
 nm <Right> <C-w>l
 nm <Down> <C-w>j
-nm <Leader>= :exec ToggleCenterScreen(87)<CR>
 " TAB MOVEMENT
 nm <C-Left> :tabprevious<CR>
 nm <C-Right> :tabnext<CR>
@@ -275,32 +77,138 @@ nm <C-Right> :tabnext<CR>
 tno <Esc> <C-\><C-n>
 tno <C-b><Esc> <Esc>
 
-nm <C-t> :te<CR>
 nm <C-n> :tabnew<CR>
 
-ino <Tab> <C-R>=Tab_Or_Complete()<CR>
+"ino <Tab> <C-R>=Tab_Or_Complete()<CR>
 ino <Up> <NOP>
 ino <Down> <NOP>
 ino <Right> <NOP>
 ino <Left> <NOP>
 
-au BufNewFile,BufRead *.texi,*.idr,*.hs,*.scm,*.rkt,*.lhs,*.lidr,*.sats,*.ipkg,*.txt,*.m,*.purs,*.md set expandtab
-"whitespace
-au BufNewFile,BufRead *.rkt hi error guibg=none
-au BufWrite * call CleanFile()
-au BufNewFile,BufRead *.lidr set filetype=idris | set filetype=lidris
-au BufNewFile,BufRead *.scm,*.clj,*.lisp RainbowToggleOn
-au BufEnter *.idr call ToggleLime()
-au VimEnter * call DarkTheme()
-au VimEnter *.txt call ToggleGoyo()
+nno <silent> k gk
+nno <silent> j gj
+nno <silent> 0 g0
+nno <silent> $ g$
 
 let g:syntastic_error_symbol = '✗'
 let g:syntastic_warning_symbol = '∆'
 let g:syntastic_style_warning_symbol = '≈'
 let g:syntastic_style_error_symbol = '✠'
+
+let g:deoplete#enable_at_startup = 1
+let g:slime_target = "tmux"
+
 hi SyntasticErrorSign guibg=none ctermbg=none
 hi SyntasticWarningSign guibg=none ctermbg=none
 hi SyntasticStyleErrorSign guibg=none ctermbg=none
 hi SyntasticStyleWarningSign guibg=none ctermbg=none
-au BufNewFile,BufRead *.m set filetype=mercury
-au BufWritePost *.m AsyncRun mmc -e -E -s tr --check-term --no-warn-stubs --allow-stubs --no-warn-nothing-exported --infer-all --no-warn-missing-module-name --use-subdirs %
+
+let color0  = "#110c0f"
+let color1  = "#30649F"
+let color2  = "#5C749A"
+let color3  = "#798198"
+let color4  = "#9F9EA5"
+let color5  = "#D8AC9C"
+let color6  = "#E7C5B9"
+let color7  = "#d3d5db"
+let color8  = "#939599"
+let color9  = "#30649F"
+let color10 = "#5C749A"
+let color11 = "#798198"
+let color12 = "#9F9EA5"
+let color13 = "#D8AC9C"
+let color14 = "#E7C5B9"
+let color15 = "#d3d5db"
+
+function! SetTheme()
+	hi Normal guifg=#d3d5db gui=italic
+	hi Comment guifg=#221d1f
+	hi Operator guifg=#5C749A
+	hi Structure guifg=#30649F
+	hi Statement guifg=#D8AC9C
+	hi SpecialChar guifg=#ffffff
+	hi Macro guifg=#798198
+	hi Include guifg=#E7C5B9
+	hi Identifier guifg=#30649F
+	hi Special guifg=#ffffff
+	hi Delimiter guifg=#30649F
+	hi Function guifg=#9F9EA5
+	hi Type guifg=#30649F
+	hi String guifg=#798198
+	hi Character guifg=#798198
+	hi Label guifg=#ffffff
+	hi Constant guifg=#D8AC9C
+	hi Number guifg=#5C749A
+	hi Float guifg=#5C749A
+	hi PreProc guifg=#939599
+	hi Error guifg=#110c0f guibg=#30649F
+	hi Conditional guifg=#939599
+	hi LineNr       guifg=#221d1f guibg=none
+	hi NonText      guifg=#221d1f guibg=none
+	hi Pmenu        guifg=#221d1f guibg=#000000 gui=none
+	hi PmenuSel     guifg=#30649F guibg=#000000
+	hi PmenuSbar    guifg=#221d1f guibg=#000000
+	hi PmenuThumb   guifg=#30649F guibg=#000000
+	hi SignColumn   guibg=none guifg=#221d1f
+	hi StatusLine   guibg=none guifg=#221d1f gui=none
+	hi StatusLineNC guibg=none guifg=#221d1f gui=none
+	hi TabLine      guibg=none guifg=#221d1f gui=none
+	hi TabLineFill  guibg=none guifg=#221d1f gui=none
+	hi TabLineSel   guibg=none guifg=#221d1f gui=none
+	hi VertSplit    guibg=#000000 guifg=#000000 gui=none
+	hi CursorLineNr guibg=#221d1f guifg=#000000
+	hi CursorLine   guibg=#120d0f
+	hi Visual       guibg=#221d1f
+
+	hi QuickFixLine guifg=#30649F guibg=#000000
+	hi tcshShellVar guifg=#5C749A
+endfunction
+
+function! UpdateStatus()
+	call writefile([expand('%')
+				\ . " l" . line('.')
+				\ . repeat(' ', 4 - len(line('.')))
+				\ . " c" . col('.')
+				\ . repeat(' ', 3 - len(col('.')))], $HOME . "/.vimstatus")
+	call execute("!tmux refresh-client -S")
+endfunction
+
+function! ClearStatus()
+	call delete($HOME . "/.vimstatus")
+	call execute("!tmux refresh-client -S")
+endfunction
+
+call plug#begin('~/.config/nvim/plugged')
+Plug 'junegunn/limelight.vim'
+Plug 'raichoo/haskell-vim'
+Plug 'idris-hackers/idris-vim'
+Plug 'ervandew/supertab'
+Plug 'godlygeek/tabular'
+Plug 'tpope/vim-surround'
+Plug 'scrooloose/nerdtree'
+Plug 'jpalardy/vim-slime'
+Plug 'vim-scripts/paredit.vim', { 'for': 'scheme' }
+Plug 'skywind3000/asyncrun.vim'
+Plug 'pangloss/vim-javascript'
+Plug 'natebosch/vim-lsc'
+Plug 'vim-scripts/loremipsum'
+Plug 'farmergreg/vim-lastplace'
+Plug 'luochen1990/rainbow'
+call plug#end()
+
+" Stuff
+au BufNewFile,BufRead *.texi,*.idr,*.hs,*.scm,*.rkt,*.lhs,*.lidr,*.sats,*.ipkg,*.txt,*.m,*.purs,*.md set expandtab
+au BufNewFile,BufRead *.rkt hi error guibg=none
+au BufWrite * call CleanFile()
+au BufWritePost *.dats AsyncRun patsopt --typecheck -d %
+au BufWritePost *.sats AsyncRun patsopt --typecheck -s %
+au BufWritePost *.c AsyncRun make check
+au BufWritePost *.txt AsyncRun diction -s %
+au BufNewFile,BufRead *.lidr set filetype=idris | set filetype=lidris
+au BufNewFile,BufRead *.c copen
+au BufNewFile,BufRead *.dats set filetype=ats | source $HOME/.config/nvim/ats.vim
+au BufNewFile,BufRead *.sats set filetype=ats | source $HOME/.config/nvim/ats.vim
+au BufNewFile,BufRead *.cats set filetype=ats | source $HOME/.config/nvim/ats.vim
+au VimEnter * call SetTheme()
+au VimEnter,BufRead,BufNewFile,BufWrite * call UpdateStatus()
+au VimLeave * call ClearStatus()

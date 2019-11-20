@@ -1,0 +1,28 @@
+#!/bin/sh
+
+# this is an ugly mess... I'll fix it one day
+
+TAU=`date +'%d:%m/%H:%M'`
+
+CASS=`TZ=Asia/Manila date +'%d:%m/%H:%M'`
+CHOUR=`TZ=Asia/Manila date +'%H'`
+CASSTIME=`[ $CHOUR -ge 8 ] && [ $CHOUR -le 23 ] && echo "#[fg=#30649f]${CASS}" || echo "#[fg=#110c0f]${CASS}"`
+
+BATT=`apm -l`
+CHARGE=`apm -b`
+LOWBATT=`[ $BATT -le 30 ] && echo "#[fg=#000000 bg=#30649f]" || echo "#[fg=#110c0f]"`
+CHARGING=`[ $CHARGE = 3 ] && echo "#[fg=#30649f]" || echo "${LOWBATT}"`
+
+TODO=`todo`
+TODOTEXT=`[ -z $TODO ] || echo "#[bg=#30649f fg=#000000] ${TODO} #[bg=#000000] "`
+
+NOTI=`cat ~/.notification`
+NOTITEXT=`[ -z $NOTI ] || echo "#[bg=#30649f fg=#000000] ${NOTI} #[bg=#000000] "`
+
+MPC=`mpc current -f '%artist% - %title%' | sed 's/(.*)//g' | sed 's/\[.*\]//g'`
+MPCTEXT="#[fg=#110c0f]${MPC} "
+
+VIM=`head -n 1 ~/.vimstatus`
+VIMTEXT=`[ -z $VIM ] || echo "#[bg=#110c0f fg=#000000] ${VIM} #[bg=#000000] "`
+
+echo "${MPCTEXT}${VIMTEXT}${NOTITEXT}${TODOTEXT}${CHARGING} ${BATT}% #[bg=#000000] ${CASSTIME}#[fg=#30649f] ${TAU}"
