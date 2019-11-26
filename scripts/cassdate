@@ -25,4 +25,16 @@ MPCTEXT="#[fg=#110c0f]${MPC} "
 VIM=`head -n 1 ~/.vimstatus`
 VIMTEXT=`[ -z $VIM ] || echo "#[bg=#110c0f fg=#000000] ${VIM} #[bg=#000000] "`
 
-echo "${MPCTEXT}${VIMTEXT}${NOTITEXT}${TODOTEXT}${CHARGING} ${BATT}% #[bg=#000000] ${CASSTIME}#[fg=#30649f] ${TAU}"
+TEMP0=`sysctl -n dev.cpu.0.temperature`
+TEMP1=`sysctl -n dev.cpu.1.temperature`
+TEMP2=`sysctl -n dev.cpu.2.temperature`
+TEMP3=`sysctl -n dev.cpu.3.temperature`
+TEMP=` cat << EOF | sort -r | head -n 1 | sed 's/\.[0-9]*C//'
+$TEMP0
+$TEMP1
+$TEMP2
+$TEMP3
+EOF`
+TEMPTEXT=`[ $TEMP -ge 90 ] && echo "#[bg=#ff3430 fg=#000000] ${TEMP}C #[bg=#000000]" || echo " ${TEMP}C "`
+
+echo "${MPCTEXT}${VIMTEXT}${NOTITEXT}${TODOTEXT}${CHARGING} ${TEMPTEXT} ${BATT}% #[bg=#000000] ${CASSTIME}#[fg=#30649f] ${TAU}"

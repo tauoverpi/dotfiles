@@ -122,6 +122,7 @@ let color15 = "#d3d5db"
 
 function! SetTheme()
 	hi Normal guifg=#d3d5db gui=italic
+	hi Todo guifg=#30649F guibg=none gui=underline
 	hi Comment guifg=#221d1f
 	hi Operator guifg=#5C749A
 	hi Structure guifg=#30649F

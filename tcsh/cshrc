@@ -11,9 +11,9 @@ alias j  jobs -l
 alias la ls -aF
 alias lf ls -FA
 alias ll ls -lAF
-alias s s -p duckduckgo -b elinks
-alias github s -p github -b elinks
-alias news s -p hackernws -b elinks
+alias s s -p duckduckgo -b lynx
+alias github s -p github -b lynx
+alias news s -p hackernews -b lynx
 alias scap 'scrot -o /tmp/cap.png && curl -F"file=@/tmp/cap.png" https://0x0.st | xclip -sel clip && xclip -sel clip -o'
 alias wcap 'scrot -s -o /tmp/cap.png && curl -F"file=@/tmp/cap.png" https://0x0.st | xclip -sel clip && xclip -sel clip -o'
 alias weather curl wttr.in
@@ -22,6 +22,7 @@ alias play 'mpc stop; mpc play'
 alias cafe 'mpc stop; mpc clear; mpc load cafe; mpc play'
 alias swing 'mpc stop; mpc clear; mpc load swing; mpc play'
 alias cyberia 'mpc stop; mpc clear; mpc load cyberia; mpc play'
+alias everything 'mpc stop; mpc clear; mpc load everything; mpc play'
 
 # These are normally set through /etc/login.conf.  You may override them here
 # if wanted.
