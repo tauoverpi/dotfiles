@@ -1,12 +1,32 @@
 #!/bin/sh
-
-# this is an ugly mess... I'll fix it one day
-
 TAU=`date +'%d:%m/%H:%M'`
-
 CASS=`TZ=Asia/Manila date +'%d:%m/%H:%M'`
 CHOUR=`TZ=Asia/Manila date +'%H'`
-CASSTIME=`[ $CHOUR -ge 8 ] && [ $CHOUR -le 23 ] && echo "#[fg=#30649f]${CASS}" || echo "#[fg=#110c0f]${CASS}"`
+CDAY=`TZ=Asia/Manila date +'%u'`
+
+#    [ [ None, None, None, None, None, None, "#f69175", "#f69175", "#aba9fc", "#aba9fc", None, None ]
+#    , [ None, None, None, None, None, None, "#7dc5f5", "#7dc5f5", "#83e0a7", "#83e0a7", "#83e0a7", None ]
+#    , [ None, None, None, None, None, "#fdc357", "#fdc357", "#fdc357", "#f69175", "#f69175", "#f69175", None ]
+#    , [ "#83e0a7", "#83e0a7", None, None, "#6295d6", "#7dc5f5", "#7dc5f5", "#7dc5f5", "#e68185", "#e68185", None, None ]
+#    , [ None, "#aba9fc", "#6295d6", "#6295d6", None, "#e68185", "#e68185", "#e68185", "#fdc357", "#fdc357", None, None ] ]
+
+CCOLOR="#30649f"
+[ $CDAY -eq 1 ] && [ $CHOUR -ge 14 ] && [ $CHOUR -le 15 ] && CCOLOR="#f69175"
+[ $CDAY -eq 1 ] && [ $CHOUR -ge 16 ] && [ $CHOUR -le 17 ] && CCOLOR="#aba9fc"
+[ $CDAY -eq 2 ] && [ $CHOUR -ge 14 ] && [ $CHOUR -le 15 ] && CCOLOR="#7dc5f5"
+[ $CDAY -eq 2 ] && [ $CHOUR -ge 16 ] && [ $CHOUR -le 18 ] && CCOLOR="#83e0a7"
+[ $CDAY -eq 3 ] && [ $CHOUR -ge 13 ] && [ $CHOUR -le 15 ] && CCOLOR="#fdc357"
+[ $CDAY -eq 3 ] && [ $CHOUR -ge 16 ] && [ $CHOUR -le 18 ] && CCOLOR="#f69175"
+[ $CDAY -eq 4 ] && [ $CHOUR -ge 8 ] && [ $CHOUR -le 9 ] && CCOLOR="#83e0a7"
+[ $CDAY -eq 4 ] && [ $CHOUR -eq 12 ] && CCOLOR="#6295d6"
+[ $CDAY -eq 4 ] && [ $CHOUR -ge 13 ] && [ $CHOUR -le 15 ] && CCOLOR="#7dc5f5"
+[ $CDAY -eq 4 ] && [ $CHOUR -ge 16 ] && [ $CHOUR -le 17 ] && CCOLOR="#e68185"
+[ $CDAY -eq 5 ] && [ $CHOUR -eq 9 ] && CCOLOR="#aba9fc"
+[ $CDAY -eq 5 ] && [ $CHOUR -ge 10 ] && [ $CHOUR -le 11] && CCOLOR="#6295d6"
+[ $CDAY -eq 5 ] && [ $CHOUR -ge 13 ] && [ $CHOUR -le 17 ] && CCOLOR="#e68185"
+[ $CDAY -eq 5 ] && [ $CHOUR -ge 16 ] && [ $CHOUR -le 17 ] && CCOLOR="#fdc357"
+
+CASSTIME=`[ $CHOUR -ge 8 ] && [ $CHOUR -le 23 ] && echo "#[fg=${CCOLOR}]${CASS}" || echo "#[fg=#110c0f]${CASS}"`
 
 BATT=`apm -l`
 CHARGE=`apm -b`

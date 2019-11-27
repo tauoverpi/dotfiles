@@ -49,10 +49,11 @@ set linebreak
 set foldlevelstart=99
 set foldmethod=syntax
 set clipboard=unnamedplus
+filetype indent plugin on
 
 function! CleanFile()
 	if (&ft == "text")
-		:%!fmt
+		:%!fmt -w 100
 	endif
 	normal mZ
 	:%s/\s\+$//e
@@ -179,6 +180,8 @@ function! ClearStatus()
 	call execute("!tmux refresh-client -S")
 endfunction
 
+"autocmd CursorHold *.cs call OmniSharp#TypeLookupWithoutDocumentation()
+
 call plug#begin('~/.config/nvim/plugged')
 Plug 'junegunn/limelight.vim'
 Plug 'raichoo/haskell-vim'
@@ -191,6 +194,10 @@ Plug 'jpalardy/vim-slime'
 Plug 'vim-scripts/paredit.vim', { 'for': 'scheme' }
 Plug 'skywind3000/asyncrun.vim'
 Plug 'pangloss/vim-javascript'
+Plug 'tpope/vim-dispatch'
+Plug 'kien/ctrlp.vim'
+Plug 'vim-syntastic/syntastic'
+Plug 'w0rp/ale'
 Plug 'natebosch/vim-lsc'
 Plug 'vim-scripts/loremipsum'
 Plug 'farmergreg/vim-lastplace'
