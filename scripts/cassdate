@@ -1,49 +1,34 @@
 #!/bin/sh
+R="#[fg=#a04630]"
+Y="#[fg=#a09c30]"
+G="#[fg=#30a06a]"
+B="#[fg=#3064a0]"
+D="#[fg=#110c0f]"
+
 TAU=`date +'%d:%m/%H:%M'`
+TAUTEXT="${B} ${TAU} "
 CASS=`TZ=Asia/Manila date +'%d:%m/%H:%M'`
 CHOUR=`TZ=Asia/Manila date +'%H'`
 CDAY=`TZ=Asia/Manila date +'%u'`
 
-#    [ [ None, None, None, None, None, None, "#f69175", "#f69175", "#aba9fc", "#aba9fc", None, None ]
-#    , [ None, None, None, None, None, None, "#7dc5f5", "#7dc5f5", "#83e0a7", "#83e0a7", "#83e0a7", None ]
-#    , [ None, None, None, None, None, "#fdc357", "#fdc357", "#fdc357", "#f69175", "#f69175", "#f69175", None ]
-#    , [ "#83e0a7", "#83e0a7", None, None, "#6295d6", "#7dc5f5", "#7dc5f5", "#7dc5f5", "#e68185", "#e68185", None, None ]
-#    , [ None, "#aba9fc", "#6295d6", "#6295d6", None, "#e68185", "#e68185", "#e68185", "#fdc357", "#fdc357", None, None ] ]
-
-CCOLOR="#30649f"
-[ $CDAY -eq 1 ] && [ $CHOUR -ge 14 ] && [ $CHOUR -le 15 ] && CCOLOR="#f69175"
-[ $CDAY -eq 1 ] && [ $CHOUR -ge 16 ] && [ $CHOUR -le 17 ] && CCOLOR="#aba9fc"
-[ $CDAY -eq 2 ] && [ $CHOUR -ge 14 ] && [ $CHOUR -le 15 ] && CCOLOR="#7dc5f5"
-[ $CDAY -eq 2 ] && [ $CHOUR -ge 16 ] && [ $CHOUR -le 18 ] && CCOLOR="#83e0a7"
-[ $CDAY -eq 3 ] && [ $CHOUR -ge 13 ] && [ $CHOUR -le 15 ] && CCOLOR="#fdc357"
-[ $CDAY -eq 3 ] && [ $CHOUR -ge 16 ] && [ $CHOUR -le 18 ] && CCOLOR="#f69175"
-[ $CDAY -eq 4 ] && [ $CHOUR -ge 8 ] && [ $CHOUR -le 9 ] && CCOLOR="#83e0a7"
-[ $CDAY -eq 4 ] && [ $CHOUR -eq 12 ] && CCOLOR="#6295d6"
-[ $CDAY -eq 4 ] && [ $CHOUR -ge 13 ] && [ $CHOUR -le 15 ] && CCOLOR="#7dc5f5"
-[ $CDAY -eq 4 ] && [ $CHOUR -ge 16 ] && [ $CHOUR -le 17 ] && CCOLOR="#e68185"
-[ $CDAY -eq 5 ] && [ $CHOUR -eq 9 ] && CCOLOR="#aba9fc"
-[ $CDAY -eq 5 ] && [ $CHOUR -ge 10 ] && [ $CHOUR -le 11] && CCOLOR="#6295d6"
-[ $CDAY -eq 5 ] && [ $CHOUR -ge 13 ] && [ $CHOUR -le 17 ] && CCOLOR="#e68185"
-[ $CDAY -eq 5 ] && [ $CHOUR -ge 16 ] && [ $CHOUR -le 17 ] && CCOLOR="#fdc357"
-
-CASSTIME=`[ $CHOUR -ge 8 ] && [ $CHOUR -le 23 ] && echo "#[fg=${CCOLOR}]${CASS}" || echo "#[fg=#110c0f]${CASS}"`
+CASSTIME=`[ $CHOUR -ge 8 ] && [ $CHOUR -le 23 ] && echo "${B} ${CASS} " || echo "${R} ${CASS} "`
 
 BATT=`apm -l`
 CHARGE=`apm -b`
-LOWBATT=`[ $BATT -le 30 ] && echo "#[fg=#000000 bg=#30649f]" || echo "#[fg=#110c0f]"`
-CHARGING=`[ $CHARGE = 3 ] && echo "#[fg=#30649f]" || echo "${LOWBATT}"`
+LOWBATT=`[ $BATT -le 30 ] && echo "${R}" || echo "${G}"`
+CHARGING=`[ $CHARGE = 3 ] && echo "${B}" || echo "${LOWBATT}"`
 
 TODO=`todo`
-TODOTEXT=`[ -z $TODO ] || echo "#[bg=#30649f fg=#000000] ${TODO} #[bg=#000000] "`
+TODOTEXT=`[ -z $TODO ] || echo "${G} ${TODO} "`
 
 NOTI=`cat ~/.notification`
-NOTITEXT=`[ -z $NOTI ] || echo "#[bg=#30649f fg=#000000] ${NOTI} #[bg=#000000] "`
+NOTITEXT=`[ -z $NOTI ] || echo "${Y} ${NOTI} "`
 
 MPC=`mpc current -f '%artist% - %title%' | sed 's/(.*)//g' | sed 's/\[.*\]//g'`
-MPCTEXT="#[fg=#110c0f]${MPC} "
+MPCTEXT="${B} ${MPC} "
 
 VIM=`head -n 1 ~/.vimstatus`
-VIMTEXT=`[ -z $VIM ] || echo "#[bg=#110c0f fg=#000000] ${VIM} #[bg=#000000] "`
+VIMTEXT=`[ -z $VIM ] || echo "${Y} ${VIM} "`
 
 TEMP0=`sysctl -n dev.cpu.0.temperature`
 TEMP1=`sysctl -n dev.cpu.1.temperature`
@@ -55,6 +40,6 @@ $TEMP1
 $TEMP2
 $TEMP3
 EOF`
-TEMPTEXT=`[ $TEMP -ge 90 ] && echo "#[bg=#ff3430 fg=#000000] ${TEMP}C #[bg=#000000]" || echo " ${TEMP}C "`
+TEMPTEXT=`[ $TEMP -ge 90 ] && echo "${R} ${TEMP}C " || echo "${G} ${TEMP}C "`
 
-echo "${MPCTEXT}${VIMTEXT}${NOTITEXT}${TODOTEXT}${CHARGING} ${TEMPTEXT} ${BATT}% #[bg=#000000] ${CASSTIME}#[fg=#30649f] ${TAU}"
+echo "#[bg=#000000]${MPCTEXT}${VIMTEXT}${NOTITEXT}${TODOTEXT} ${TEMPTEXT} ${CHARGING} ${BATT}% ${CASSTIME}${TAUTEXT}"

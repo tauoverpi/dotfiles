@@ -1,55 +1,56 @@
-set nocompatible
-set list
+filetype indent plugin on
+syntax sync minlines=256
+"set laststatus=2
+"set number
+"set relativenumber number
+"set showtabline=2
 set ai
-set number
 set autochdir
 set backspace=eol,start,indent
 set backupdir=~/.config/nvim/tmp/backup/
-set conceallevel=2
+set clipboard=unnamedplus
 set concealcursor=ni
-set directory=~/.config/nvim/tmp/swap
-set hlsearch!
-set sw=4
-set ts=4
+set conceallevel=2
 set cursorline
-set signcolumn=yes
+set directory=~/.config/nvim/tmp/swap
+set foldlevelstart=99
+set foldmethod=syntax
+set hlsearch!
 set ignorecase
 set incsearch
+set laststatus=0
 set lazyredraw
 set lbr
-set listchars=tab:\▏\ ,eol:¬,extends:❯
+set linebreak
+set list
+set listchars=tab:\▏\ ,eol:↵,extends:❯
 set magic
 set mat=1
 set mouse=a
+set nocompatible
 set nohlsearch
+set noruler
+set noshowmode
+set number
 set scrolloff=5
 set shiftwidth=2
 set showmatch
 set si
+set signcolumn=yes
 set smartcase
 set smarttab
+set sw=4
 set t_Co=256
 set tabstop=2
 set tags=tags;
+set termguicolors
 set textwidth=100
-set noshowmode
-set laststatus=0
-set noruler
+set ts=4
 set tw=500
 set undodir=~/.config/nvim/tmp/undo/
-set termguicolors
-"set number
-"set relativenumber number
 set undofile
 set whichwrap+=<,>,h,l
-"set showtabline=2
 set wrap
-set linebreak
-"set laststatus=2
-set foldlevelstart=99
-set foldmethod=syntax
-set clipboard=unnamedplus
-filetype indent plugin on
 
 function! CleanFile()
 	if (&ft == "text")
@@ -59,6 +60,14 @@ function! CleanFile()
 	:%s/\s\+$//e
 	:%s/\n\{3,}/\r\r/e
 	normal `Z
+endfunction
+
+function! ScribbleCheck()
+	AsyncRun scribble --dest-name output.txt --text ++arg --text % && java -jar $HOME/build/LT/LanguageTool-4.8-SNAPSHOT/languagetool-commandline.jar -c utf8 -d UPPERCASE_SENTENCE_START -l en-US output.txt
+endfunction
+
+function! Lt()
+	AsyncRun java -jar $HOME/build/LT/LanguageTool-4.8-SNAPSHOT/languagetool-commandline.jar -c utf8 -d UPPERCASE_SENTENCE_START -l en-US %
 endfunction
 
 nm <F10> :AsyncRun make <CR>
@@ -91,10 +100,10 @@ nno <silent> j gj
 nno <silent> 0 g0
 nno <silent> $ g$
 
-let g:syntastic_error_symbol = '✗'
-let g:syntastic_warning_symbol = '∆'
-let g:syntastic_style_warning_symbol = '≈'
-let g:syntastic_style_error_symbol = '✠'
+let g:syntastic_error_symbol = '⏺'
+let g:syntastic_warning_symbol = '⏺'
+let g:syntastic_style_warning_symbol = '⏺'
+let g:syntastic_style_error_symbol = '⏺'
 
 let g:deoplete#enable_at_startup = 1
 let g:slime_target = "tmux"
@@ -103,6 +112,11 @@ hi SyntasticErrorSign guibg=none ctermbg=none
 hi SyntasticWarningSign guibg=none ctermbg=none
 hi SyntasticStyleErrorSign guibg=none ctermbg=none
 hi SyntasticStyleWarningSign guibg=none ctermbg=none
+
+let g:syntastic_haskell_checkers = ['hlint']
+"let g:vim_annotations_offset = '/.liquid/'
+"let g:syntastic_mode_map = { 'mode': 'active' }
+"let g:syntastic_haskell_liquid_args = "-d"
 
 let color0  = "#110c0f"
 let color1  = "#30649F"
@@ -122,6 +136,13 @@ let color14 = "#E7C5B9"
 let color15 = "#d3d5db"
 
 function! SetTheme()
+	hi SyntasticError guifg=#ff3430
+	hi SyntasticErrorSign guifg=#ff3430
+	hi SyntasticWarning guifg=#ffff30
+	hi SyntasticWarningSign guifg=#ffff30
+	hi SyntasticStyleError guifg=#ff3430
+	hi SyntasticStyleWarning guifg=#ffff30
+
 	hi Normal guifg=#d3d5db gui=italic
 	hi Todo guifg=#30649F guibg=none gui=underline
 	hi Comment guifg=#221d1f
@@ -183,40 +204,48 @@ endfunction
 "autocmd CursorHold *.cs call OmniSharp#TypeLookupWithoutDocumentation()
 
 call plug#begin('~/.config/nvim/plugged')
-Plug 'junegunn/limelight.vim'
-Plug 'raichoo/haskell-vim'
-Plug 'idris-hackers/idris-vim'
-Plug 'ervandew/supertab'
-Plug 'godlygeek/tabular'
-Plug 'tpope/vim-surround'
-Plug 'scrooloose/nerdtree'
-Plug 'jpalardy/vim-slime'
-Plug 'vim-scripts/paredit.vim', { 'for': 'scheme' }
-Plug 'skywind3000/asyncrun.vim'
-Plug 'pangloss/vim-javascript'
-Plug 'tpope/vim-dispatch'
-Plug 'kien/ctrlp.vim'
-Plug 'vim-syntastic/syntastic'
+"Plug 'kien/ctrlp.vim'
+"Plug 'kien/rainbow_parentheses.vim'
+"Plug 'natebosch/vim-lsc'
 Plug 'w0rp/ale'
-Plug 'natebosch/vim-lsc'
-Plug 'vim-scripts/loremipsum'
+Plug 'ervandew/supertab'
+Plug 'vim-pandoc/vim-pandoc-syntax'
 Plug 'farmergreg/vim-lastplace'
-Plug 'luochen1990/rainbow'
+Plug 'floobits/floobits-neovim'
+Plug 'godlygeek/tabular'
+Plug 'idris-hackers/idris-vim', { 'for': 'idris' }
+Plug 'jpalardy/vim-slime'
+Plug 'junegunn/limelight.vim'
+Plug 'panagosg7/vim-annotations'
+Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+Plug 'raichoo/haskell-vim', { 'for': 'haskell' }
+Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/syntastic'
+Plug 'skywind3000/asyncrun.vim'
+Plug 'tpope/vim-dispatch'
+Plug 'tpope/vim-surround'
+Plug 'vim-scripts/loremipsum', { 'on': 'Loremipsum' }
+Plug 'vim-scripts/paredit.vim', { 'for': 'scheme' }
 call plug#end()
 
 " Stuff
-au BufNewFile,BufRead *.texi,*.idr,*.hs,*.scm,*.rkt,*.lhs,*.lidr,*.sats,*.ipkg,*.txt,*.m,*.purs,*.md set expandtab
+au BufNewFile,BufFilePre,BufRead *.md set filetype=none
+au BufWritePost *.md AsyncRun pandoc % -o /tmp/pandoc.pdf
+au BufNewFile,BufRead *.c copen
+au BufNewFile,BufRead *.cats set filetype=ats | source $HOME/.config/nvim/ats.vim
+au BufNewFile,BufRead *.dats set filetype=ats | source $HOME/.config/nvim/ats.vim
+au BufNewFile,BufRead *.lidr set filetype=idris | set filetype=lidris
 au BufNewFile,BufRead *.rkt hi error guibg=none
+au BufNewFile,BufRead *.sats set filetype=ats | source $HOME/.config/nvim/ats.vim
+au BufNewFile,BufRead *.scrbl set filetype=scribble
+au BufNewFile,BufRead *.texi,*.idr,*.hs,*.scm,*.rkt,*.lhs,*.lidr,*.sats,*.ipkg,*.txt,*.m,*.purs,*.md set expandtab
 au BufWrite * call CleanFile()
+au BufWrite *.hs AsyncRun liquid -q %
+au BufWritePost *.c AsyncRun make check
+au BufWritePost *.scrbl AsyncRun scribble --dest /tmp/scribble --pdf %
 au BufWritePost *.dats AsyncRun patsopt --typecheck -d %
 au BufWritePost *.sats AsyncRun patsopt --typecheck -s %
-au BufWritePost *.c AsyncRun make check
 au BufWritePost *.txt AsyncRun diction -s %
-au BufNewFile,BufRead *.lidr set filetype=idris | set filetype=lidris
-au BufNewFile,BufRead *.c copen
-au BufNewFile,BufRead *.dats set filetype=ats | source $HOME/.config/nvim/ats.vim
-au BufNewFile,BufRead *.sats set filetype=ats | source $HOME/.config/nvim/ats.vim
-au BufNewFile,BufRead *.cats set filetype=ats | source $HOME/.config/nvim/ats.vim
 au VimEnter * call SetTheme()
 au VimEnter,BufRead,BufNewFile,BufWrite * call UpdateStatus()
 au VimLeave * call ClearStatus()

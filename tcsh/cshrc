@@ -23,6 +23,7 @@ alias cafe 'mpc stop; mpc clear; mpc load cafe; mpc play'
 alias swing 'mpc stop; mpc clear; mpc load swing; mpc play'
 alias cyberia 'mpc stop; mpc clear; mpc load cyberia; mpc play'
 alias everything 'mpc stop; mpc clear; mpc load everything; mpc play'
+alias dotnet ~/build/dotnet/dotnet
 
 # These are normally set through /etc/login.conf.  You may override them here
 # if wanted.
@@ -47,11 +48,11 @@ endif
 
 if ($?prompt) then
 	# An interactive shell -- set some stuff up
-	set prompt = "%~ "
+	set prompt = "%{\033[38;2;48;160;106m%}%~%{\033[0m%} "
 	set promptchars = "%#"
 	set filec
-	set history = 1000
-	set savehist = (1000 merge)
+	set history = 10000
+	set savehist = (10000 merge)
 	set autolist = ambiguous
 	# Use history to aid expansion
 	set autoexpand
