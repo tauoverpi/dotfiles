@@ -5,7 +5,7 @@ XF86AudioMute
 	mixer vol 0:0
 
 XF86Audio{Prev,Next,Play,Stop}
-	mpc {prev,next,toggle,stop}
+	mpc {prev,next,toggle,stop} && tmux refresh-client -S
 
 super + shift + Return
 	cool-retro-term
@@ -43,6 +43,9 @@ super + shift + Menu
 super + k
 	krita
 
+super + s
+	slock
+
 super + p
 	dmenu_run
 
@@ -53,4 +56,4 @@ super + {_,shift +} space
 	bspc node -t {tiled, floating}
 
 super + v
-  mpv $(xclip -o -sel clip)
+	mpv $(xclip -o -sel clip)

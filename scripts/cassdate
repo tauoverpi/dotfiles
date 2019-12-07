@@ -1,45 +1,56 @@
-#!/bin/sh
-R="#[fg=#a04630]"
-Y="#[fg=#a09c30]"
-G="#[fg=#30a06a]"
-B="#[fg=#3064a0]"
-D="#[fg=#110c0f]"
+#!/bin/tcsh
+set R = "#[fg=#ff4630]"
+set Y = "#[fg=#ff9c30]"
+set G = "#[fg=#30ff6a]"
+set B = "#[fg=#3064ff]"
+set D = "#[fg=#110c0f]"
 
-TAU=`date +'%d:%m/%H:%M'`
-TAUTEXT="${B} ${TAU} "
-CASS=`TZ=Asia/Manila date +'%d:%m/%H:%M'`
-CHOUR=`TZ=Asia/Manila date +'%H'`
-CDAY=`TZ=Asia/Manila date +'%u'`
+set level = (" " ▁ ▂ ▃ ▄ ▅ ▆ ▇ █)
 
-CASSTIME=`[ $CHOUR -ge 8 ] && [ $CHOUR -le 23 ] && echo "${B} ${CASS} " || echo "${R} ${CASS} "`
+set mytime = `date +'%H:%M'`
+setenv TZ "Asia/Manila"
+set hertime = `date +'%H:%M'`
+set herhour = `date +'%H'`
 
-BATT=`apm -l`
-CHARGE=`apm -b`
-LOWBATT=`[ $BATT -le 30 ] && echo "${R}" || echo "${G}"`
-CHARGING=`[ $CHARGE = 3 ] && echo "${B}" || echo "${LOWBATT}"`
+set night = "$B"
+if ($herhour < 8) set night = "$R"
 
-TODO=`todo`
-TODOTEXT=`[ -z $TODO ] || echo "${G} ${TODO} "`
+set vimstatus = `head -n 1 ~/.vimstatus`
 
-NOTI=`cat ~/.notification`
-NOTITEXT=`[ -z $NOTI ] || echo "${Y} ${NOTI} "`
+set batt = `apm -l`
+set battstate = `apm -b`
 
-MPC=`mpc current -f '%artist% - %title%' | sed 's/(.*)//g' | sed 's/\[.*\]//g'`
-MPCTEXT="${B} ${MPC} "
+set temps = (`sysctl -n dev.cpu.0.temperature` \
+`sysctl -n dev.cpu.1.temperature` \
+`sysctl -n dev.cpu.2.temperature` \
+`sysctl -n dev.cpu.3.temperature`)
 
-VIM=`head -n 1 ~/.vimstatus`
-VIMTEXT=`[ -z $VIM ] || echo "${Y} ${VIM} "`
+set vol = `mixer vol | sed 's/.*:\([0-9]*\)$/\1/'`
 
-TEMP0=`sysctl -n dev.cpu.0.temperature`
-TEMP1=`sysctl -n dev.cpu.1.temperature`
-TEMP2=`sysctl -n dev.cpu.2.temperature`
-TEMP3=`sysctl -n dev.cpu.3.temperature`
-TEMP=` cat << EOF | sort -r | head -n 1 | sed 's/\.[0-9]*C//'
-$TEMP0
-$TEMP1
-$TEMP2
-$TEMP3
-EOF`
-TEMPTEXT=`[ $TEMP -ge 90 ] && echo "${R} ${TEMP}C " || echo "${G} ${TEMP}C "`
+set temp = 0
+foreach t ($temps)
+	set t = `echo $t | sed 's,\..C,,'`
+	if ($temp < $t) @ temp = $t
+end
 
-echo "#[bg=#000000]${MPCTEXT}${VIMTEXT}${NOTITEXT}${TODOTEXT} ${TEMPTEXT} ${CHARGING} ${BATT}% ${CASSTIME}${TAUTEXT}"
+set temperature = ""
+set volume = ""
+set battery = ""
+
+foreach i (1 2 3 4 5 6 7 8 9)
+	set n = 10
+	@ n *= $i
+	if ($temp > $n) set temperature = $level[$i]
+	if ($batt > $n) set battery = $level[$i]
+	if ($vol > $n) set volume = $level[$i]
+end
+
+set mpctext = `mpc current -f '%file%' | sed -e 's/\[.*\]//g' -e 's/(.*)//g' -e 's/\.[a-z0-9]*$//' -e 's,/.* - \(.*\)[ ]*$,/\1,'`
+set status = (\
+"$B" $mpctext \
+"$Y" $vimstatus \
+"$night" $hertime \
+"$B" $mytime \
+"▏$Y$temperature$B$volume$G$battery$B▕")
+
+echo "$status"

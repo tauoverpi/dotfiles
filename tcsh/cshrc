@@ -13,16 +13,12 @@ alias lf ls -FA
 alias ll ls -lAF
 alias s s -p duckduckgo -b lynx
 alias github s -p github -b lynx
-alias news s -p hackernews -b lynx
+alias arch s -p archwiki -b lynx
 alias scap 'scrot -o /tmp/cap.png && curl -F"file=@/tmp/cap.png" https://0x0.st | xclip -sel clip && xclip -sel clip -o'
 alias wcap 'scrot -s -o /tmp/cap.png && curl -F"file=@/tmp/cap.png" https://0x0.st | xclip -sel clip && xclip -sel clip -o'
 alias weather curl wttr.in
+alias parrot curl parrot.live
 alias song 'mpc current >> ~/.songs'
-alias play 'mpc stop; mpc play'
-alias cafe 'mpc stop; mpc clear; mpc load cafe; mpc play'
-alias swing 'mpc stop; mpc clear; mpc load swing; mpc play'
-alias cyberia 'mpc stop; mpc clear; mpc load cyberia; mpc play'
-alias everything 'mpc stop; mpc clear; mpc load everything; mpc play'
 alias dotnet ~/build/dotnet/dotnet
 
 # These are normally set through /etc/login.conf.  You may override them here
@@ -48,7 +44,8 @@ endif
 
 if ($?prompt) then
 	# An interactive shell -- set some stuff up
-	set prompt = "%{\033[38;2;48;160;106m%}%~%{\033[0m%} "
+	alias precmd 'history -S'
+	set prompt = "%{\033[1m\033[38;2;48;255;106m%}%~%{\033[0m%} "
 	set promptchars = "%#"
 	set filec
 	set history = 10000

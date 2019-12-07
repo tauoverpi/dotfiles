@@ -1,7 +1,4 @@
 #!/bin/sh
-bspc config normal_border_color "#000000"
-bspc config active_border_color "#000000"
-bspc config focused_border_color "#000000"
 bspc config border_width            2
 bspc config window_gap              10
 bspc config top_padding             25
@@ -23,3 +20,8 @@ bspc rule -a surf manage=on
 bspc rule -a icecat manage=on
 
 bspc monitor -d . . . . . . . . . .
+
+bspc config normal_border_color "#000000"
+bspc config active_border_color "#000000"
+bspc config focused_border_color "#000000"
+

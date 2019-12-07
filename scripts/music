@@ -1,0 +1,17 @@
+#!/bin/sh
+
+case $1 in
+	"p")
+		[ -z $2 ] && mpc play
+		[ -n $2 ] && mpc clear && mpc load $2 && mpc play
+		;;
+	"ls")
+		mpc playl | column
+		;;
+	"pl")
+		mpc ls | column
+		;;
+	*)
+		mpc "`echo $@ | sed -e 's/^[a-z0-9-]* //' `" || echo "u wot m8"
+		;;
+esac
