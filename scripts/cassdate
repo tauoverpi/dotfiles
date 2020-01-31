@@ -4,16 +4,22 @@ set Y = "#[fg=#ff9c30]"
 set G = "#[fg=#30ff6a]"
 set B = "#[fg=#3064ff]"
 set D = "#[fg=#110c0f]"
+set L = "#[fg=#334e4f]"
+set BD = "#[bg=#110c0f]"
 
 set level = (" " ▁ ▂ ▃ ▄ ▅ ▆ ▇ █)
+set theme = ("$R" "$Y" "$G" "$B")
+set day = `date +%j`
+@ day = 1 + ($day % 4)
+set T = "#[fg=#e36209]"
 
 set mytime = `date +'%H:%M'`
 setenv TZ "Asia/Manila"
 set hertime = `date +'%H:%M'`
 set herhour = `date +'%H'`
 
-set night = "$B"
-if ($herhour < 8) set night = "$R"
+set night = "$T"
+if ($herhour < 8) set night = "$D"
 
 set vimstatus = `head -n 1 ~/.vimstatus`
 
@@ -40,17 +46,16 @@ set battery = ""
 foreach i (1 2 3 4 5 6 7 8 9)
 	set n = 10
 	@ n *= $i
-	if ($temp > $n) set temperature = $level[$i]
-	if ($batt > $n) set battery = $level[$i]
-	if ($vol > $n) set volume = $level[$i]
+	if ($temp >= $n) set temperature = $level[$i]
+	if ($batt >= $n) set battery = $level[$i]
+	if ($vol >= $n) set volume = $level[$i]
 end
 
-set mpctext = `mpc current -f '%file%' | sed -e 's/\[.*\]//g' -e 's/(.*)//g' -e 's/\.[a-z0-9]*$//' -e 's,/.* - \(.*\)[ ]*$,/\1,'`
+set mpctext = `mpc current -f '%file%' | sed -e 's/\[.*\]//g' -e 's/(.*)//g' -e 's/\.[a-z0-9]*$//' -e 's,/.* - [ ]*\(.*\)[ ]*$,/\1,'`
 set status = (\
-"$B" $mpctext \
-"$Y" $vimstatus \
-"$night" $hertime \
-"$B" $mytime \
-"▏$Y$temperature$B$volume$G$battery$B▕")
+"$T" $mpctext "${L}$vimstatus" \
+"$night$hertime" \
+"$T$mytime" \
+"$BD$temperature$volume$battery")
 
 echo "$status"

@@ -1,0 +1,85 @@
+snippet ===
+    `repeat('=', strlen(getline(line('.') - 1)))`
+
+    ${0}
+
+snippet ---
+    `repeat('-', strlen(getline(line('.') - 1)))`
+
+    ${0}
+
+snippet ```
+    \`\`\`{.${1} file=${2}}
+    ${0}
+    \`\`\`
+
+snippet ``
+    \`\`\`{.${1} #${2}}
+    ${0}
+    \`\`\`
+
+snippet art
+    ---
+    title: ${1}
+    ...
+
+    ${0}
+
+snippet comm
+    <details>
+        <summary>comments</summary>
+        <p class="guest">${1}
+        </p>
+        <p class="me">${2}
+        </p>
+    </details>
+    ${0}
+
+snippet note
+    <details>
+        <summary>note</summary>
+        <p class="notice">${1}
+        </p>
+    </details>
+    ${0}
+
+
+snippet guest
+    <p class="guest">${1}
+    </p>
+    ${0}
+
+snippet me
+    <p class="me">${1}
+    </p>
+    ${0}
+
+snippet notice
+    <p class="notice">NOTICE: ${1}
+    </p>
+    ${0}
+
+snippet warn
+    <p class="warning">CAUTION: ${1}
+    </p>
+    ${0}
+
+snippet psc
+    class ${1} where
+        ${2} :: ${3}
+        ${0}
+
+snippet psi
+    instance ${1} where
+        ${2} :: ${3}
+        ${0}
+
+snippet fni
+    ${1} = ${2}
+    ${0}
+
+snippet fn
+    ${1} :: ${2}
+    ${3} = ${4}
+
+    ${0}

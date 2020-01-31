@@ -4,8 +4,12 @@ set Y = "#[fg=#ff9c30]"
 set G = "#[fg=#30ff6a]"
 set B = "#[fg=#3064ff]"
 set D = "#[fg=#110c0f]"
+set L = "#[fg=#334e4f]"
+set N = "#[fg=#000000]"
 
-set panes = ("" 一 "" 二 "" 三 "" 四 "" 五 "" 六 "" 七 "" 八 "" 九 "" 十 "")
+set T = "#[fg=#e36209]"
+
+set panes = ("" _ "" _ "" _ "" _ "" _ "" _ "" _ "" _ "" _ "" _ "")
 
 set i = $1
 set j = $1
@@ -13,8 +17,8 @@ set k = $2
 @ i = $i * 2 - 1
 @ j = $i + 2
 @ k = $k * 2 + 1
-set panes[$i] = "$G"
-set panes[$j] = "$B"
-set panes[$k] = "$D"
+set panes[$i] = "$T"
+set panes[$j] = "$D"
+set panes[$k] = "$N"
 
-echo "$panes"
+echo "$D$panes"

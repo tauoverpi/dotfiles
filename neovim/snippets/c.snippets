@@ -1,0 +1,100 @@
+snippet --
+
+	/* ${1}
+	----------------------------------------------------------------------------- */
+
+
+	${0}
+
+snippet ex
+	/* EXAMPLE - ${1}
+
+	${0}
+
+	*/
+
+snippet for
+	for (${1};${2};${3}) {
+		${0}
+	}
+
+snippet mit
+	/*
+	Copyright (c) `strftime('%Y')` Simon A. Nielsen Knights <tauoverpi@yandex.com>
+
+	Permission is hereby granted, free of charge, to any person obtaining a copy
+	of this software and associated documentation files (the "Software"), to deal
+	in the Software without restriction, including without limitation the rights
+	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	copies of the Software, and to permit persons to whom the Software is
+	furnished to do so, subject to the following conditions:
+
+	The above copyright notice and this permission notice shall be included in all
+	copies or substantial portions of the Software.
+
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+	SOFTWARE.
+	----------------------------------------------------------------------------- */
+
+	${0}
+
+snippet fn
+	${1} ${2}(${3})
+	{
+		${0}
+	}
+
+snippet std
+	#include <stdio.h>
+	#include <stdlib.h>
+	#include <stdbool.h>
+	#include <stdint.h>
+	#include <unistd.h>
+
+snippet str
+	struct ${1} {
+		${2}
+	};
+
+	${0}
+
+snippet tds
+	typedef struct ${1} {
+		${2}
+	} ${3};
+
+	${0}
+
+snippet fnv32
+	uint32_t hash = 16777619;
+	const uint32_t prime = 2166136261;
+	for (size_t i = 0; i < ${1:len}; i++) {
+		hash = (${2:data}[i] ^ hash) * prime;
+	}
+
+	${0}
+
+snippet fnv64
+	uint64_t hash = 1099511628211;
+	const uint64_t prime = 14695981039346656037;
+	for (size_t i = 0; i < ${1:len}; i++) {
+		hash = (${2:data}[i] ^ hash) * prime;
+	}
+
+	${0}
+
+snippet swi
+	switch (${1}) {
+		${0}
+		default: break;
+	}
+
+snippet elif
+	else if (${1}) {
+		${0}
+	}

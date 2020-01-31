@@ -11,15 +11,17 @@ alias j  jobs -l
 alias la ls -aF
 alias lf ls -FA
 alias ll ls -lAF
-alias s s -p duckduckgo -b lynx
-alias github s -p github -b lynx
-alias arch s -p archwiki -b lynx
+alias s s -p duckduckgo -b links
+alias github s -p github -b links
+alias arch s -p archwiki -b links
 alias scap 'scrot -o /tmp/cap.png && curl -F"file=@/tmp/cap.png" https://0x0.st | xclip -sel clip && xclip -sel clip -o'
 alias wcap 'scrot -s -o /tmp/cap.png && curl -F"file=@/tmp/cap.png" https://0x0.st | xclip -sel clip && xclip -sel clip -o'
-alias weather curl wttr.in
+alias wttr "curl -s wttr.in | sed '$ d'"
+alias moon "curl -s wttr.in/Moon | sed '$ d'"
 alias parrot curl parrot.live
 alias song 'mpc current >> ~/.songs'
 alias dotnet ~/build/dotnet/dotnet
+alias rdp 'ssh -L 3389:localhost:3389 tunnel@tay -N'
 
 # These are normally set through /etc/login.conf.  You may override them here
 # if wanted.
@@ -32,10 +34,12 @@ setenv SXHKD_SHELL sh # this speeds things up considerably
 setenv LC_ALL en_US.UTF-8
 setenv EDITOR nvim
 setenv PAGER less
+setenv NPM_PACKAGES "$HOME/.npm-packages"
 setenv SURF_USERAGENT "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US) AppleWebKit/525.19 (KHTML, like Gecko) Chrome/1.0.154.53 Safari/525.19"
-setenv PATH $HOME/.cabal/bin:$HOME/.local/bin:$HOME/.cargo/bin:$PATH
+setenv PATH $HOME/.cabal/bin:$HOME/.local/bin:$HOME/.cargo/bin:${NPM_PACKAGES}/bin:/usr/local/bigmc/bin/:$PATH
 setenv PATSHOME /usr/home/tau/build/ATS2-Postiats-gmp-0.3.13
 setenv MPD_HOST ${HOME}/.mpd/socket
+setenv C_INCLUDE_PATH /usr/local/include/fuse:/usr/include
 
 if (! $?TMUX && $?DISPLAY) then
 	setenv TERM xterm-256color
@@ -45,7 +49,7 @@ endif
 if ($?prompt) then
 	# An interactive shell -- set some stuff up
 	alias precmd 'history -S'
-	set prompt = "%{\033[1m\033[38;2;48;255;106m%}%~%{\033[0m%} "
+	set prompt = "%{\033[1m\033[38;2;20;30;31m%}%~%{\033[0m%} "
 	set promptchars = "%#"
 	set filec
 	set history = 10000
@@ -63,4 +67,3 @@ if ($?prompt) then
 endif
 
 # opam configuration
-source /usr/home/tau/.opam/opam-init/init.csh >& /dev/null || true
