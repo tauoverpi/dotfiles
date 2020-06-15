@@ -3,7 +3,28 @@
 
 # Export 'SHELL' to child processes.  Programs such as 'screen'
 # honor it and otherwise use /bin/sh.
+
+function fuck () {
+    TF_PYTHONIOENCODING=$PYTHONIOENCODING;
+    export TF_SHELL=bash;
+    export TF_ALIAS=fuck;
+    export TF_SHELL_ALIASES=$(alias);
+    export TF_HISTORY=$(fc -ln -10);
+    export PYTHONIOENCODING=utf-8;
+    TF_CMD=$(
+        thefuck THEFUCK_ARGUMENT_PLACEHOLDER "$@"
+    ) && eval "$TF_CMD";
+    unset TF_HISTORY;
+    export PYTHONIOENCODING=$TF_PYTHONIOENCODING;
+    history -s $TF_CMD;
+}
+
 export SHELL
+export PATH=$HOME/bin:$HOME/.config/guix/current/bin:$PATH
+export EDITOR=nvim
+export GUIX_PACKAGE_PATH=$HOME/pkg
+export PROMPT_COMMAND='history -a'
+export MPD_HOST=$HOME/.mpd/connection
 
 if [[ $- != *i* ]]
 then
@@ -16,46 +37,74 @@ then
     return
 fi
 
+if [ -z $TMUX ]
+then
+  tmux
+fi
+
 # Source the system-wide file.
-# eval $(thefuck --alias)
 source /etc/bashrc
 
 # Adjust the prompt depending on whether we're in 'guix environment'.
+CLEAR=$(echo -e "\x1b[0m")
+RED=$(echo -e "\x1b[31m")
+GREEN=$(echo -e "\x1b[32m")
+YELLOW=$(echo -e "\x1b[33m")
+BLUE=$(echo -e "\x1b[34m")
 if [ -n "$GUIX_ENVIRONMENT" ]
 then
-    PS1='\u@\h \w [env] λ '
+    PS1="\u@\h \w [env] λ "
 else
-    PS1='\u@\h \w λ '
+  PS1="\w λ "
 fi
-alias ls='ls -p -F --color=none'
+alias ls='ls -p --color=auto'
 alias ll='ls -l'
-alias grep='grep --color=none'
+alias grep='grep --color=auto'
+alias watch='watch -c'
+alias crep='grep --color=always'
 alias vga='xrandr --output VGA-1 --auto'
+alias recon='sudo -E guix system reconfigure $HOME/config/config.scm -c 1 -M 1'
+alias config="$EDITOR $HOME/config/config.scm"
+alias piign='nvim ~/data/piigab/notes'
+alias note='nvim ~/data/note'
+alias cnote='nvim ~/data/cass'
+alias res='nvim ~/git/blog/resources'
+alias game='nvim ~/git/blog/challenges'
+alias book='nvim ~/git/cas9/game.md'
+alias seductive='sed'
+alias awkward='awk'
+alias wttr='curl -s wttr.in/gothenburg | head -n -1'
+alias moon='curl -s wttr.in/moon | head -n -1'
+alias mbus='wine64 ~/.wine/drive_c/Program\ Files\ \(x86\)/PiiGAB/MBWizard/MBWizard.exe'
+alias lt='java -jar ~/data/build/languagetool/LanguageTool-4.8/languagetool-commandline.jar'
+alias less='less -R'
+alias pi900S='cd ~/git/piigab/Pi-900S/flask/'
+alias foep='nvim ~/git/elara/draft.md'
+alias todo='nvim ~/.todo'
 
-# still need to rewrite this...
-export MPD_HOST=$HOME/.mpd/socket
-export GUIX_PACKAGE_PATH=$HOME/projects/packages
-export IDRIS_CC=gcc
-export EDITOR=nvim
-export PATH=$HOME/.local/bin:$PATH
-export SSL_CERT_DIR=/run/current-system/profile/etc/ssl/certs
-export CURL_CA_BUNDLE=$SSL_CERT_DIR/ca-certificates.crt
-export _JAVA_AWT_WM_NONREPARENTING=1
-export GUILE_AUTO_COMPILE=0
-export CC=gcc
+export CGO_ENABLE=0
 
-# MAIL
-export EMAIL='tauoverpi@yandex.com'
-# export MAIL='
-export MAILDIR="${HOME}/.mail"
-export RANDFILE="${HOME}/.cache/neomutt/rnd"
-export VISUAL='nvim'
-
-alias reconfigure='sudo -E guix system reconfigure $HOME/projects/sr.ht/dotfiles/guix/config.scm'
-
-toWav ()
+lmddgtfy()
 {
-	sox -r 8000 -e unsigned -b 8 -c 1 $1 $2
+  X="https://lmddgtfy.net/?q=$(echo $@ | sed 's/ /%20/g')"
+  echo $X | xclip -sel clip
+  echo $X
+}
+
+s()
+{
+  links "https://duckduckgo.com/lite/search?q=$(echo $@ | sed 's/ /%20/g')"
+}
+
+suspend()
+{
+  echo -n mem | sudo tee /sys/power/state  # suspend to ram
+}
+
+branch()
+{
+  X=$(git branch 2>/dev/null)
+  echo -e "${GREEN}$(echo "$X" | grep '*' | tr -d ' ' | tr -d '*')${CLEAR} "
 }
 
 share ()
@@ -96,7 +145,7 @@ wcap ()
 {
 	target="/tmp/tmp.png"
 	[ -z $1 ] || target=$1
-	scrot -s $target
+	scrot -s -o $target
 	share $target
 }
 
@@ -104,51 +153,8 @@ scap ()
 {
 	target="/tmp/tmp.png"
 	[ -z $1 ] || target=$1
-	scrot $target
+	scrot -o $target
 	share $target
-}
-
-search ()
-{
-	links "https://searx.me/?preferences=eJx1VUuP1DAM_jX0Ug3iceDUAwIhkJAWMQvXyE08rWkalzid2fLrcWb7WnY4TEdN7O_hxG5EGX0Sw8EEvJgEdfUJvGDhmExEYX_GWImlQzvWL9Ol8BCaERqsMBx-HAvPFnx-KRwJ1B6dGfzYUJDqJ_UHTx2allOHk7x48-FuwJBRldJ4Ct3KW0e-CMbMn-O-hBMFSmjERvZ-yXxvLYqYj3dfFOQSNaCgXrWYIfLDNAuHMbHlfvCYsCoETigI0bbVqyK12GPFYiEWGJ6qPaI_GeXl2EMiDlnGfQTbqaof378qYc9aCl39fH__7bgI0PfjFT47sZCw4TgZQY82bSXBoBwoVUe2A3VgTuQxM5wiYil8SheIWDqKmpYBDCXdPTMkY4QtgS97dAS6SAGMOZNDzgARnaPnQWOQwYO0CpQLlCMb5sZjqctTCcOwE_FxdFpc02DACLnYjpo6bfsNNWoDJO1jFmI9vasRF5nclhMmgB35anwVvpfTj0LWmOufbllrD-l8w-TG3iB2iXqUuVKPdAvArH_NB9sIj_8j5zPhXtnrh51wQXQD6h1YwXv-peR7MQv8msR6WSMOvKvxhvPM1ZqG2gS5hhvyCSLzWuMW6gj5MZvO147OWJLcUrPorSnVo17jNGdN0GbMHUnUTiSwz-7KDSXbAqap56BN_CQscTdxYmm5g7BpeDye1fkpQg-e6oizpn7qtb3iVKYIQby2kbtlaSlmTgWNzhHy1L1Tq_nXcPno5uZZPr2ly9s_4le583VazPwTtp3wnwD9XotcSMTqYNtrsBBiKSmONo0xy9PZisHiFSGfqGWHZX7MtdmhbNCv375997C_0JQ81EtGgpiGPBf3hXFN6fA6VvN022-tzXl1uE7GZWhNEBw-3C7yfvX3BcLWpEWPqWVXfbs73hfzYNQ-q5bt6xQ-SJr06-G5oez4_BfilHiF&q=$(echo $@ | sed 's/ /%20/g')"
-}
-alias s=search
-
-hibernate()
-{
-	sudo su -c 'echo mem >> /sys/power/state'
-}
-
-build ()
-{
-  GUIX_PACKAGE_PATH=$HOME/projects/packages guix build $@
-}
-
-b4 ()
-{
-	echo -e "#include <stdio.h>\nint main(void) { for(int t = 0;; t++) { int x = $@; putchar(x); } return 0; }" > /tmp/bb.c
-        gcc /tmp/bb.c -o /tmp/bb
-        /tmp/bb | aplay -
-}
-
-undecorate()
-{
-	 xprop -f _MOTIF_WM_HINTS 32c -set _MOTIF_WM_HINTS "0x2, 0x0, 0x0, 0x0, 0x0"
-}
-
-machinecode()
-{
-	pushd /tmp
-	while read l
-	do
-		echo -e "format $1 executable $2\n$l" > c4.asm
-		fasm c4.asm
-		echo
-		hexdump -C -s 120 c4
-		echo
-		echo -n "> "
-	done
-	popd
 }
 
 song()
@@ -163,89 +169,157 @@ current()
 
 wh()
 {
-	curl -L "https://wallhaven.cc/api/v1/search?$1" | sed 's,\\,,g' | egrep -o "https://w.wallhaven.cc/full/[a-z0-9]+/wallhaven-[a-z0-9]+.jpg"
+	curl -L "https://wallhaven.cc/api/v1/search?q=$1" | sed 's,\\,,g' | egrep -o "https://w.wallhaven.cc/full/[a-z0-9]+/wallhaven-[a-z0-9]+.jpg"
 }
 
-cprint()
+radio()
 {
-	cat << EOF > /tmp/cprint.c
-#include <stdio.h>
-$1
-int main(void) {
-	printf("%x\n", $2);
-	return 0;
-}
-EOF
-	clang /tmp/cprint.c -o /tmp/cprint
-	/tmp/cprint
-}
-
-radio() {
-	case $1 in
-		"cafe")
-			mpc clear
-			mpc add http://lainon.life:8000/cafe.ogg
-			;;
-		"cyberia")
-			mpc clear
-			mpc add http://lainon.life:8000/cyberia.ogg
-			;;
-		"everything")
-			mpc clear
-			mpc add http://lainon.life:8000/everything.ogg
-			;;
-		*)
-			;;
-	esac
-	mpc stop; mpc play
+    case $1 in
+        "cyberia")
+            mpv "http://lainon.life:8000/cyberia.ogg"
+            ;;
+        "cafe")
+            mpv "http://lainon.life:8000/cafe.ogg"
+            ;;
+        "swing")
+            mpv "http://lainon.life:8000/swing.ogg"
+            ;;
+        "everything")
+            mpv "http://lainon.life:8000/everything.ogg"
+            ;;
+        *)
+            echo "idk"
+            ;;
+    esac
 }
 
-recon()
-{
-	GUIX_PACKAGE_PATH=$HOME/projects/packages sudo -E guix system reconfigure $HOME/projects/dotfiles/guix/config.scm --verbosity=3 $@
+mu() {
+  local v=() t=$(stty -g)
+  stty -echo
+  echo -en "\E[6n"
+  IFS='[;' read -rd R -a v
+  stty $t
+  LEN=(${v[@]:1})
+  LEN=$(($LINES - $LEN))
+  if [ $LEN -lt 20 ]; then
+    LEN=20
+  fi
+  case $1 in
+    "l")
+      X=$(mpc lspl | fzy -l $LEN)
+      [ -n "$X" ] && mpc clear && mpc load "$X" && mpc play
+      mu s
+      ;;
+    "s")
+      X=$(mpc playl | nl -s "| " | fzy -l $LEN | sed 's,[ \t]*\([0-9]*\)|.*,\1,')
+      [ -n "$X" ] && mpc play $X
+      ;;
+    "p")
+      mpc toggle
+      ;;
+    "h")
+      mpc stop
+      ;;
+    *)
+      mpc $@
+      ;;
+  esac
 }
 
-iwlwifi()
-{
-	sudo modprobe -r iwldvm
-	sudo modprobe iwlwifi
+### WORK
+
+pi900() {
+  case "$2" in
+    "httpd")
+      ssh "root@192.168.10.$1" -C "/etc/init.d/S50lighttpd $3"
+      ;;
+    "send")
+      scp "$3" "root@192.168.10.$1:/var/www1/$4"
+      ;;
+    "ssh")
+      ssh "root@192.168.10.$1"
+      ;;
+    "mount")
+      sshfs "root@192.168.10.$1:/var/www1" "$3"
+      ;;
+    "flask")
+      ssh "root@192.168.10.$1" -C "cd /var/www1 && FLASK_ENV=development python3 main.py"
+      ;;
+    "install")
+      scp "$HOME/.ssh/id_rsa.pub" "root@192.168.10.$1:/tmp/"
+      ssh "root@192.168.10.$1" 'cat /tmp/id_rsa.pub >> ~/.ssh/authorized_keys'
+      ;;
+      *)
+      echo "wat"
+      ;;
+  esac
 }
 
-crf()
-{
-	foo=(https://chalmersrobotics.se/status/api/image/crf_webcam_outer \
-		https://chalmersrobotics.se/status/api/image/crf_webcam_inner \
-		https://chalmersrobotics.se/status/api/image/crf_webcam_platform)
-	echo ${foo[*]} | xargs mpv
+wifi() {
+  case $1 in
+    "home")
+      sudo iwconfig wlp3s0 essid "B-LINK_938196"
+      sudo dhclient wlp3s0
+      ;;
+    *)
+      echo "idk"
+      ;;
+  esac
 }
 
-lexivga()
-{
-	case $1 in
-		"bright")
-			xrandr --output VGA-1 --brightness $2
-			;;
-		"off")
-			xrandr --output VGA-1 --off
-			;;
-		*)
-			xrandr --output VGA-1 --mode 1920x1080 --left-of LVDS-1
-			;;
-	esac
-}
-
-repeatedly()
-{
-    while true
+_pigenmap() {
+  case $1 in
+    "files")
+      DIRS=$(find | grep -v '__pycache__' | grep -v 'unused')
+      ;;
+    *)
+      DIRS=$(find -type d | grep -v '__pycache__' | grep -v 'unused')
+      ;;
+  esac
+  C=0x0
+  for l in $DIRS
+  do
+    LAST=""
+    NEST=0
+    for d in $(echo $l | tr '/' '\n')
     do
-        if [[ $(stat -c "%Y" $3) < $(stat -c "%Y" $4) ]]
-        then
-            echo -e "\x1b[2J\x1b[0;0H"
-            $2
-        fi
-        sleep $1
+      if [ -z $LAST ]
+      then
+        echo "\"$d$NEST\"[label=\"$(pwd | sed 's:.*/\([a-z0-9A-Z_]*\):\1:')\"];"
+      else
+        COLOR=$(printf "#%x%x%x%x%x%x" $C $C $C $C $C $C)
+        C=$(((C + 2) % 12))
+        echo "\"$d$NEST$LAST\"[label=\"$d\"];"
+        echo "\"$LAST\" -- \"$d$NEST$LAST\"[color=\"$COLOR\"];"
+      fi
+      LAST="$d$NEST$LAST"
+      NEST=$((NEST + 1))
     done
+  done
 }
 
-fortune
-echo
+pigenmap() {
+  echo "graph G {"
+  echo "overlap = false;"
+  echo "rankdir=LR;"
+  echo "splines=ortho;"
+  echo "node[shape=none];"
+  LAST=""
+  _pigenmap $1 | sort | while read -r l; do \
+    x=$(echo "$l" | sed "s,\[color=.*,,"); \
+    [ "$x" != "$LAST" ] && echo "$l"; \
+    LAST="$x"; \
+  done
+  echo "}"
+}
+
+crf() {
+  mpv https://chalmersrobotics.se/status/api/image/crf_webcam_inner \
+      https://chalmersrobotics.se/status/api/image/crf_webcam_outer \
+      https://chalmersrobotics.se/status/api/image/crf_webcam_platform \
+      https://chalmersrobotics.se/status/api/image/crf_webcam_prusa_mmu \
+      https://chalmersrobotics.se/status/api/image/crf_webcam_prusa_red \
+      https://chalmersrobotics.se/status/api/image/crf_webcam_prusa_gray
+}
+
+alias oai="java -jar $HOME/data/build/openapi-generator-cli-4.3.1.jar"
