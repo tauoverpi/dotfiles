@@ -11,6 +11,55 @@ snippet --
 
 	${0}
 
+snippet guix
+	;;; GNU Guix --- Functional package management for GNU
+	;;; Copyright © 2020 Simon A. Nielsen Knights <tauoverpiu@yandex.com>
+	;;;
+	;;; This file is part of GNU Guix.
+	;;;
+	;;; GNU Guix is free software; you can redistribute it and/or modify it
+	;;; under the terms of the GNU General Public License as published by
+	;;; the Free Software Foundation; either version 3 of the License, or (at
+	;;; your option) any later version.
+	;;;
+	;;; GNU Guix is distributed in the hope that it will be useful, but
+	;;; WITHOUT ANY WARRANTY; without even the implied warranty of
+	;;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	;;; GNU General Public License for more details.
+	;;;
+	;;; You should have received a copy of the GNU General Public License
+	;;; along with GNU Guix.  If not, see <http://www.gnu.org/licenses/>.
+
+snippet copy
+	;;; Copyright © 2020 Simon A. Nielsen Knights <tauoverpiu@yandex.com>
+
+snippet pkgh
+	(define-module (tau packages ${1})
+	  #:use-module (guix packages)
+	  #:use-module (guix download)
+	  #:use-module ((guix licenses) #:prefix license:)
+	${2})
+
+	${0}
+
+snippet pkg
+	(define-public ${1:name}
+	  (package
+	    (name ${2})
+	    (version ${3})
+	    (source (origin
+	              (method ${4})
+	              (uri (string-append ${6}))
+	              (sha256
+	                (base32
+	                  "${7}"))))
+	    (build-system ${8})
+	    (home-page "${9}")
+	    (synopsis "${10}")
+	    (description "${11})
+	    (license license:${12})))
+
+	${0}
 
 snippet mit
 

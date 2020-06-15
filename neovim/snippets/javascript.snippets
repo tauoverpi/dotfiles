@@ -3,6 +3,52 @@ snippet --
 	/* ${1}
 	----------------------------------------------------------------------------- */
 
+snippet act
+	const ${1} = ${2} => {
+        ${3}
+		const wrapper = ${4}((runtime, self, m) => {
+			switch (m.type) {
+				case Protocol.Initialize:
+					${6:console.log("here");}
+					return;
+				case Protocol.Terminate:
+					${5:console.log("terminating");}
+					return;
+			}
+		});
+		return wrapper;
+	}
+
+snippet elem
+	const ${1} = (parent${2:, item}) => {
+        ${3}
+		const wrapper = element(parent, "${4:}", (runtime, self, parent, m) => {
+			switch (m.type) {
+				case Protocol.Initialize:
+					${6:console.log("here");}
+					return;
+				case Protocol.Terminate:
+					${5:console.log("terminating");}
+					return;
+			}
+		}));
+		return wrapper;
+	}
+
+snippet diva
+	const ${1} = (parent${2:, item}) => {
+		return wrapper = element(parent, (runtime, self, parent, m) => {
+			switch (m.type) {
+				case Protocol.Initialize:
+					console.log("here");
+					return;
+				case Protocol.Terminate:
+					console.log("terminating");
+					return;
+			}
+		}));
+		return wrapper;
+	}
 
 snippet mit
 	/*
