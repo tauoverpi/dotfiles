@@ -22,7 +22,7 @@ function fuck () {
 export SHELL
 export PATH=$HOME/bin:$HOME/.config/guix/current/bin:$PATH
 export EDITOR=nvim
-export GUIX_PACKAGE_PATH=$HOME/pkg
+export GUIX_PACKAGE_PATH=$HOME/git/github/packages
 export PROMPT_COMMAND='history -a'
 export MPD_HOST=$HOME/.mpd/connection
 
@@ -63,8 +63,8 @@ alias grep='grep --color=auto'
 alias watch='watch -c'
 alias crep='grep --color=always'
 alias vga='xrandr --output VGA-1 --auto'
-alias recon='sudo -E guix system reconfigure $HOME/config/config.scm -c 1 -M 1'
-alias config="$EDITOR $HOME/config/config.scm"
+alias recon='sudo -E guix system reconfigure $HOME/dotfiles/latitude.scm -c 1 -M 1'
+alias config="$EDITOR $HOME/dotfiles/latitude.scm"
 alias piign='nvim ~/data/piigab/notes'
 alias note='nvim ~/data/note'
 alias cnote='nvim ~/data/cass'
