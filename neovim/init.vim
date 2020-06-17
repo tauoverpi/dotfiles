@@ -1,42 +1,15 @@
 filetype indent plugin on
 syntax on
-let g:gitgutter_max_signs = 5000
-call plug#begin('~/.config/nvim/plugged')
-Plug 'elmcast/elm-vim', { 'for': 'elm' }
-Plug 'airblade/vim-gitgutter'
-Plug 'ervandew/supertab'
-Plug 'farmergreg/vim-lastplace'
-Plug 'fatih/vim-go', { 'for': 'go' }
-Plug 'flowtype/vim-flow', {'for': 'javascript'}
-Plug 'godlygeek/tabular'
-Plug 'junegunn/limelight.vim', { 'on': 'Limelight' }
-Plug 'luochen1990/rainbow'
-Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
-Plug 'scrooloose/nerdtree'
-Plug 'scrooloose/syntastic'
-Plug 'shougo/neosnippet.vim'
-Plug 'frasercrmck/formative.vim'
-Plug 'skywind3000/asyncrun.vim'
-Plug 'tpope/vim-fugitive'
-Plug 'vim-pandoc/vim-pandoc-syntax'
-Plug 'derekelkins/agda-vim', { 'for': 'agda' }
-Plug 'zig-lang/zig.vim', { 'for': ['zig', 'pandoc.markdown'] }
-Plug 'zah/nim.vim'
-Plug 'jakwings/vim-pony'
-Plug 'killerswan/pony-currycomb.vim'
-call plug#end()
 
 set cursorline
 set autochdir
 set incsearch
 set backspace=eol,start,indent
-set backupdir=~/.config/nvim/tmp/backup/
 set clipboard=unnamedplus
 set concealcursor=ni
 set conceallevel=0
-set directory=~/.config/nvim/tmp/swap
 set expandtab
-set fillchars=vert:\.
+set fillchars=vert:\▕
 set foldlevelstart=99
 set foldmethod=syntax
 set hlsearch!
@@ -112,65 +85,65 @@ endfunction
 let g:light = 1
 function! ToggleTheme()
     hi  Boolean         guifg=#458588
-    hi  Character       guifg=#b7b083 guibg=#d9d0a5 gui=italic
-    hi  ColorColumn     guifg=#000000
+    hi  Character       guifg=#666666 guibg=#333333 gui=italic
+    hi  ColorColumn     guifg=#ffffff
     hi  Comment         guifg=#a89984 gui=italic
-    hi  Conceal         guifg=#000000
+    hi  Conceal         guifg=#ffffff
     hi  Conditional     guifg=#665c54
-    hi  Constant        guifg=#000000
+    hi  Constant        guifg=#ffffff
     "hi  Cursor          guibg=#ffffff
-    hi  CursorColumn    guifg=#000000
-    hi  CursorLine      guifg=none    guibg=#eae0b6
-    hi  CursorLineNr    guifg=#000000
-    hi  Debug           guifg=#000000
-    hi  Define          guifg=#000000
-    hi  Delimiter       guifg=#000000 gui=bold
-    hi  DiffAdd         guifg=#000000
-    hi  DiffChange      guifg=#000000
-    hi  DiffDelete      guifg=#000000
-    hi  DiffText        guifg=#000000
-    hi  Directory       guifg=#000000
-    hi  EndOfBuffer     guifg=#000000
-    hi  ErrorMsg        guifg=#000000
+    hi  CursorColumn    guifg=#ffffff
+    hi  CursorLine      guifg=none    guibg=#050505
+    hi  CursorLineNr    guifg=#ffffff
+    hi  Debug           guifg=#ffffff
+    hi  Define          guifg=#ffffff
+    hi  Delimiter       guifg=#ffffff gui=bold
+    hi  DiffAdd         guifg=#ffffff
+    hi  DiffChange      guifg=#ffffff
+    hi  DiffDelete      guifg=#ffffff
+    hi  DiffText        guifg=#ffffff
+    hi  Directory       guifg=#ffffff
+    hi  EndOfBuffer     guifg=#ffffff
+    hi  ErrorMsg        guifg=#ffffff
     hi  Exception       guifg=#9d0006
     hi  Float           guifg=#458588 gui=bold
     hi  Number          guifg=#458588 gui=bold
-    hi  FoldColumn      guifg=#000000
-    hi  Folded          guifg=#000000
+    hi  FoldColumn      guifg=#ffffff
+    hi  Folded          guifg=#ffffff
     hi  Function        guifg=#98971a
     hi  Identifier      guifg=#98971a
-    hi  Ignore          guifg=#000000
-    hi  IncSearch       guifg=#000000
+    hi  Ignore          guifg=#ffffff
+    hi  IncSearch       guifg=#ffffff
     hi  Include         guifg=#98971a
     hi  Keyword         guifg=#d65d0e
     hi  Label           guifg=#cc241d
-    hi  LineNr          guifg=#000000
+    hi  LineNr          guifg=#ffffff
     hi  Macro           guifg=#cc241d
-    hi  MatchParen      guifg=#000000
-    hi  ModeMsg         guifg=#000000
-    hi  MoreMsg         guifg=#000000
-    hi  MsgArea         guifg=#000000
-    hi  MsgSeparator    guifg=#000000
-    hi  NonText         guifg=#000000
-    hi  Normal          guifg=#000000
-    hi  NormalFloat     guifg=#000000
-    hi  NormalNC        guifg=#000000
+    hi  MatchParen      guifg=#ffffff
+    hi  ModeMsg         guifg=#ffffff
+    hi  MoreMsg         guifg=#ffffff
+    hi  MsgArea         guifg=#ffffff
+    hi  MsgSeparator    guifg=#ffffff
+    hi  NonText         guifg=#ffffff
+    hi  Normal          guifg=#ffffff
+    hi  NormalFloat     guifg=#ffffff
+    hi  NormalNC        guifg=#ffffff
     hi  Operator        guifg=#d65d0e
     hi  Pmenu           guifg=#928374 guibg=#fbf1c7
     hi  PmenuSbar       guifg=#fbf1c7 guibg=none
     hi  PmenuSel        guifg=#fbf1c7 guibg=#b16286
     hi  PmenuThumb      guifg=none    guibg=none
-    hi  PreCondit       guifg=#000000
-    hi  PreProc         guifg=#000000
-    hi  Question        guifg=#000000
-    hi  QuickFixLine    guifg=#000000
-    hi  Repeat          guifg=#000000
-    hi  Search          guifg=#000000
-    hi  SignColumn      guifg=#000000
-    hi  Special         guifg=#000000
+    hi  PreCondit       guifg=#ffffff
+    hi  PreProc         guifg=#ffffff
+    hi  Question        guifg=#ffffff
+    hi  QuickFixLine    guifg=#ffffff
+    hi  Repeat          guifg=#ffffff
+    hi  Search          guifg=#ffffff
+    hi  SignColumn      guibg=none
+    hi  Special         guifg=#ffffff
     hi  SpecialChar     guifg=#aaaafa guibg=#1c1c1c
-    hi  SpecialComment  guifg=#000000
-    hi  SpecialKey      guifg=#000000
+    hi  SpecialComment  guifg=#ffffff
+    hi  SpecialKey      guifg=#ffffff
     hi  SpellBad        guifg=#cc241d
     hi  SpellCap        guifg=#d79921
     hi  SpellLocal      guifg=#458588
@@ -178,30 +151,30 @@ function! ToggleTheme()
     hi  Statement       guifg=#7c6f64
     hi  StatusLine      guifg=#a89984 guibg=none gui=none
     hi  StatusLineNC    guifg=#a89984 guibg=none gui=none
-    hi  StorageClass    guifg=#000000
-    hi  String          guifg=#b7b083 guibg=#eae0b6 gui=italic
-    hi  Error           guifg=#000000 guibg=#9d0006
+    hi  StorageClass    guifg=#ffffff
+    hi  String          guifg=#666666 guibg=#333333 gui=italic
+    hi  Error           guifg=#ffffff guibg=#9d0006
     hi  Structure       guifg=#076678
-    hi  Substitute      guifg=#000000
-    hi  TabLine         guifg=#000000
-    hi  TabLineFill     guifg=#000000
-    hi  TabLineSel      guifg=#000000
-    hi  Tag             guifg=#000000
-    hi  TermCursor      guifg=#000000
-    hi  TermCursorNC    guifg=#000000
-    hi  Title           guifg=#000000
+    hi  Substitute      guifg=#ffffff
+    hi  TabLine         guifg=#ffffff
+    hi  TabLineFill     guifg=#ffffff
+    hi  TabLineSel      guifg=#ffffff
+    hi  Tag             guifg=#ffffff
+    hi  TermCursor      guifg=#ffffff
+    hi  TermCursorNC    guifg=#ffffff
+    hi  Title           guifg=#ffffff
     hi  Todo            guifg=#d79921 guibg=none gui=underline
     hi  Type            guifg=#b16286 gui=bold
-    hi  Typedef         guifg=#000000
-    hi  Underlined      guifg=#000000
-    hi  VertSplit       guifg=#000000 guibg=#000000
+    hi  Typedef         guifg=#ffffff
+    hi  Underlined      guifg=#ffffff
+    hi  VertSplit       guifg=#333333 guibg=none gui=none
     hi  Visual          guifg=none    guibg=#d5c4a1
-    hi  VisualNC        guifg=#000000
-    hi  WarningMsg      guifg=#000000
-    hi  Whitespace      guifg=#000000
-    hi  WildMenu        guifg=#000000
-    hi  lCursor         guifg=#000000
-    hi jsonKeyword      guifg=#000000
+    hi  VisualNC        guifg=#ffffff
+    hi  WarningMsg      guifg=#ffffff
+    hi  Whitespace      guifg=#ffffff
+    hi  WildMenu        guifg=#ffffff
+    hi  lCursor         guifg=#ffffff
+      hi jsonKeyword      guifg=#ffffff
 
     hi  GitGutterAdd    guifg=#98971a
     hi  GitGutterChange guifg=#d79921
@@ -212,7 +185,7 @@ function! ToggleTheme()
     hi  SyntasticStyleErrorSign   guibg=none guifg=#d81735
     hi  SyntasticStyleWarningSign guibg=none guifg=#ffa800
 
-    let g:limelight_conceal_guifg = '#c8c094'
+    let g:limelight_conceal_guifg = '#333333'
     let g:rainbow_conf = {
     \'guifgs': ["#cc241d", "#98971a", "#d79921", "#458588", "#b16286"],
     \}
@@ -245,14 +218,8 @@ nm <Down> <C-w>j
 nm <C-Left> :tabprevious<CR>
 nm <C-Right> :tabnext<CR>
 
-function Diction()
-  :AsyncRun diction /tmp/.tobecheckedforgrammar
-endfunction
-
 vm <silent> f :'<,'>!fmt -w 80<CR>
 vm <silent> t :Tabularize /\|<CR>
-vm <silent> g :'<,'>w! /tmp/.tobecheckedforgrammar<CR> :AsyncRun diction /tmp/.tobecheckedforgrammar<CR>
-vm <silent> s :'<,'>w! /tmp/.tobecheckedforgrammar<CR> :AsyncRun style /tmp/.tobecheckedforgrammar<CR>
 
 tno <Esc> <C-\><C-n>
 tno <C-b><Esc> <Esc>
@@ -308,14 +275,14 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 
 " Stuff
-au BufNewFile,BufRead * RainbowToggleOn
+"au BufNewFile,BufRead * RainbowToggleOn
 au BufNewFile,BufRead * Limelight
 au BufNewFile,BufRead *.c,*.cs set expandtab!
-"au CursorHold * execute 'hi CursorLineNr guibg=#221d1f guifg=#30ff6a'
-"au InsertEnter * execute 'hi CursorLineNr guibg=#221d1f guifg=#ff9c30'
-"au InsertLeave * execute 'hi CursorLineNr guibg=#221d1f guifg=#000000'
+au CursorHold * execute 'hi CursorLineNr guibg=#221d1f guifg=#30ff6a'
+au InsertEnter * execute 'hi CursorLineNr guibg=#221d1f guifg=#ff9c30'
+au InsertLeave * execute 'hi CursorLineNr guibg=#221d1f guifg=#000000'
 au BufWrite * call CleanFile()
-au BufWritePost * silent !touch %
-au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown.pandoc
+"au BufWritePost * silent !touch %
+"au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown.pandoc
 
 call ToggleTheme()
