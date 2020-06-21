@@ -88,7 +88,7 @@ function! ToggleTheme()
     hi  Character       guifg=#666666 guibg=#333333 gui=italic
     hi  ColorColumn     guifg=#ffffff
     hi  Comment         guifg=#a89984 gui=italic
-    hi  Conceal         guifg=#ffffff
+    hi  Conceal         guifg=#ffffff gui=none guibg=none
     hi  Conditional     guifg=#665c54
     hi  Constant        guifg=#ffffff
     "hi  Cursor          guibg=#ffffff
@@ -274,6 +274,25 @@ nmap <leader>d <Plug>FormativeFile
 smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 
+function Todo()
+  syntax match todoCheckbox "-\ \[\ \]" conceal cchar=○
+  syntax match todoCheckbox "-\ \[x\]" conceal cchar=●
+  set conceallevel=2
+endfunction
+
+function TodoNot()
+  set conceallevel=0
+endfunction
+
+function ZigConceal()
+  syntax match nullConceal "null" conceal cchar=⦰
+  syntax match xorConceal "xor" conceal cchar=⨂
+  syntax match unreachableConceal "unreachable" conceal cchar=⊥
+  syntax match andConceal "and" conceal cchar=⋀
+  syntax match orConceal "or" conceal cchar=⋁
+  set conceallevel=2
+endfunction
+
 " Stuff
 "au BufNewFile,BufRead * RainbowToggleOn
 au BufNewFile,BufRead * Limelight
@@ -282,6 +301,8 @@ au CursorHold * execute 'hi CursorLineNr guibg=#221d1f guifg=#30ff6a'
 au InsertEnter * execute 'hi CursorLineNr guibg=#221d1f guifg=#ff9c30'
 au InsertLeave * execute 'hi CursorLineNr guibg=#221d1f guifg=#000000'
 au BufWrite * call CleanFile()
+au BufNewFile,BufRead,WinEnter *.md call Todo()
+au WinLeave *.md call TodoNot()
 "au BufWritePost * silent !touch %
 "au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown.pandoc
 

@@ -12,7 +12,7 @@
   wget gnupg java games gnome sdl gl graphics game-development
   lean agda audio dico compton virtualization distributed julia
   messaging glib python-web ocaml assembly prolog haskell-apps
-  sml idris gnunet vpn)
+  sml idris gnunet vpn firmware vulkan)
 
 (use-service-modules
   desktop networking ssh xorg pm sound cuirass audio
@@ -50,6 +50,7 @@
                                %facebook-host-aliases)))
 
   (kernel linux)
+  (kernel-arguments (list "intel_iommu=on"))
   (initrd microcode-initrd)
   (firmware (list linux-firmware))
   (bootloader
@@ -105,7 +106,9 @@
 
             xonotic
 
-            encfs acpi xsetroot spoon qemu
+            vulkan-tools vulkan-headers mesa
+
+            encfs acpi xsetroot spoon qemu ovmf
 
             ocaml ocaml4.07-core ocaml4.07-dune ocaml4.07-earley
             ocaml4.07-merlin ocaml4.07-ppx-jane ocaml4.07-ppx-let
@@ -149,6 +152,7 @@
             ats2
 
             ffmpeg
+
             dwm curl gnu-c-manual links git ungoogled-chromium
             glibc-utf8-locales colobot minetest adanaxisgpl no-more-secrets
             mono debootstrap wget gnupg (list icedtea-8 "jdk") sdl2 mojoshader
@@ -190,10 +194,13 @@
             (service network-manager-service-type
               (network-manager-configuration
                 (dns "none")))
+
             (extra-special-file
               "/etc/resolv.conf"
               (plain-file "resolv.conf" "nameserver 127.0.0.1"))
+
             (extra-special-file
               "/usr/bin/env"
               (file-append coreutils "/bin/env")))
+
       %base-services)))
