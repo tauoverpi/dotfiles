@@ -1,9 +1,3 @@
-# Bash initialization for interactive non-login shells and
-# for remote shells (info "(bash) Bash Startup Files").
-
-# Export 'SHELL' to child processes.  Programs such as 'screen'
-# honor it and otherwise use /bin/sh.
-
 function fuck () {
     TF_PYTHONIOENCODING=$PYTHONIOENCODING;
     export TF_SHELL=bash;
@@ -25,12 +19,10 @@ export EDITOR=nvim
 export GUIX_PACKAGE_PATH=$HOME/git/github/packages
 export PROMPT_COMMAND='history -a'
 export MPD_HOST=$HOME/.mpd/connection
+export MAIL=$HOME/.mail
 
 if [[ $- != *i* ]]
 then
-    # We are being invoked from a non-interactive shell.  If this
-    # is an SSH session (as in "ssh host command"), source
-    # /etc/profile so we get PATH and other essential variables.
     [[ -n "$SSH_CLIENT" ]] && source /etc/profile
 
     # Don't do anything else.
@@ -67,7 +59,7 @@ alias recon='sudo -E guix system reconfigure $HOME/dotfiles/latitude.scm -c 1 -M
 alias config="$EDITOR $HOME/dotfiles/latitude.scm"
 alias note='nvim ~/.note'
 alias cnote='nvim ~/.cass'
-alias res='nvim ~/git/blog/resources'
+alias res='nvim ~/git/github/resources/res'
 alias game='nvim ~/git/blog/challenges'
 alias book='nvim ~/git/cas9/game.md'
 alias seductive='sed'
@@ -78,10 +70,17 @@ alias mbus='wine64 ~/.wine/drive_c/Program\ Files\ \(x86\)/PiiGAB/MBWizard/MBWiz
 alias lt='java -jar ~/data/build/languagetool/LanguageTool-4.8/languagetool-commandline.jar'
 alias less='less -R'
 alias pi900S='cd ~/git/piigab/Pi-900S/flask/'
-alias foep='nvim ~/git/elara/draft.md'
 alias todo='nvim ~/.todo'
+alias cli="$HOME/git/github/cli/zig-cache/bin/cli"
+alias qwerty='xmodmap $HOME/dotfiles/qgmlwb.xkb'
+alias qgmlwb='setxkbmap us'
 
 export CGO_ENABLE=0
+
+music()
+{
+  mpv "$HOME/music/$1/" --loop-playlist=inf -vo=null --playlist-start=$(($RANDOM % ($(find "$HOME/music/$1"| wc -l) - 1)))
+}
 
 lmddgtfy()
 {
@@ -169,6 +168,14 @@ current()
 wh()
 {
 	curl -L "https://wallhaven.cc/api/v1/search?q=$1" | sed 's,\\,,g' | egrep -o "https://w.wallhaven.cc/full/[a-z0-9]+/wallhaven-[a-z0-9]+.jpg"
+}
+
+bright()
+{
+  L=$(cat /sys/class/backlight/intel_backlight/max_brightness)
+  V=$1
+  [ $L -lt $V ] && V=$L
+  echo $V | sudo tee /sys/class/backlight/intel_backlight/brightness
 }
 
 radio()
@@ -322,3 +329,18 @@ crf() {
 }
 
 alias oai="java -jar $HOME/data/build/openapi-generator-cli-4.3.1.jar"
+
+onworkscreen()
+{
+  xrandr --output DP-2-2 --left-of eDP-1 --auto
+  xrandr --output DP-1-2 --right-of eDP-1 --auto
+  sh ~/.fehbg
+}
+
+offworkscreen()
+{
+  # yes this is lazy
+  xrandr --output DP-2-2 --off
+  xrandr --output DP-1-2 --off
+  sh ~/.fehbg
+}

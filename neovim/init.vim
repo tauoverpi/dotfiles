@@ -12,10 +12,9 @@ set expandtab
 set fillchars=vert:\▕
 set foldlevelstart=99
 set foldmethod=syntax
-set hlsearch!
 set autoread
 set ignorecase
-set laststatus=2
+set laststatus=0
 set lazyredraw
 set linebreak
 set list
@@ -26,7 +25,6 @@ set matchpairs=
 set mouse=a
 set nocompatible
 set nohlsearch
-set noruler
 set noshowmode
 set scrolloff=5
 set shiftwidth=2
@@ -45,24 +43,36 @@ set undodir=~/.config/nvim/tmp/undo/
 set undofile
 set whichwrap+=<,>,h,l
 set wrap
+set omnifunc=ale#completion#OmniFunc
+let g:deoplete#enable_at_startup = 1
+let g:ale_completion_enabled = 1
+let g:gruvbox_bold=1
+let g:gruvbox_italic=1
+let g:gruvbox_underline=1
+let g:gruvbox_undercurl=1
+let g:gruvbox_improved_strings=1
+let g:gruvbox_improved_warnings=1
+let g:gruvbox_guisp_fallback='bg'
+let g:gruvbox_number_column='none'
+let g:lightline={}
 
-function! ModeColour(mode)
-  set statusline=
-  set statusline+=█
-  set statusline+=%=
-  set statusline+=%f
-  if a:mode == 'i'
-    hi  StatusLine      guifg=#98971a gui=none
-  elseif a:mode == 'n'
-    hi  StatusLine      guifg=#458588 gui=none
-  elseif a:mode == 'r'
-    execute 'hi  StatusLine      guifg=#a89984 guibg=none gui=none'
+let g:current_theme = 0
+function ToggleTheme()
+  if (g:current_theme == 1)
+    let g:current_theme = 0
+    set background=light
+    let g:gruvbox_sign_column='bg0'
+    let g:gruvbox_number_column='bg0'
+  else
+    let g:current_theme =1
+    set background=dark
+    let g:gruvbox_sign_column='bg0'
+    let g:gruvbox_number_column='bg0'
   endif
 endfunction
 
-au InsertEnter * call ModeColour('i')
-au InsertLeave * call ModeColour('n')
-au VimEnter * call ModeColour('n')
+call ToggleTheme()
+colorscheme gruvbox
 
 function! CleanFile()
 	normal mZ
@@ -82,129 +92,12 @@ function! LimelightToggle()
 	endif
 endfunction
 
-let g:light = 1
-function! ToggleTheme()
-    hi  Boolean         guifg=#458588
-    hi  Character       guifg=#666666 guibg=#333333 gui=italic
-    hi  ColorColumn     guifg=#ffffff
-    hi  Comment         guifg=#a89984 gui=italic
-    hi  Conceal         guifg=#ffffff gui=none guibg=none
-    hi  Conditional     guifg=#665c54
-    hi  Constant        guifg=#ffffff
-    "hi  Cursor          guibg=#ffffff
-    hi  CursorColumn    guifg=#ffffff
-    hi  CursorLine      guifg=none    guibg=#050505
-    hi  CursorLineNr    guifg=#ffffff
-    hi  Debug           guifg=#ffffff
-    hi  Define          guifg=#ffffff
-    hi  Delimiter       guifg=#ffffff gui=bold
-    hi  DiffAdd         guifg=#ffffff
-    hi  DiffChange      guifg=#ffffff
-    hi  DiffDelete      guifg=#ffffff
-    hi  DiffText        guifg=#ffffff
-    hi  Directory       guifg=#ffffff
-    hi  EndOfBuffer     guifg=#ffffff
-    hi  ErrorMsg        guifg=#ffffff
-    hi  Exception       guifg=#9d0006
-    hi  Float           guifg=#458588 gui=bold
-    hi  Number          guifg=#458588 gui=bold
-    hi  FoldColumn      guifg=#ffffff
-    hi  Folded          guifg=#ffffff
-    hi  Function        guifg=#98971a
-    hi  Identifier      guifg=#98971a
-    hi  Ignore          guifg=#ffffff
-    hi  IncSearch       guifg=#ffffff
-    hi  Include         guifg=#98971a
-    hi  Keyword         guifg=#d65d0e
-    hi  Label           guifg=#cc241d
-    hi  LineNr          guifg=#ffffff
-    hi  Macro           guifg=#cc241d
-    hi  MatchParen      guifg=#ffffff
-    hi  ModeMsg         guifg=#ffffff
-    hi  MoreMsg         guifg=#ffffff
-    hi  MsgArea         guifg=#ffffff
-    hi  MsgSeparator    guifg=#ffffff
-    hi  NonText         guifg=#ffffff
-    hi  Normal          guifg=#ffffff
-    hi  NormalFloat     guifg=#ffffff
-    hi  NormalNC        guifg=#ffffff
-    hi  Operator        guifg=#d65d0e
-    hi  Pmenu           guifg=#928374 guibg=#fbf1c7
-    hi  PmenuSbar       guifg=#fbf1c7 guibg=none
-    hi  PmenuSel        guifg=#fbf1c7 guibg=#b16286
-    hi  PmenuThumb      guifg=none    guibg=none
-    hi  PreCondit       guifg=#ffffff
-    hi  PreProc         guifg=#ffffff
-    hi  Question        guifg=#ffffff
-    hi  QuickFixLine    guifg=#ffffff
-    hi  Repeat          guifg=#ffffff
-    hi  Search          guifg=#ffffff
-    hi  SignColumn      guibg=none
-    hi  Special         guifg=#ffffff
-    hi  SpecialChar     guifg=#aaaafa guibg=#1c1c1c
-    hi  SpecialComment  guifg=#ffffff
-    hi  SpecialKey      guifg=#ffffff
-    hi  SpellBad        guifg=#cc241d
-    hi  SpellCap        guifg=#d79921
-    hi  SpellLocal      guifg=#458588
-    hi  SpellRare       guifg=#b16286
-    hi  Statement       guifg=#7c6f64
-    hi  StatusLine      guifg=#a89984 guibg=none gui=none
-    hi  StatusLineNC    guifg=#a89984 guibg=none gui=none
-    hi  StorageClass    guifg=#ffffff
-    hi  String          guifg=#666666 guibg=#333333 gui=italic
-    hi  Error           guifg=#ffffff guibg=#9d0006
-    hi  Structure       guifg=#076678
-    hi  Substitute      guifg=#ffffff
-    hi  TabLine         guifg=#ffffff
-    hi  TabLineFill     guifg=#ffffff
-    hi  TabLineSel      guifg=#ffffff
-    hi  Tag             guifg=#ffffff
-    hi  TermCursor      guifg=#ffffff
-    hi  TermCursorNC    guifg=#ffffff
-    hi  Title           guifg=#ffffff
-    hi  Todo            guifg=#d79921 guibg=none gui=underline
-    hi  Type            guifg=#b16286 gui=bold
-    hi  Typedef         guifg=#ffffff
-    hi  Underlined      guifg=#ffffff
-    hi  VertSplit       guifg=#333333 guibg=none gui=none
-    hi  Visual          guifg=none    guibg=#d5c4a1
-    hi  VisualNC        guifg=#ffffff
-    hi  WarningMsg      guifg=#ffffff
-    hi  Whitespace      guifg=#ffffff
-    hi  WildMenu        guifg=#ffffff
-    hi  lCursor         guifg=#ffffff
-      hi jsonKeyword      guifg=#ffffff
-
-    hi  GitGutterAdd    guifg=#98971a
-    hi  GitGutterChange guifg=#d79921
-    hi  GitGutterDelete guifg=#458588
-
-    hi  SyntasticErrorSign        guibg=none guifg=#d81735
-    hi  SyntasticWarningSign      guibg=none guifg=#ffa800
-    hi  SyntasticStyleErrorSign   guibg=none guifg=#d81735
-    hi  SyntasticStyleWarningSign guibg=none guifg=#ffa800
-
-    let g:limelight_conceal_guifg = '#333333'
-    let g:rainbow_conf = {
-    \'guifgs': ["#cc241d", "#98971a", "#d79921", "#458588", "#b16286"],
-    \}
-
-endfunction
-
 let g:gitgutter_sign_added = '▍ '
 let g:gitgutter_sign_modified = '▍ '
 let g:gitgutter_sign_removed = '▍ '
 let g:gitgutter_sign_removed_first_line = '▍ '
 let g:gitgutter_sign_modified_removed = '▍ '
 
-function! Synctex()
-        " remove 'silent' for debugging
-        execute "silent !zathura --synctex-forward " . line('.') . ":" . col('.') . ":" . bufname('%') . " " . g:syncpdf
-endfunction
-map <C-enter> :call Synctex()<cr>
-
-nm <F10> :AsyncRun make <CR>
 nm <S-h> <C-w><
 nm <S-j> <C-w>-
 nm <S-k> <C-w>+
@@ -224,16 +117,16 @@ vm <silent> t :Tabularize /\|<CR>
 tno <Esc> <C-\><C-n>
 tno <C-b><Esc> <Esc>
 
+nm <F7> :RainbowToggle<CR>
 nm <F8> :call LimelightToggle()<CR>
-nm <F7> :call ToggleTheme()<CR>
-nm <F6> :call RainbowToggle()<CR>
+nm <F9> :call ToggleTheme()<CR>
 
 nm <C-n> :tabnew<CR>
 
-"ino <Up> <NOP>
-"ino <Down> <NOP>
-"ino <Right> <NOP>
-"ino <Left> <NOP>
+ino <Up> <NOP>
+ino <Down> <NOP>
+ino <Right> <NOP>
+ino <Left> <NOP>
 
 nno <silent> k gk
 nno <silent> j gj
@@ -270,40 +163,15 @@ imap <C-k>     <Plug>(neosnippet_expand_or_jump)
 smap <C-k>     <Plug>(neosnippet_expand_or_jump)
 xmap <C-k>     <Plug>(neosnippet_expand_target)
 nmap <leader>d <Plug>FormativeFile
+" Toggle theme key-mappings.
 
 smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 
-function Todo()
-  syntax match todoCheckbox "-\ \[\ \]" conceal cchar=○
-  syntax match todoCheckbox "-\ \[x\]" conceal cchar=●
-  set conceallevel=2
-endfunction
-
-function TodoNot()
-  set conceallevel=0
-endfunction
-
-function ZigConceal()
-  syntax match nullConceal "null" conceal cchar=⦰
-  syntax match xorConceal "xor" conceal cchar=⨂
-  syntax match unreachableConceal "unreachable" conceal cchar=⊥
-  syntax match andConceal "and" conceal cchar=⋀
-  syntax match orConceal "or" conceal cchar=⋁
-  set conceallevel=2
-endfunction
-
 " Stuff
-"au BufNewFile,BufRead * RainbowToggleOn
 au BufNewFile,BufRead * Limelight
 au BufNewFile,BufRead *.c,*.cs set expandtab!
 au CursorHold * execute 'hi CursorLineNr guibg=#221d1f guifg=#30ff6a'
 au InsertEnter * execute 'hi CursorLineNr guibg=#221d1f guifg=#ff9c30'
 au InsertLeave * execute 'hi CursorLineNr guibg=#221d1f guifg=#000000'
 au BufWrite * call CleanFile()
-au BufNewFile,BufRead,WinEnter *.md call Todo()
-au WinLeave *.md call TodoNot()
-"au BufWritePost * silent !touch %
-"au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown.pandoc
-
-call ToggleTheme()

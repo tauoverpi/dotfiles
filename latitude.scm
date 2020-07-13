@@ -12,7 +12,7 @@
   wget gnupg java games gnome sdl gl graphics game-development
   lean agda audio dico compton virtualization distributed julia
   messaging glib python-web ocaml assembly prolog haskell-apps
-  sml idris gnunet vpn firmware vulkan)
+  sml idris gnunet vpn firmware vulkan spice kde)
 
 (use-service-modules
   desktop networking ssh xorg pm sound cuirass audio
@@ -85,15 +85,15 @@
                 %base-user-accounts))
   (packages
     (append
-      (list nss-certs neovim kitty tmux man-pages dmenu zathura sshfs zip fzy
-            wireshark tree xrandr sassc clang texlive boinc-client
+      (list nss-certs kitty tmux man-pages dmenu zathura sshfs zip fzy
+            tree xrandr clang texlive
             espeak-ng slock graphviz unzip gforth gnu-make libevent wine64
             mpv gimp inkscape nmap scrot pv aria2 feh diction rsync
             pkg-config torsocks valgrind gdb weechat mpd-mpc
             zathura-pdf-mupdf zathura-ps zathura-djvu xclip aspell-dict-sv
             elm-compiler nim go file htop sent dico aspell-dict-uk
             alsa-utils neomutt
-            node aspell fswatch uglify-js thefuck redshift
+            node aspell thefuck redshift
 
             ghc-pandoc ghc-pandoc-citeproc ghc-pandoc-types ghc ghc-entangled
             ghc-pandoc-crossref ghc-pandoc-filter-graphviz ghc-pandoc-sidenote
@@ -102,32 +102,17 @@
 
             gcc-toolchain
 
-            julia
-
-            xonotic
-
-            vulkan-tools vulkan-headers mesa
+            mailutils getmail
 
             encfs acpi xsetroot spoon qemu ovmf
 
-            ocaml ocaml4.07-core ocaml4.07-dune ocaml4.07-earley
-            ocaml4.07-merlin ocaml4.07-ppx-jane ocaml4.07-ppx-let
-            ocaml4.07-ppx-pipebang ocaml4.07-ppx-hash ocaml4.07-ppx-optional
-            ocaml4.07-uri ocaml4.07-spawn ocaml4.07-utop ocaml4.07-ezjsonm
-            ocaml4.07-findlib
-
             tcpdump net-tools zpaq
 
-            ;python-problog python-telethon python-entangled-filters python-pytest
-            ;python-pandocfilters python-panflute python-pygraphviz python-graphviz
-            ;python-2 python python-pmbootstrap python-requests
-            python
+            python python-pynvim
 
             sshoot sshuttle
 
             youtube-dl
-
-            idris
 
             font-jetbrains-mono font-scientifica
             font-google-noto font-victor-mono font-mononoki font-awesome
@@ -137,29 +122,30 @@
 
             xf86-input-wacom xhost xf86-video-intel xinput xmodmap setxkbmap
 
-            zig-0.6.0
+            zig-0.6.0-master
 
             icecat
-            gnunet
+
+            drawpile krita
+            supertuxkart btanks
 
             tidy-html
 
-            neovim-zig neovim-gitgutter neovim-tabular neovim-limelight
-            neovim-lastplace
-
-            carpalx
-
-            ats2
+            neovim neovim-zig neovim-gitgutter neovim-tabular neovim-limelight
+            neovim-lastplace neovim-gruvbox neovim-vebugger neovim-rainbow
+            neovim-ale
 
             ffmpeg
 
+            qemu spice-gtk
+
             dwm curl gnu-c-manual links git ungoogled-chromium
-            glibc-utf8-locales colobot minetest adanaxisgpl no-more-secrets
-            mono debootstrap wget gnupg (list icedtea-8 "jdk") sdl2 mojoshader
-            mojoshader-cs blender godot lean agda agda-stdlib mesa-utils ardour
-            qemu drawpile wabt llvm clang-toolchain surf fortune-mod sky ri-li
-            stockfish chessx telegram-purple pidgin glib strace fasm swi-prolog
-            ghostwriter xprop xwininfo neomutt compton)
+            glibc-utf8-locales no-more-secrets
+            debootstrap wget gnupg (list icedtea-8 "jdk") sdl2
+            mesa-utils
+            wabt llvm clang-toolchain fortune-mod
+            strace
+            xprop xwininfo neomutt compton)
       %base-packages))
   (services
     (append
@@ -198,6 +184,10 @@
             (extra-special-file
               "/etc/resolv.conf"
               (plain-file "resolv.conf" "nameserver 127.0.0.1"))
+
+            (extra-special-file
+              "/lib64/ld-linux-x86-64.so.2"
+              (file-append clang-toolchain "/lib/ld-linux-x86-64.so.2"))
 
             (extra-special-file
               "/usr/bin/env"
