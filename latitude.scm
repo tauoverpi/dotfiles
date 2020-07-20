@@ -133,7 +133,8 @@
 
             neovim neovim-zig neovim-gitgutter neovim-tabular neovim-limelight
             neovim-lastplace neovim-gruvbox neovim-vebugger neovim-rainbow
-            neovim-ale
+            neovim-ale neovim-floobits neovim-deoplete neovim-pandoc-syntax
+            python-pynvim
 
             ffmpeg
 

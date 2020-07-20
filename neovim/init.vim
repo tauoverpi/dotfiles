@@ -43,7 +43,7 @@ set undodir=~/.config/nvim/tmp/undo/
 set undofile
 set whichwrap+=<,>,h,l
 set wrap
-set omnifunc=ale#completion#OmniFunc
+let g:python_host_prog='/run/current-system/profile/bin/python3.8'
 let g:deoplete#enable_at_startup = 1
 let g:ale_completion_enabled = 1
 let g:gruvbox_bold=1
@@ -132,11 +132,12 @@ nno <silent> k gk
 nno <silent> j gj
 nno <silent> 0 g0
 nno <silent> $ g$
+ino <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 
 let g:pandoc#syntax#conceal#use = 0
 let g:pandoc#syntax#codeblocks#embeds#langs =
-  \ [ "literatehaskell=lhaskell", "bash=sh", "zig", "elm", "go", "scheme"
-  \ , "c", "dot"
+  \ [ "literatehaskell=lhaskell", "bash=sh", "zig", "elm", "scheme"
+  \ , "c", "dot", "python",
   \ ]
 let g:pymode_lint_on_write = 0
 let g:syntastic_error_symbol = '▊ '
@@ -175,3 +176,4 @@ au CursorHold * execute 'hi CursorLineNr guibg=#221d1f guifg=#30ff6a'
 au InsertEnter * execute 'hi CursorLineNr guibg=#221d1f guifg=#ff9c30'
 au InsertLeave * execute 'hi CursorLineNr guibg=#221d1f guifg=#000000'
 au BufWrite * call CleanFile()
+au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown.pandoc
