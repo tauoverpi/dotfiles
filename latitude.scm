@@ -1,39 +1,50 @@
 (use-modules (gnu))
 (use-package-modules
-  vim tmux terminals llvm xorg certs suckless libevent tor
-  man pdf curl gcc web-browsers version-control pkg-config
-  chromium xdisorg linux mpd video gimp inkscape gnuzilla
+  vim tmux terminals llvm xorg certs suckless libevent tor android
+  man pdf curl gcc web-browsers version-control pkg-config maths
+  chromium xdisorg linux mpd video gimp inkscape gnuzilla php dns
   admin pv bittorrent image-viewers mail python valgrind nim
   node aspell dictionaries speech graphviz wine gdb irc elm
-  forth compression networking haskell-xyz tex rsync fonts
+  forth compression networking haskell-xyz tex rsync fonts ocr
   shellutils web commencement base golang haskell-xyz file
   wm haskell textutils text-editors javascript python-check
   check monitoring python-xyz lisp-xyz crypto mono debian
   wget gnupg java games gnome sdl gl graphics game-development
   lean agda audio dico compton virtualization distributed julia
   messaging glib python-web ocaml assembly prolog haskell-apps
-  sml idris gnunet vpn firmware vulkan spice kde)
+  sml idris gnunet vpn firmware vulkan spice kde libreoffice
+  machine-learning)
+
 
 (use-service-modules
-  desktop networking ssh xorg pm sound cuirass audio
-  getmail mcron virtualization sddm dns admin messaging)
+  desktop networking ssh xorg pm sound cuirass audio web
+  mcron virtualization sddm dns admin messaging)
 
 (use-modules (tau packages fonts)
              (tau packages zig)
              (tau packages firmware)
              (nongnu packages linux)
+             (nongnu packages mozilla)
+             (nongnu packages steam-client)
              (nongnu system linux-initrd)
-             (tau packages agda)
              (tau packages vim)
-             (tau packages ats)
              (tau packages haskell)
              (tau packages xorg)
+             (tau packages telegram)
              (tau packages drawpile)
              (guix packages)
              (guix download)
              (guix gexp)
-             (guix build-system python)
              (tau packages python))
+
+;(define channels
+;  (list (channel
+;          (name 'guix)
+;          (url "https://git.savannah.gnu.org/git/guix.git")
+;          (commit "96a655a77bb087397a9436391e472c36ff0a2ec2"))))
+
+;(define (inferior name)
+;  (first (lookup-inferior-packages (inferior-for-channels channels) name)))
 
 (define garbage-collector-job
   #~(job '(next-hour '(10)) "guix gc -F 10G"))
@@ -86,27 +97,31 @@
   (packages
     (append
       (list nss-certs kitty tmux man-pages dmenu zathura sshfs zip fzy
-            tree xrandr clang texlive
+            tree xrandr clang texlive poppler
             espeak-ng slock graphviz unzip gforth gnu-make libevent wine64
-            mpv gimp inkscape nmap scrot pv aria2 feh diction rsync
-            pkg-config torsocks valgrind gdb weechat mpd-mpc
+            mpv gimp inkscape nmap scrot pv feh diction rsync
+            torsocks valgrind gdb weechat mpd-mpc
             zathura-pdf-mupdf zathura-ps zathura-djvu xclip aspell-dict-sv
-            elm-compiler nim go file htop sent dico aspell-dict-uk
-            alsa-utils neomutt
-            node aspell thefuck redshift
+            elm-compiler nim go file sent dico aspell-dict-uk
+            neomutt telegram-cli isc-bind flite tesseract-ocr
+            aspell thefuck redshift ;firefox
 
             ghc-pandoc ghc-pandoc-citeproc ghc-pandoc-types ghc ghc-entangled
             ghc-pandoc-crossref ghc-pandoc-filter-graphviz ghc-pandoc-sidenote
             ghc-pandoc-stylefrommeta ghc-pandoc-csv2table
             ghc-panpipe ghcid ghc-tldr
 
+            alsa-utils cava steam
+
             gcc-toolchain
 
-            mailutils getmail
+            mailutils fetchmail libreoffice
+            dico xdotool fastboot
 
-            encfs acpi xsetroot spoon qemu ovmf
 
-            tcpdump net-tools zpaq
+            encfs acpi xsetroot spoon qemu ovmf ;dosfstools
+
+            stunnel tcpdump net-tools zpaq
 
             python python-pynvim
 
@@ -114,38 +129,44 @@
 
             youtube-dl
 
+            sassc node tidy-html wget aria2 jq
+
+            icecat ;(inferior "ungoogled-chromium")
+
             font-jetbrains-mono font-scientifica
             font-google-noto font-victor-mono font-mononoki font-awesome
             font-comic-neue font-dejavu font-hack font-liberation
             font-linuxlibertine font-lato font-mathjax font-ubuntu font-hermit
             font-wqy-microhei font-cns11643 font-wqy-zenhei
 
-            xf86-input-wacom xhost xf86-video-intel xinput xmodmap setxkbmap
+            xf86-input-wacom xhost xf86-video-intel xinput xmodmap xprop
+            krita drawpile
 
             zig-0.6.0-master
 
-            icecat
+            supertuxkart btanks 0ad minetest php
 
-            drawpile krita
-            supertuxkart btanks
-
-            tidy-html
+            asciinema python-pmbootstrap
 
             neovim neovim-zig neovim-gitgutter neovim-tabular neovim-limelight
             neovim-lastplace neovim-gruvbox neovim-vebugger neovim-rainbow
-            neovim-ale neovim-floobits neovim-deoplete neovim-pandoc-syntax
-            python-pynvim
+            neovim-ale neovim-deoplete neovim-pandoc-syntax
 
-            ffmpeg
+            ffmpeg fakechroot fakeroot ;kaldi
 
             qemu spice-gtk
 
-            dwm curl gnu-c-manual links git ungoogled-chromium
+            vulkan-loader vulkan-tools spirv-tools vulkan-headers spirv-headers
+            glfw pkg-config
+
+            dwm bspwm sxhkd octave wxmaxima
+
+            curl gnu-c-manual links lynx git ;netcat-openbsd
             glibc-utf8-locales no-more-secrets
             debootstrap wget gnupg (list icedtea-8 "jdk") sdl2
             mesa-utils
             wabt llvm clang-toolchain fortune-mod
-            strace
+            strace prout
             xprop xwininfo neomutt compton)
       %base-packages))
   (services
@@ -159,14 +180,26 @@
                      (tlp-configuration
                        (sched-powersave-on-ac? #t)
                        (energy-perf-policy-on-ac "powersave")))
+
             (service qemu-binfmt-service-type
               (qemu-binfmt-configuration
-                (platforms (lookup-qemu-platforms "aarch64"))
+                (platforms (lookup-qemu-platforms "aarch64" "arm"))
                 (guix-support? #t)))
+
+            (udev-rules-service 'usb-android android-udev-rules)
             (service mcron-service-type
               (mcron-configuration
                 (jobs (list garbage-collector-job))))
+
             (service slim-service-type)
+
+            (service httpd-service-type
+              (httpd-configuration
+                (config
+                  (httpd-config-file
+                  (server-name "server")
+                  (document-root "/home/tau/web")))))
+
             (service dnsmasq-service-type
               (dnsmasq-configuration
                 (no-resolv? #t)
@@ -177,6 +210,7 @@
                            "208.67.220.220"
                            "198.101.242.72"
                            "23.253.163.53"))))
+
             (service wpa-supplicant-service-type)
             (service network-manager-service-type
               (network-manager-configuration

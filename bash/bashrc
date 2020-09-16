@@ -14,7 +14,7 @@ function fuck () {
 }
 
 export SHELL
-export PATH=$HOME/bin:$HOME/.config/guix/current/bin:$PATH
+export PATH=$HOME/bin:$HOME/.config/guix/current/bin:$PATH:$HOME/git/github/scratch/zig/zig-cache/bin
 export EDITOR=nvim
 export GUIX_PACKAGE_PATH=$HOME/git/github/packages
 export PROMPT_COMMAND='history -a'
@@ -49,6 +49,8 @@ then
 else
   PS1="\w λ "
 fi
+alias :q='exit'
+alias speak='flite -voice slt -f'
 alias ls='ls -p --color=auto'
 alias ll='ls -l'
 alias grep='grep --color=auto'
@@ -59,7 +61,6 @@ alias recon='sudo -E guix system reconfigure $HOME/dotfiles/latitude.scm -c 1 -M
 alias config="$EDITOR $HOME/dotfiles/latitude.scm"
 alias note='nvim ~/.note'
 alias cnote='nvim ~/.cass'
-alias res='nvim ~/git/github/resources/res'
 alias game='nvim ~/git/blog/challenges'
 alias book='nvim ~/git/cas9/game.md'
 alias seductive='sed'
@@ -71,15 +72,53 @@ alias lt='java -jar ~/data/build/languagetool/LanguageTool-4.8/languagetool-comm
 alias less='less -R'
 alias pi900S='cd ~/git/piigab/Pi-900S/flask/'
 alias todo='nvim ~/.todo'
-alias cli="$HOME/git/github/cli/zig-cache/bin/cli"
 alias qwerty='xmodmap $HOME/dotfiles/qgmlwb.xkb'
 alias qgmlwb='setxkbmap us'
+alias dict='dico -d WordNet'
 
 export CGO_ENABLE=0
+export TESSDATA_PREFIX='/home/tau/git/third/tessdata'
+
+
+res()
+{
+  nvim ~/git/github/resources/res
+  pushd ~/git/github/resources/
+  git add res
+  zig build commit
+  popd
+}
+
+
+say()
+{
+  flite -voice slt <<< "$@"
+}
+
+speakpdf()
+{
+  F=`readlink -f $1`
+  cache=`echo $F | sha1sum | sed 's/ .*/.wav/'`
+  if [ -e "/tmp/${cache}" ]; then
+    mpv "/tmp/${cache}"
+  else
+    scratch=$(mktemp -d -t tts-XXXXXXXXXXXXXXXXX)
+    pushd $scratch
+    pdftoppm $F -o tmp
+    ls *.ppm | while read -r l; do tesseract $l "${l}" -l eng; done
+    cat *.txt > out.txt
+    flite -voice slt -f out.txt -o "/tmp/${cache}"
+    rm "/tmp/${scratch}/*"
+    rmdir "/tmp/${scratch}/*"
+    popd
+    mpv "/tmp/${cache}"
+  fi
+}
+
 
 music()
 {
-  mpv "$HOME/music/$1/" --loop-playlist=inf -vo=null --playlist-start=$(($RANDOM % ($(find "$HOME/music/$1"| wc -l) - 1)))
+  mpv $HOME/music/$1 --loop-playlist=inf -vo=null --shuffle
 }
 
 lmddgtfy()
@@ -87,6 +126,13 @@ lmddgtfy()
   X="https://lmddgtfy.net/?q=$(echo $@ | sed 's/ /%20/g')"
   echo $X | xclip -sel clip
   echo $X
+}
+
+tmp(){
+  scratch=$(mktemp -d -t scratch-XXXXXXXXXXXXXXXXX)
+  pushd $scratch
+  bash
+  popd
 }
 
 s()
@@ -253,7 +299,7 @@ pi900() {
       ;;
     "install")
       scp "$HOME/.ssh/id_rsa.pub" "root@192.168.10.$1:/tmp/"
-      ssh "root@192.168.10.$1" 'cat /tmp/id_rsa.pub >> ~/.ssh/authorized_keys'
+      ssh "root@192.168.10.$1" 'mkdir ~/.ssh && cat /tmp/id_rsa.pub >> ~/.ssh/authorized_keys'
       ;;
       *)
       echo "wat"
@@ -332,9 +378,9 @@ alias oai="java -jar $HOME/data/build/openapi-generator-cli-4.3.1.jar"
 
 onworkscreen()
 {
-  xrandr --output DP-2-2 --left-of eDP-1 --auto
-  xrandr --output DP-1-2 --right-of eDP-1 --auto
-  sh ~/.fehbg
+  xrandr --output DP-2-2 --left-of eDP-1 --auto --rotate left
+  xrandr --output DP-1-2 --left-of DP-2-2 --auto --rotate left
+  feh --bg-fill ~/Downloads/minicass.png ~/Downloads/darkleaf.jpg ~/Downloads/darkleaf.jpg
 }
 
 offworkscreen()
@@ -342,5 +388,5 @@ offworkscreen()
   # yes this is lazy
   xrandr --output DP-2-2 --off
   xrandr --output DP-1-2 --off
-  sh ~/.fehbg
+  feh --bg-fill ~/Downloads/minicass.png
 }

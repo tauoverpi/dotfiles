@@ -51,6 +51,7 @@ let g:gruvbox_italic=1
 let g:gruvbox_underline=1
 let g:gruvbox_undercurl=1
 let g:gruvbox_improved_strings=1
+let g:gruvbox_contrast_dark='hard'
 let g:gruvbox_improved_warnings=1
 let g:gruvbox_guisp_fallback='bg'
 let g:gruvbox_number_column='none'
@@ -113,6 +114,7 @@ nm <C-Right> :tabnext<CR>
 
 vm <silent> f :'<,'>!fmt -w 80<CR>
 vm <silent> t :Tabularize /\|<CR>
+vm <silent> z :'<,'>!zig fmt --stdin<CR>
 
 tno <Esc> <C-\><C-n>
 tno <C-b><Esc> <Esc>
