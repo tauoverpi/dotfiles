@@ -97,7 +97,7 @@
   (packages
     (append
       (list nss-certs kitty tmux man-pages dmenu zathura sshfs zip fzy
-            tree xrandr clang texlive poppler
+            tree xrandr clang texlive poppler sox
             espeak-ng slock graphviz unzip gforth gnu-make libevent wine64
             mpv gimp inkscape nmap scrot pv feh diction rsync
             torsocks valgrind gdb weechat mpd-mpc

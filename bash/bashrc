@@ -49,8 +49,9 @@ then
 else
   PS1="\w λ "
 fi
+
 alias :q='exit'
-alias speak='flite -voice slt -f'
+alias speak='flite -voice $FLITEMYCROFT -f'
 alias ls='ls -p --color=auto'
 alias ll='ls -l'
 alias grep='grep --color=auto'
@@ -77,7 +78,8 @@ alias qgmlwb='setxkbmap us'
 alias dict='dico -d WordNet'
 
 export CGO_ENABLE=0
-export TESSDATA_PREFIX='/home/tau/git/third/tessdata'
+export TESSDATA_PREFIX="$HOME/git/third/tessdata"
+export FLITEMYCROFT="$HOME/git/third/FliteVoices/eng-GBR-male;mycroft.flitevox"
 
 
 res()
@@ -92,25 +94,31 @@ res()
 
 say()
 {
-  flite -voice slt <<< "$@"
+  flite -voice $FLITEMYCROFT <<< "$@"
+}
+
+speakclip()
+{
+  flite -voice $FLITEMYCROFT -t <<< "$(xclip -sel clip -o)"
 }
 
 speakpdf()
 {
-  F=`readlink -f $1`
-  cache=`echo $F | sha1sum | sed 's/ .*/.wav/'`
+  F=$(readlink -f $1)
+  cache=$(echo $F | sha1sum | sed 's/ .*/.ogg/')
   if [ -e "/tmp/${cache}" ]; then
     mpv "/tmp/${cache}"
   else
     scratch=$(mktemp -d -t tts-XXXXXXXXXXXXXXXXX)
     pushd $scratch
     pdftoppm $F -o tmp
-    ls *.ppm | while read -r l; do tesseract $l "${l}" -l eng; done
+    ls *.ppm | while read -r l; do tesseract $l "${l}" -l eng+spa; done
     cat *.txt > out.txt
-    flite -voice slt -f out.txt -o "/tmp/${cache}"
-    rm "/tmp/${scratch}/*"
-    rmdir "/tmp/${scratch}/*"
+    flite -voice $FLITEMYCROFT -f out.txt -o "${cache}.wav"
+    sox "${cache}.wav" "/tmp/${cache}"
     popd
+    rm ${scratch}/*
+    rmdir ${scratch}/
     mpv "/tmp/${cache}"
   fi
 }
