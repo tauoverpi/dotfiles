@@ -8,7 +8,7 @@
   forth compression networking haskell-xyz tex rsync fonts ocr
   shellutils web commencement base golang haskell-xyz file
   wm haskell textutils text-editors javascript python-check
-  check monitoring python-xyz lisp-xyz crypto mono debian
+  check monitoring python-xyz lisp-xyz crypto mono debian cobol
   wget gnupg java games gnome sdl gl graphics game-development
   lean agda audio dico compton virtualization distributed julia
   messaging glib python-web ocaml assembly prolog haskell-apps
@@ -131,7 +131,7 @@
 
             sassc node tidy-html wget aria2 jq
 
-            icecat ;(inferior "ungoogled-chromium")
+            icecat icedove ;(inferior "ungoogled-chromium")
 
             font-jetbrains-mono font-scientifica
             font-google-noto font-victor-mono font-mononoki font-awesome
@@ -149,7 +149,7 @@
             asciinema python-pmbootstrap
 
             neovim neovim-zig neovim-gitgutter neovim-tabular neovim-limelight
-            neovim-lastplace neovim-gruvbox neovim-vebugger neovim-rainbow
+            neovim-lastplace  neovim-vebugger neovim-rainbow
             neovim-ale neovim-deoplete neovim-pandoc-syntax
 
             ffmpeg fakechroot fakeroot ;kaldi
@@ -159,7 +159,7 @@
             vulkan-loader vulkan-tools spirv-tools vulkan-headers spirv-headers
             glfw pkg-config
 
-            dwm bspwm sxhkd octave wxmaxima
+            dwm bspwm sxhkd octave wxmaxima gnucobol
 
             curl gnu-c-manual links lynx git ;netcat-openbsd
             glibc-utf8-locales no-more-secrets

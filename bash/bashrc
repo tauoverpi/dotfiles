@@ -107,7 +107,7 @@ speakpdf()
   F=$(readlink -f $1)
   cache=$(sha256sum $F | sed 's/ .*/.ogg/')
   if [ -e "$HOME/.cache/voice/${cache}" ]; then
-    mpv "$HOME/.cache/voice/${cache}"
+    mpv --save-position-on-quit "$HOME/.cache/voice/${cache}"
   else
     scratch=$(mktemp -d -t tts-XXXXXXXXXXXXXXXXX)
     pushd $scratch
@@ -119,7 +119,7 @@ speakpdf()
     popd
     rm ${scratch}/*
     rmdir ${scratch}/
-    mpv "$HOME/.cache/voice/${cache}"
+    mpv --save-position-on-quit "$HOME/.cache/voice/${cache}"
   fi
 }
 
@@ -128,13 +128,13 @@ speaktext()
   F=$(readlink -f $1)
   cache=$(sha256sum $F | sed 's/ .*/.ogg/')
   if [ -e "$HOME/.cache/voice/${cache}" ]; then
-    mpv "$HOME/.cache/voice/${cache}"
+    mpv --save-position-on-quit "$HOME/.cache/voice/${cache}"
   else
     pushd /tmp
     flite -voice $FLITEMYCROFT -f $F -o "${F}.wav"
     sox "${F}.wav" "$HOME/.cache/voice/${cache}"
     popd
-    mpv "$HOME/.cache/voice/${cache}"
+    mpv --save-position-on-quit "$HOME/.cache/voice/${cache}"
   fi
 }
 
