@@ -4,21 +4,21 @@
   man pdf curl gcc web-browsers version-control pkg-config maths
   chromium xdisorg linux mpd video gimp inkscape gnuzilla php dns
   admin pv bittorrent image-viewers mail python valgrind nim
-  node aspell dictionaries speech graphviz wine gdb irc elm
+  node aspell dictionaries speech graphviz wine gdb irc elm cups
   forth compression networking haskell-xyz tex rsync fonts ocr
-  shellutils web commencement base golang haskell-xyz file
-  wm haskell textutils text-editors javascript python-check
+  shellutils web commencement base golang haskell-xyz file ebook
+  wm haskell textutils text-editors javascript python-check figlet
   check monitoring python-xyz lisp-xyz crypto mono debian cobol
   wget gnupg java games gnome sdl gl graphics game-development
   lean agda audio dico compton virtualization distributed julia
   messaging glib python-web ocaml assembly prolog haskell-apps
-  sml idris gnunet vpn firmware vulkan spice kde libreoffice
-  machine-learning)
+  sml idris gnunet vpn firmware vulkan spice kde libreoffice package-management
+  machine-learning pulseaudio xiph scheme rust diffoscope statistics)
 
 
 (use-service-modules
   desktop networking ssh xorg pm sound cuirass audio web
-  mcron virtualization sddm dns admin messaging)
+  mcron virtualization sddm dns admin messaging cups)
 
 (use-modules (tau packages fonts)
              (tau packages zig)
@@ -28,6 +28,7 @@
              (nongnu packages steam-client)
              (nongnu system linux-initrd)
              (tau packages vim)
+             (tau packages trx)
              (tau packages haskell)
              (tau packages xorg)
              (tau packages telegram)
@@ -36,15 +37,6 @@
              (guix download)
              (guix gexp)
              (tau packages python))
-
-;(define channels
-;  (list (channel
-;          (name 'guix)
-;          (url "https://git.savannah.gnu.org/git/guix.git")
-;          (commit "96a655a77bb087397a9436391e472c36ff0a2ec2"))))
-
-;(define (inferior name)
-;  (first (lookup-inferior-packages (inferior-for-channels channels) name)))
 
 (define garbage-collector-job
   #~(job '(next-hour '(10)) "guix gc -F 10G"))
@@ -92,32 +84,29 @@
                   (group "users")
                   (home-directory "/home/tau")
                   (supplementary-groups
-                    '("wheel" "netdev" "audio" "video" "kvm")))
+                    '("wheel" "dialout" "netdev" "audio" "video" "kvm")))
                 %base-user-accounts))
   (packages
     (append
       (list nss-certs kitty tmux man-pages dmenu zathura sshfs zip fzy
-            tree xrandr clang texlive poppler sox
-            espeak-ng slock graphviz unzip gforth gnu-make libevent wine64
-            mpv gimp inkscape nmap scrot pv feh diction rsync
-            torsocks valgrind gdb weechat mpd-mpc
+            tree xrandr clang poppler sox texlive
+            graphviz unzip gnu-make libevent wine64
+            mpv gimp inkscape nmap scrot pv feh rsync
+            valgrind gdb weechat mpd-mpc
             zathura-pdf-mupdf zathura-ps zathura-djvu xclip aspell-dict-sv
-            elm-compiler nim go file sent dico aspell-dict-uk
+            file sent dico aspell-dict-uk elm-compiler
             neomutt telegram-cli isc-bind flite tesseract-ocr
-            aspell thefuck redshift ;firefox
+            aspell thefuck redshift racket cups
 
-            ghc-pandoc ghc-pandoc-citeproc ghc-pandoc-types ghc ghc-entangled
+            ghc-pandoc ghc-pandoc-citeproc ghc-entangled ghc hoogle
             ghc-pandoc-crossref ghc-pandoc-filter-graphviz ghc-pandoc-sidenote
-            ghc-pandoc-stylefrommeta ghc-pandoc-csv2table
-            ghc-panpipe ghcid ghc-tldr
 
-            alsa-utils cava steam
+            alsa-utils cava steam trx mpd
 
             gcc-toolchain
 
             mailutils fetchmail libreoffice
-            dico xdotool fastboot
-
+            dico xdotool fastboot pulseaudio
 
             encfs acpi xsetroot spoon qemu ovmf ;dosfstools
 
@@ -129,9 +118,9 @@
 
             youtube-dl
 
-            sassc node tidy-html wget aria2 jq
+            sassc node tidy-html wget aria2 jq xkill paperview
 
-            icecat icedove ;(inferior "ungoogled-chromium")
+            icecat ungoogled-chromium ; icedove
 
             font-jetbrains-mono font-scientifica
             font-google-noto font-victor-mono font-mononoki font-awesome
@@ -140,32 +129,36 @@
             font-wqy-microhei font-cns11643 font-wqy-zenhei
 
             xf86-input-wacom xhost xf86-video-intel xinput xmodmap xprop
-            krita drawpile
+            krita ;drawpile
 
-            zig-0.6.0-master
+            zig-0.7.1-master r jupyter guix-jupyter gwl
 
-            supertuxkart btanks 0ad minetest php
+            figlet qutebrowser lm-sensors
 
-            asciinema python-pmbootstrap
+            btanks gforth php
+            ; supertuxkart btanks 0ad minetest
+
+            asciinema python-pmbootstrap diction
 
             neovim neovim-zig neovim-gitgutter neovim-tabular neovim-limelight
-            neovim-lastplace  neovim-vebugger neovim-rainbow
-            neovim-ale neovim-deoplete neovim-pandoc-syntax
+            neovim-lastplace  neovim-vebugger neovim-rainbow neovim-elm
+            neovim-ale neovim-deoplete neovim-pandoc-syntax neovim-clang-format
 
-            ffmpeg fakechroot fakeroot ;kaldi
+            ffmpeg ;dosfstools ; fakechroot fakeroot ;kaldi
 
-            qemu spice-gtk
+            qemu spice-gtk wireshark
 
             vulkan-loader vulkan-tools spirv-tools vulkan-headers spirv-headers
-            glfw pkg-config
+            glfw pkg-config sdl2 sdl2-image (list openjdk14 "jdk") xxd nheko
+            stockfish diffoscope
 
-            dwm bspwm sxhkd octave wxmaxima gnucobol
+            dwm bspwm sxhkd ; octave wxmaxima gnucobol
 
-            curl gnu-c-manual links lynx git ;netcat-openbsd
+            curl gnu-c-manual links lynx git socat netcat-openbsd
             glibc-utf8-locales no-more-secrets
-            debootstrap wget gnupg (list icedtea-8 "jdk") sdl2
+            debootstrap wget gnupg pinentry-tty pinentry
             mesa-utils
-            wabt llvm clang-toolchain fortune-mod
+            wabt llvm clang-toolchain lld fortune-mod
             strace prout
             xprop xwininfo neomutt compton)
       %base-packages))
@@ -174,7 +167,6 @@
       (list (service openssh-service-type
               (openssh-configuration
                 (x11-forwarding? #t)))
-            (service tor-service-type)
             (service thermald-service-type)
             (service tlp-service-type
                      (tlp-configuration
@@ -192,13 +184,7 @@
                 (jobs (list garbage-collector-job))))
 
             (service slim-service-type)
-
-            (service httpd-service-type
-              (httpd-configuration
-                (config
-                  (httpd-config-file
-                  (server-name "server")
-                  (document-root "/home/tau/web")))))
+            (service cups-service-type)
 
             (service dnsmasq-service-type
               (dnsmasq-configuration
