@@ -109,6 +109,7 @@
                     (lambda _
                       (substitute* "config.def.h"
                         (("MODKEY Mod1Mask") "MODKEY Mod4Mask")
+                        (("const int showbar.*") "const int showbar = 0;")
                         (("005577") "000000"))
                       #t)))))))
         dmenu
