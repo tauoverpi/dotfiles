@@ -20,8 +20,8 @@ set linebreak
 set list
 set listchars=tab:\▎\ ,extends:>
 set magic
-set mat=1
-set matchpairs=
+"set mat=1
+"set matchpairs=
 set mouse=a
 set nocompatible
 set nohlsearch
@@ -305,7 +305,7 @@ function! DarkTheme()
   hi DiffDelete      guibg=#111111
   hi DiffText        guibg=#111111
   hi Directory       guibg=#111111
-  hi EndOfBuffer     guifg=#000000 gui=none
+  hi EndOfBuffer     guifg=#000000 gui=none guibg=#171a1b
   hi ErrorMsg        guibg=#ff0000
   hi FoldColumn      guibg=#000000
   hi Folded          guibg=#000000
@@ -337,8 +337,8 @@ function! DarkTheme()
   hi SpellCap        guibg=#444433
   hi SpellLocal      guibg=#333344
   hi SpellRare       guibg=#334444
-  hi StatusLine      guibg=none gui=none guifg=#333333
-  hi StatusLineNC    guibg=none gui=none guifg=#333333
+  hi StatusLine      guibg=none gui=bold guifg=#000000
+  hi StatusLineNC    guibg=none gui=bold guifg=#000000
   hi Substitute      guibg=#111111
   hi TabLine         guibg=#111111
   hi TabLineFill     guibg=#111111
@@ -347,8 +347,8 @@ function! DarkTheme()
   hi TermCursorNC    guibg=#111111
   hi Title           guibg=#111111
   hi VertSplit       guibg=none guifg=#111111 gui=none
-  hi Visual          guibg=#111111
-  hi VisualNC        guibg=#111111
+  hi Visual          guifg=#333333 guibg=#171a1b
+  hi VisualNC        guifg=#333333 guibg=#171a1b
   hi WarningMsg      guibg=#111111
   hi Whitespace      guibg=#1d2021 guibg=none
   hi WildMenu        guibg=#111111

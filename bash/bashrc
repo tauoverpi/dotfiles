@@ -16,9 +16,9 @@ function fuck () {
 export SHELL
 export PATH=$HOME/bin:$HOME/.config/guix/current/bin:$PATH:$HOME/git/github/scratch/zig/zig-cache/bin
 export EDITOR=nvim
-export GUIX_PACKAGE_PATH=$HOME/git/github/packages
+export GUIX_PACKAGE_PATH=$HOME/vcs/github/packages
 export PROMPT_COMMAND='history -a'
-export MPD_HOST=$HOME/.mpd/connection
+#export MPD_HOST=$HOME/.mpd/connection
 export MAIL=$HOME/.mail
 
 if [[ $- != *i* ]]
@@ -58,8 +58,8 @@ alias grep='grep --color=auto'
 alias watch='watch -c'
 alias crep='grep --color=always'
 alias vga='xrandr --output VGA-1 --auto'
-alias recon='sudo -E guix system reconfigure $HOME/dotfiles/latitude.scm -c 1 -M 1'
-alias config="$EDITOR $HOME/dotfiles/latitude.scm"
+alias recon='sudo -E guix system reconfigure $HOME/config.scm'
+alias config="$EDITOR $HOME/config.scm"
 alias note='nvim ~/.note'
 alias cnote='nvim ~/.cass'
 alias game='nvim ~/git/blog/challenges'
@@ -68,10 +68,7 @@ alias seductive='sed'
 alias awkward='awk'
 alias wttr='curl -s wttr.in/gothenburg | head -n -1'
 alias moon='curl -s wttr.in/moon | head -n -1'
-alias mbus='wine64 ~/.wine/drive_c/Program\ Files\ \(x86\)/PiiGAB/MBWizard/MBWizard.exe'
-alias lt='java -jar ~/data/build/languagetool/LanguageTool-4.8/languagetool-commandline.jar'
 alias less='less -R'
-alias pi900S='cd ~/git/piigab/Pi-900S/flask/'
 alias todo='nvim ~/.todo'
 alias qwerty='xmodmap $HOME/dotfiles/qgmlwb.xkb'
 alias qgmlwb='setxkbmap us'
@@ -159,7 +156,7 @@ tmp(){
 
 s()
 {
-  links "https://duckduckgo.com/lite/search?q=$(echo $@ | sed 's/ /%20/g')"
+  lynx "https://duckduckgo.com/lite/search?q=$(echo $@ | sed 's/ /%20/g')"
 }
 
 suspend()
@@ -240,10 +237,10 @@ wh()
 
 bright()
 {
-  L=$(cat /sys/class/backlight/intel_backlight/max_brightness)
+  L=$(cat /sys/class/backlight/amdgpu_bl0/max_brightness)
   V=$1
   [ $L -lt $V ] && V=$L
-  echo $V | sudo tee /sys/class/backlight/intel_backlight/brightness
+  echo $V | sudo tee /sys/class/backlight/amdgpu_bl0/brightness
 }
 
 radio()
