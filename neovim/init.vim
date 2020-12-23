@@ -1,7 +1,7 @@
 filetype indent plugin on
 syntax on
 
-set cursorline
+"set cursorline
 set autochdir
 set incsearch
 set backspace=eol,start,indent
@@ -18,7 +18,7 @@ set laststatus=0
 set lazyredraw
 set linebreak
 set list
-set listchars=tab:\.\ ,extends:>
+set listchars=tab:\▎\ ,extends:>
 set magic
 set mat=1
 set matchpairs=
@@ -39,20 +39,31 @@ set tabstop=2
 set tags=tags;
 set termguicolors
 set textwidth=80
+set updatetime=1000
 set undodir=~/.config/nvim/tmp/undo/
 set undofile
 set whichwrap+=<,>,h,l
 set wrap
-let g:python_host_prog='/run/current-system/profile/bin/python3.8'
-let g:deoplete#enable_at_startup = 1
+"let g:python_host_prog='/run/current-system/profile/bin/python3'
+"let g:deoplete#enable_at_startup = 1
 let g:ale_completion_enabled = 1
 let g:ale_completion_autoimport = 1
+let g:ale_zig_zls_executable = '/home/tau/bin/zls'
+let g:ale_linters = { 'zig': ['zls'] }
+let g:ale_open_list = 1
+let g:ale_keep_list_window_open = 1
+let g:ale_set_loclist = 0
+let g:ale_set_quickfix = 1
+let g:ale_sign_error = '▊ '
+let g:ale_sign_warning = '▊ '
+"let g:ale_hover_cursor = 1
+"let g:ale_set_balloons = 1
+"let g:ale_hover_to_preview = 1
 
 function! CleanFile()
-	normal mZ
-	:%s/\s\+$//e
-	":%s/\n\{3,}/\r\r/e
-	normal `Z
+  normal mZ
+  :%s/\s\+$//e
+  normal `Z
 endfunction
 
 let g:limetoggle = 1
@@ -84,6 +95,8 @@ nm <Down> <C-w>j
 " TAB MOVEMENT
 nm <C-Left> :tabprevious<CR>
 nm <C-Right> :tabnext<CR>
+" ALE
+
 
 function! Vox()
   if mode()=="v"
@@ -153,7 +166,6 @@ let g:neosnippet#disable_runtime_snippets = {
 		\ }
 let g:neosnippet#snippets_directory='~/config/neovim/snippets/'
 "let g:rainbow_active = 1
-let g:limelight_conceal_guifg='#444444'
 let g:limelight_paragraph_span = 0
 let g:markdown_fenced_languages =
 \ ["c", "cpp", "python", "sh", "yaml", "html"
@@ -174,105 +186,229 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 
 " Stuff
 au BufNewFile,BufRead * Limelight
-au BufNewFile,BufRead *.c,*.cs set expandtab!
-au CursorHold * execute 'hi CursorLineNr guibg=#221d1f guifg=#30ff6a'
-au InsertEnter * execute 'hi CursorLineNr guibg=#221d1f guifg=#ff9c30'
-au InsertLeave * execute 'hi CursorLineNr guibg=#221d1f guifg=#000000'
+au BufNewFile,BufRead *.c,*.cs set expandtab
+au BufNewFile,BufRead *.c,*.h set ft=c
+au CursorHold,CursorHoldI * execute 'ALEHover'
+"au InsertEnter * execute 'hi CursorLineNr guibg=#221d1f guifg=#ff9c30'
+"au InsertLeave * execute 'hi CursorLineNr guibg=#221d1f guifg=#000000'
 au BufWrite * call CleanFile()
 au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown.pandoc
 
 " Theme
 
-"hi ColorColumn     guibg=#ffffff
-"hi Conceal         guibg=#ffffff
-"hi Cursor          guibg=#ffffff
-hi CursorColumn    guibg=#ffffff
-hi CursorLine      guibg=#222222
-hi CursorLineNr    guibg=#ffffff
-hi DiffAdd         guibg=#ffffff
-hi DiffChange      guibg=#ffffff
-hi DiffDelete      guibg=#ffffff
-hi DiffText        guibg=#ffffff
-hi Directory       guibg=#ffffff
-hi EndOfBuffer     guibg=#000000
-hi ErrorMsg        guibg=#ff0000
-hi FoldColumn      guibg=#ffffff
-hi Folded          guibg=#ffffff
-hi IncSearch       guibg=#ffffff
-hi LineNr          guibg=#ffffff
-hi MatchParen      guibg=#ffffff
-hi ModeMsg         guibg=#ffffff
-hi MoreMsg         guibg=#ffffff
-hi MsgArea         guibg=#000000
-hi MsgSeparator    guibg=#ffffff
-hi NonText         guibg=#000000
-hi Normal          guibg=#000000
-hi NormalFloat     guibg=#ffffff
-"hi NormalNC        guibg=#ffffff
-hi Pmenu           guibg=#111111
-hi PmenuSbar       guibg=#111111
-hi PmenuSel        guibg=#111111 guifg=#00ff00
-hi PmenuThumb      guibg=#111111
-hi Question        guibg=#ffffff
-hi QuickFixLine    guibg=#000000
-"hi RedrawDebugClear  guibg=#ffffff
-"hi RedrawDebugComposed  guibg=#ffffff
-"hi RedrawDebugNormal  guibg=#ffffff
-"hi RedrawDebugRecompose  guibg=#ffffff
-hi Search          guibg=#ffffff
-hi SignColumn      guibg=#000000
-hi SpecialKey      guibg=#ffffff
-hi SpellBad        guibg=#443333
-hi SpellCap        guibg=#444433
-hi SpellLocal      guibg=#333344
-hi SpellRare       guibg=#334444
-hi StatusLine      guibg=#111111 gui=none guifg=#333333
-hi StatusLineNC    guibg=#111111 gui=none guifg=#333333
-hi Substitute      guibg=#ffffff
-hi TabLine         guibg=#ffffff
-hi TabLineFill     guibg=#ffffff
-hi TabLineSel      guibg=#ffffff
-hi TermCursor      guibg=#ffffff
-hi TermCursorNC    guibg=#ffffff
-hi Title           guibg=#111111
-hi VertSplit       guibg=#111111 guifg=#111111
-hi Visual          guibg=#222222
-hi VisualNC        guibg=#222222
-hi WarningMsg      guibg=#ffffff
-hi Whitespace      guibg=#000000
-hi WildMenu        guibg=#ffffff
-hi lCursor         guibg=#ffffff
+function! LightTheme()
+  "hi ColorColumn     guibg=#ffffff
+  "hi Conceal         guibg=#ffffff
+  "hi Cursor          guibg=#ffffff
+  hi CursorColumn    guibg=#c5c5c5
+  hi CursorLine      guibg=#c5c5c5
+  hi CursorLineNr    guibg=#111111
+  hi DiffAdd         guibg=#111111
+  hi DiffChange      guibg=#111111
+  hi DiffDelete      guibg=#111111
+  hi DiffText        guibg=#111111
+  hi Directory       guibg=#111111
+  hi EndOfBuffer     guifg=none gui=none
+  hi ErrorMsg        guibg=#ff0000
+  hi FoldColumn      guibg=#111111
+  hi Folded          guibg=#111111
+  hi IncSearch       guibg=#111111
+  hi LineNr          guibg=#111111
+  hi MatchParen      guibg=#111111
+  hi ModeMsg         guibg=#111111
+  hi MoreMsg         guibg=#111111
+  hi MsgArea         guibg=#dddddd
+  hi MsgSeparator    guibg=#111111
+  hi NonText         guifg=none gui=none
+  hi Normal          guibg=#dddddd guifg=#444444
+  hi NormalFloat     guibg=#111111
+  "hi NormalNC        guibg=#111111
+  hi Pmenu           guibg=#dddddd
+  hi PmenuSbar       guibg=#dddddd
+  hi PmenuSel        guibg=#cccccc guifg=#000000
+  hi PmenuThumb      guibg=#dddddd
+  hi Question        guibg=#111111
+  hi QuickFixLine    guibg=#eeeeee
+  "hi RedrawDebugClear  guibg=#111111
+  "hi RedrawDebugComposed  guibg=#111111
+  "hi RedrawDebugNormal  guibg=#111111
+  "hi RedrawDebugRecompose  guibg=#111111
+  hi Search          guibg=#111111
+  hi SignColumn      guibg=#dddddd
+  hi SpecialKey      guibg=#111111
+  hi SpellBad        guibg=#443333
+  hi SpellCap        guibg=#444433
+  hi SpellLocal      guibg=#333344
+  hi SpellRare       guibg=#334444
+  hi StatusLine      guibg=none gui=none guifg=#333333
+  hi StatusLineNC    guibg=none gui=none guifg=#333333
+  hi Substitute      guibg=#111111
+  hi TabLine         guibg=#111111
+  hi TabLineFill     guibg=#111111
+  hi TabLineSel      guibg=#111111
+  hi TermCursor      guibg=#111111
+  hi TermCursorNC    guibg=#111111
+  hi Title           guibg=#111111
+  hi VertSplit       guibg=none guifg=#111111 gui=none
+  hi Visual          guibg=#eeeeee
+  hi VisualNC        guibg=#eeeeee
+  hi WarningMsg      guibg=#111111
+  hi Whitespace      guibg=#dddddd
+  hi WildMenu        guibg=#111111
+  hi lCursor         guibg=#111111
 
-hi Boolean guifg=#eeeeee
-hi Character guifg=#eeeeee
-hi Comment guifg=#666666
-hi Conditional guifg=#666666
-hi Constant guifg=#eeeeee
-hi Debug guifg=#666666
-hi Define guifg=#666666
-hi Error  guifg=#ff0000
-hi Exception guifg=#ff0000
-hi Float guifg=#eeeeee
-hi Function guifg=#666666
-hi Ignore guifg=#666666
-hi Include guifg=#666666
-hi Keyword guifg=#666666 gui=bold
-hi Label guifg=#666666
-hi Macro guifg=#ff0000
-hi PreCondit guifg=#666666
-hi PreProc guifg=#666666
-hi Repeat guifg=#666666
-hi Special guifg=#666666
-hi SpecialComment guifg=#666666
-hi Statement guifg=#666666
-hi StorageClass guifg=#666666
-hi String guibg=#333333 guifg=#ffffff gui=italic
-hi Structure guifg=#666666
-hi Todo guifg=#666666
-hi Typedef guifg=#666666
-hi Underlined guifg=#666666
-hi Type guifg=#666666
+  hi Boolean guifg=#111111
+  hi Character guifg=#111111
+  hi Comment guifg=#666666
+  hi Conditional guifg=#98971a gui=bold
+  hi Constant guifg=#98971a
+  hi Debug guifg=#666666
+  hi Define guifg=#666666
+  hi Error  guifg=#ff0000 guibg=none
+  hi Exception guifg=#ff0000
+  hi Float guifg=#111111
+  hi Function guifg=#458588 gui=bold
+  hi Ignore guifg=#666666
+  hi Include guifg=#666666
+  hi Keyword guifg=#000000 gui=bold
+  hi Label guifg=#666666
+  hi Macro guifg=#ff0000
+  hi PreCondit guifg=#666666
+  hi PreProc guifg=#666666
+  hi Repeat guifg=#666666
+  hi Special guifg=#666666
+  hi SpecialComment guifg=#666666
+  hi Statement guifg=#d79921
+  hi StorageClass guifg=#000000 gui=bold
+  hi String guibg=#b5b5b5 guifg=#777777 gui=italic
+  hi Structure guifg=#458588 gui=bold
+  hi Todo guibg=#458588 guifg=#ffffff gui=bold
+  hi Typedef guifg=#666666
+  hi Underlined guifg=#666666
+  hi Type guifg=#458588
+  hi Operator guifg=#458588 gui=bold
+  hi Identifier guifg=#111111
+  hi qfFileName guibg=none
+  hi qfLineNr guibg=none
+  let g:limelight_conceal_guifg='#bbbbbb'
+endfunction
 
-hi GitGutterAdd guifg=#00ff00
-hi GitGutterChange guifg=#ffff00
-hi GitGutterDelete guifg=#ff0000
+function! DarkTheme()
+  "hi ColorColumn     guibg=#ffffff
+  "hi Conceal         guibg=#ffffff
+  "hi Cursor          guibg=#ffffff
+  hi CursorColumn    guibg=#454545
+  hi CursorLine      guibg=#454545
+  hi CursorLineNr    guibg=#111111
+  hi DiffAdd         guibg=#111111
+  hi DiffChange      guibg=#111111
+  hi DiffDelete      guibg=#111111
+  hi DiffText        guibg=#111111
+  hi Directory       guibg=#111111
+  hi EndOfBuffer     guifg=#000000 gui=none
+  hi ErrorMsg        guibg=#ff0000
+  hi FoldColumn      guibg=#000000
+  hi Folded          guibg=#000000
+  hi IncSearch       guibg=#000000
+  hi LineNr          guibg=#000000
+  hi MatchParen      guibg=#000000
+  hi ModeMsg         guibg=#000000
+  hi MoreMsg         guibg=#000000
+  hi MsgArea         guibg=#1d2021
+  hi MsgSeparator    guibg=#eeeeee
+  hi NonText         guibg=none gui=none
+  hi Normal          guibg=#1d2021 guifg=#eeeeee
+  hi NormalFloat     guibg=#111111
+  "hi NormalNC        guibg=#111111
+  hi Pmenu           guibg=#444444
+  hi PmenuSbar       guibg=#444444
+  hi PmenuSel        guibg=#cccccc guifg=#000000
+  hi PmenuThumb      guibg=#dddddd
+  hi Question        guibg=#111111
+  hi QuickFixLine    guibg=#111111
+  "hi RedrawDebugClear  guibg=#111111
+  "hi RedrawDebugComposed  guibg=#111111
+  "hi RedrawDebugNormal  guibg=#111111
+  "hi RedrawDebugRecompose  guibg=#111111
+  hi Search          guibg=#eeeeee
+  hi SignColumn      guibg=#1d2021
+  hi SpecialKey      guibg=#eeeeee
+  hi SpellBad        guibg=#443333
+  hi SpellCap        guibg=#444433
+  hi SpellLocal      guibg=#333344
+  hi SpellRare       guibg=#334444
+  hi StatusLine      guibg=none gui=none guifg=#333333
+  hi StatusLineNC    guibg=none gui=none guifg=#333333
+  hi Substitute      guibg=#111111
+  hi TabLine         guibg=#111111
+  hi TabLineFill     guibg=#111111
+  hi TabLineSel      guibg=#111111
+  hi TermCursor      guibg=#111111
+  hi TermCursorNC    guibg=#111111
+  hi Title           guibg=#111111
+  hi VertSplit       guibg=none guifg=#111111 gui=none
+  hi Visual          guibg=#111111
+  hi VisualNC        guibg=#111111
+  hi WarningMsg      guibg=#111111
+  hi Whitespace      guibg=#1d2021 guibg=none
+  hi WildMenu        guibg=#111111
+  hi lCursor         guibg=#111111
+
+  hi Boolean guifg=#eeeeee
+  hi Character guifg=#eeeeee
+  hi Comment guifg=#aaaaaa
+  hi Conditional guifg=#98971a gui=bold
+  hi Constant guifg=#98971a
+  hi Debug guifg=#aaaaaa
+  hi Define guifg=#aaaaaa
+  hi Error  guifg=#ff0000 guibg=none
+  hi Exception guifg=#ff0000
+  hi Float guifg=#eeeeee
+  hi Function guifg=#458588 gui=bold
+  hi Ignore guifg=#aaaaaa
+  hi Include guifg=#aaaaaa
+  hi Keyword guifg=#ffffff gui=bold
+  hi Label guifg=#aaaaaa
+  hi Macro guifg=#ff0000
+  hi PreCondit guifg=#aaaaaa
+  hi PreProc guifg=#aaaaaa
+  hi Repeat guifg=#aaaaaa
+  hi Special guifg=#aaaaaa
+  hi SpecialComment guifg=#aaaaaa
+  hi Statement guifg=#d79921
+  hi StorageClass guifg=#ffffff gui=bold
+  hi String guibg=#353535 guifg=#aaaaaa gui=italic
+  hi Structure guifg=#458588 gui=bold
+  hi Todo guibg=#458588 guifg=#ffffff gui=bold
+  hi Typedef guifg=#aaaaaa
+  hi Underlined guifg=#aaaaaa
+  hi Type guifg=#458588
+  hi Operator guifg=#458588 gui=bold
+  hi Identifier guifg=#eeeeee
+  hi qfFileName guibg=none
+  hi qfLineNr guibg=none
+  let g:limelight_conceal_guifg='#555555'
+endfunction
+
+call DarkTheme()
+
+let g:theme_toggle = 1
+function! ToggleTheme()
+	if (g:theme_toggle == 0)
+		call DarkTheme()
+		let g:theme_toggle = 1
+	else
+    call LightTheme()
+		let g:theme_toggle = 0
+	endif
+
+endfunction
+
+hi SpellCap guibg=none guifg=#ff0000 gui=none
+hi SpellBad guibg=none guifg=#ff0000 gui=none
+hi SpellLocal guibg=none guifg=#ff0000 gui=none
+hi SpellRare guibg=none guifg=#ff0000 gui=none
+
+hi GitGutterAdd guifg=#98971a
+hi GitGutterChange guifg=#458588
+hi GitGutterDelete guifg=#cc241d
