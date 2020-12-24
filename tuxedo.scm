@@ -194,13 +194,9 @@
                  (music-dir "~/music")
                  (outputs
                    (list (mpd-output
-                           (name "pulse")
-                           (type "pulse")
-                           (mixer-type 'hardware))
-
-                         (mpd-output
                            (name "stream")
                            (type "httpd")
+                           (always-on? #t)
                            (mixer-type 'null)
                            (extra-options
                              `((encoder . "vorbis")

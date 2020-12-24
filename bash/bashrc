@@ -58,7 +58,7 @@ alias grep='grep --color=auto'
 alias watch='watch -c'
 alias crep='grep --color=always'
 alias vga='xrandr --output VGA-1 --auto'
-alias recon='sudo -E guix system reconfigure $HOME/config.scm'
+alias recon='sudo -E guix system reconfigure $HOME/config.scm -v3'
 alias config="$EDITOR $HOME/config.scm"
 alias note='nvim ~/.note'
 alias cnote='nvim ~/.cass'
@@ -133,11 +133,6 @@ speaktext()
     popd
     mpv --save-position-on-quit "$HOME/.cache/voice/${cache}"
   fi
-}
-
-music()
-{
-  mpv $HOME/music/$1 --loop-playlist=inf -vo=null --shuffle
 }
 
 lmddgtfy()
@@ -241,6 +236,11 @@ bright()
   V=$1
   [ $L -lt $V ] && V=$L
   echo $V | sudo tee /sys/class/backlight/amdgpu_bl0/brightness
+}
+
+music()
+{
+  mpc playl | nl | fzy | awk '{print $1}' | xargs mpc play
 }
 
 radio()
