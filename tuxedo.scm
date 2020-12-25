@@ -22,7 +22,7 @@
   networking curl gdb valgrind diffoscope spice xorg
   virtualization python-xyz package-management pdf
   ocr haskell-xyz libreoffice man gcc tex fonts
-  graphviz javascript games)
+  graphviz javascript games wm)
 
 (define shell-packages
   (list tmux
@@ -114,6 +114,7 @@
                       #t)))))))
         dmenu
         redshift
+        i3lock-color
         scrot
         feh
         spice-gtk
@@ -231,6 +232,10 @@
     (bootloader-configuration
       (bootloader grub-efi-bootloader)
       (target "/boot/efi")
+      (theme
+        (grub-theme
+          (inherit (grub-theme))
+          (image (local-file "gnu-gold.png"))))
       (keyboard-layout keyboard-layout)))
 
   (mapped-devices
