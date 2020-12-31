@@ -5,6 +5,7 @@
              (nongnu packages steam-client)
              (nongnu packages mozilla)
              (tau packages vim)
+             (tau packages solvespace)
              (tau packages fonts)
              (tau packages zig)
              (guix packages)
@@ -12,7 +13,8 @@
              (nongnu packages linux))
 
 (use-service-modules
-  desktop networking ssh xorg virtualization dns audio)
+  desktop networking ssh xorg virtualization dns audio sound
+  dbus pm)
 
 (use-package-modules
   vim tmux suckless version-control terminals figlet web linux
@@ -22,11 +24,13 @@
   networking curl gdb valgrind diffoscope spice xorg
   virtualization python-xyz package-management pdf
   ocr haskell-xyz libreoffice man gcc tex fonts
-  graphviz javascript games wm)
+  graphviz javascript games wm engineering)
 
 (define shell-packages
   (list tmux
         asciinema
+        zpaq
+        htop
         figlet
         jq
         xxd
@@ -34,6 +38,7 @@
         tree file
         unzip zip
         pv
+        picocom
         git
         fzy))
 
@@ -70,18 +75,12 @@
 
 (define game-packages
   (list steam
-        0ad
-        xonotic
-        minetest
-        btanks
-        supertuxkart
         bsd-games
-        chess gnugo
-        red-eclipse))
+        chess gnugo))
 
 (define web-packages
   (list ungoogled-chromium
-        firefox
+        ;firefox
         qutebrowser
         aria2 curl
         youtube-dl
@@ -118,6 +117,9 @@
         scrot
         feh
         spice-gtk
+        ntfs-3g
+        solvespace
+        openscad
         qemu
         compton
         jupyter guix-jupyter gwl
@@ -157,7 +159,7 @@
                   (group "users")
                   (home-directory "/home/tau")
                   (supplementary-groups
-                    '("wheel" "netdev" "audio" "video" "kvm")))
+                    '("wheel" "netdev" "audio" "video" "kvm" "dialout")))
                 %base-user-accounts))
 
   (packages
@@ -220,11 +222,19 @@
                          "198.101.242.72"
                          "23.253.163.53"))))
 
-      (extra-special-file "/etc/resolv.conf"
-        (plain-file "resolv.conf" "nameserver 127.0.0.1"))
+      (screen-locker-service slock)
+      (service upower-service-type)
+      (service ntp-service-type)
+      (service thermald-service-type)
+      (service pulseaudio-service-type)
+      (service alsa-service-type)
+      (dbus-service)
 
-      (extra-special-file "/usr/bin/env"
-        (file-append coreutils "/bin/env"))
+
+      (service special-files-service-type
+               `(("/etc/resolv.conf" ,(plain-file "resolv.conf" "nameserver 127.0.0.1"))
+                 ("/usr/bin/env" ,(file-append coreutils "/bin/env"))
+                 ("/usr/bin/file" ,(file-append file "/bin/file"))))
 
       %base-services))
 
