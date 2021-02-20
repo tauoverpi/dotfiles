@@ -2,7 +2,6 @@
 ;; by the graphical installer.
 
 (use-modules (gnu)
-             (nongnu packages steam-client)
              (nongnu packages mozilla)
              (tau packages vim)
              (tau packages solvespace)
@@ -14,24 +13,29 @@
 
 (use-service-modules
   desktop networking ssh xorg virtualization dns audio sound
-  dbus pm)
+  dbus pm mcron vpn)
 
 (use-package-modules
   vim tmux suckless version-control terminals figlet web linux
   admin chromium web-browsers bittorrent haskell python gimp
   inkscape kde graphics xdisorg image-viewers compton file
-  compression pv shellutils mpd video audio speech rsync
-  networking curl gdb valgrind diffoscope spice xorg
-  virtualization python-xyz package-management pdf
-  ocr haskell-xyz libreoffice man gcc tex fonts
-  graphviz javascript games wm engineering)
+  compression pv shellutils mpd video audio speech rsync wine
+  networking curl gdb valgrind diffoscope spice xorg mail
+  virtualization python-xyz package-management pdf tor w3m
+  ocr haskell-xyz libreoffice man gcc tex fonts fontutils
+  graphviz javascript games wm engineering elm text-editors
+  telegram pkg-config sdl)
+
+(define garbage-collector-job #~(job "5 8 * * *" "guix gc -F 10G"))
 
 (define shell-packages
   (list tmux
         asciinema
         zpaq
         htop
+        pkg-config
         figlet
+        perf
         jq
         xxd
         acpi lm-sensors
@@ -43,9 +47,9 @@
         fzy))
 
 (define media-packages
-  (list mpd-mpc mpd
-        mpv ffmpeg
+  (list mpv ffmpeg
         cava
+        sdl2 sdl-image
         alsa-utils
         flite
         sox))
@@ -54,16 +58,19 @@
   (list stunnel
         net-tools
         tcpdump
+        torsocks
         sshfs
         rsync
+        iftop
+        neomutt
         wireshark
         nmap
         socat netcat-openbsd))
 
 (define font-packages
-  (list font-jetbrains-mono font-scientifica
+  (list fontconfig font-jetbrains-mono font-scientifica
         font-google-noto font-victor-mono font-mononoki font-awesome
-        font-comic-neue font-dejavu font-hack font-liberation
+        font-comic-neue font-hack font-liberation font-ibm-plex
         font-linuxlibertine font-lato font-mathjax font-ubuntu font-hermit
         font-wqy-microhei font-cns11643 font-wqy-zenhei))
 
@@ -74,8 +81,7 @@
         neovim-zig))
 
 (define game-packages
-  (list steam
-        bsd-games
+  (list bsd-games
         chess gnugo))
 
 (define web-packages
@@ -83,8 +89,9 @@
         ;firefox
         qutebrowser
         aria2 curl
+        w3m
         youtube-dl
-        lynx))
+        links))
 
 (define debugging-packages
   (list gdb
@@ -93,11 +100,26 @@
         strace))
 
 (define language-packages
-  (list zig-0.7.1-master
+  (list zig-0.8-dev
+        elm-compiler
         wabt))
 
 (define desktop-packages
   (list kitty
+        telegram-cli
+        telegram-desktop
+        (package
+          (inherit sent)
+          (arguments
+            (substitute-keyword-arguments (package-arguments sent)
+              ((#:phases phases)
+               `(modify-phases ,phases
+                  (add-before 'build 'theme
+                    (lambda _
+                      (substitute* "config.def.h"
+                        (("000000") "ffffff")
+                        (("FFFFFF") "1d2021"))
+                      #t)))))))
         (package
           (inherit dwm)
           (arguments
@@ -109,12 +131,14 @@
                       (substitute* "config.def.h"
                         (("MODKEY Mod1Mask") "MODKEY Mod4Mask")
                         (("const int showbar.*") "const int showbar = 0;")
+                        (("st\", NULL") "kitty\", NULL")
                         (("005577") "000000"))
                       #t)))))))
         dmenu
         redshift
         i3lock-color
         scrot
+        wine64
         feh
         spice-gtk
         ntfs-3g
@@ -139,7 +163,7 @@
 (define graphics-packages
   (list gimp
         inkscape
-        krita
+        ;krita
         blender))
 
 (define special-packages
@@ -159,7 +183,7 @@
                   (group "users")
                   (home-directory "/home/tau")
                   (supplementary-groups
-                    '("wheel" "netdev" "audio" "video" "kvm" "dialout")))
+                    '("wheel" "netdev" "audio" "video" "kvm" "dialout" "disk")))
                 %base-user-accounts))
 
   (packages
@@ -171,6 +195,7 @@
       game-packages
       graphics-packages
       language-packages
+      font-packages
       media-packages
       net-packages
       shell-packages
@@ -182,28 +207,17 @@
     (cons*
       (service openssh-service-type)
       (service tor-service-type)
-      (service slim-service-type)
+      (service slim-service-type
+               (slim-configuration
+                 ;(theme-name "theme")
+                 ;(theme (local-file "artwork/slim" "themes" #:recursive? #t))
+                 (default-user "tau")))
 
       (service network-manager-service-type
                (network-manager-configuration
                  (dns "none")))
 
       (service wpa-supplicant-service-type)
-
-      (service mpd-service-type
-               (mpd-configuration
-                 (user "tau")
-                 (port "6600")
-                 (music-dir "~/music")
-                 (outputs
-                   (list (mpd-output
-                           (name "stream")
-                           (type "httpd")
-                           (always-on? #t)
-                           (mixer-type 'null)
-                           (extra-options
-                             `((encoder . "vorbis")
-                               (port . "8080"))))))))
 
       (service qemu-binfmt-service-type
                (qemu-binfmt-configuration
@@ -227,9 +241,15 @@
       (service ntp-service-type)
       (service thermald-service-type)
       (service pulseaudio-service-type)
+      (service bluetooth-service-type
+               (bluetooth-configuration
+                 (auto-enable? #t)))
       (service alsa-service-type)
       (dbus-service)
 
+      (simple-service 'crontab
+                      mcron-service-type
+                      (list garbage-collector-job))
 
       (service special-files-service-type
                `(("/etc/resolv.conf" ,(plain-file "resolv.conf" "nameserver 127.0.0.1"))
@@ -245,7 +265,7 @@
       (theme
         (grub-theme
           (inherit (grub-theme))
-          (image (local-file "gnu-gold.png"))))
+          (image (local-file "artwork/gnu-gold.png"))))
       (keyboard-layout keyboard-layout)))
 
   (mapped-devices

@@ -54,8 +54,8 @@ let g:ale_open_list = 1
 let g:ale_keep_list_window_open = 1
 let g:ale_set_loclist = 0
 let g:ale_set_quickfix = 1
-let g:ale_sign_error = '▊ '
-let g:ale_sign_warning = '▊ '
+let g:ale_sign_error = '▶ '
+let g:ale_sign_warning = '▶ '
 "let g:ale_hover_cursor = 1
 "let g:ale_set_balloons = 1
 "let g:ale_hover_to_preview = 1
@@ -64,17 +64,6 @@ function! CleanFile()
   normal mZ
   :%s/\s\+$//e
   normal `Z
-endfunction
-
-let g:limetoggle = 1
-function! LimelightToggle()
-	if (g:limetoggle == 0)
-		Limelight
-		let g:limetoggle = 1
-	else
-		Limelight!
-		let g:limetoggle = 0
-	endif
 endfunction
 
 let g:gitgutter_sign_added = '▍ '
@@ -134,10 +123,8 @@ tno <Esc> <C-\><C-n>
 tno <C-b><Esc> <Esc>
 
 nm <F7> :RainbowToggle<CR>
-nm <F8> :call LimelightToggle()<CR>
+nm <F8> :Limelight!!<CR>
 nm <F9> :call ToggleTheme()<CR>
-
-nm <C-n> :tabnew<CR>
 
 ino <Up> <NOP>
 ino <Down> <NOP>
@@ -162,8 +149,8 @@ let g:syntastic_style_warning_symbol = '▊ '
 let g:syntastic_style_error_symbol = '▊ '
 
 let g:neosnippet#disable_runtime_snippets = {
-		\   '_' : 1,
-		\ }
+    \   '_' : 1,
+    \ }
 let g:neosnippet#snippets_directory='~/config/neovim/snippets/'
 "let g:rainbow_active = 1
 let g:limelight_paragraph_span = 0
@@ -356,7 +343,7 @@ function! DarkTheme()
 
   hi Boolean guifg=#eeeeee
   hi Character guifg=#eeeeee
-  hi Comment guifg=#aaaaaa
+  hi Comment guifg=#222222
   hi Conditional guifg=#98971a gui=bold
   hi Constant guifg=#98971a
   hi Debug guifg=#aaaaaa
@@ -377,7 +364,7 @@ function! DarkTheme()
   hi SpecialComment guifg=#aaaaaa
   hi Statement guifg=#d79921
   hi StorageClass guifg=#ffffff gui=bold
-  hi String guibg=#353535 guifg=#aaaaaa gui=italic
+  hi String guibg=#222222 guifg=#aaaaaa gui=italic
   hi Structure guifg=#458588 gui=bold
   hi Todo guibg=#458588 guifg=#ffffff gui=bold
   hi Typedef guifg=#aaaaaa
@@ -390,18 +377,127 @@ function! DarkTheme()
   let g:limelight_conceal_guifg='#555555'
 endfunction
 
-call DarkTheme()
+function! BlackTheme()
+  "hi ColorColumn     guibg=none
+  "hi Conceal         guibg=none
+  "hi Cursor          guibg=none
+  hi CursorColumn    guibg=none
+  hi CursorLine      guibg=none
+  hi CursorLineNr    guibg=none
+  hi DiffAdd         guibg=none
+  hi DiffChange      guibg=none
+  hi DiffDelete      guibg=none
+  hi DiffText        guibg=none
+  hi Directory       guibg=none
+  hi EndOfBuffer     guifg=#000000 gui=none guibg=none
+  hi ErrorMsg        guibg=none
+  hi FoldColumn      guibg=none
+  hi Folded          guibg=none
+  hi IncSearch       guibg=none
+  hi LineNr          guibg=none
+  hi MatchParen      guibg=none
+  hi ModeMsg         guibg=none
+  hi MoreMsg         guibg=none
+  hi MsgArea         guibg=none
+  hi MsgSeparator    guibg=none
+  hi NonText         guibg=none gui=none
+  hi Normal          guibg=none guifg=none
+  hi NormalFloat     guibg=none
+  "hi NormalNC        guibg=none
+  hi Pmenu           guibg=none
+  hi PmenuSbar       guibg=none
+  hi PmenuSel        guibg=none guifg=none
+  hi PmenuThumb      guibg=none
+  hi Question        guibg=none
+  hi QuickFixLine    guibg=none
+  "hi RedrawDebugClear  guibg=none
+  "hi RedrawDebugComposed  guibg=none
+  "hi RedrawDebugNormal  guibg=none
+  "hi RedrawDebugRecompose  guibg=none
+  hi Search          guibg=#f49b15
+  hi SignColumn      guibg=none
+  hi SpecialKey      guibg=none
+  hi SpellBad        guibg=none
+  hi SpellCap        guibg=none
+  hi SpellLocal      guibg=none
+  hi SpellRare       guibg=none
+  hi StatusLine      guibg=none gui=bold guifg=none
+  hi StatusLineNC    guibg=none gui=bold guifg=none
+  hi Substitute      guibg=none
+  hi TabLine         guibg=none
+  hi TabLineFill     guibg=none
+  hi TabLineSel      guibg=none
+  hi TermCursor      guibg=none
+  hi TermCursorNC    guibg=none
+  hi Title           guibg=none
+  hi VertSplit       guibg=none guifg=none gui=none
+  hi Visual          guibg=#f49b15 guifg=#1d2021 gui=none
+  hi VisualNC        guifg=none guibg=none
+  hi WarningMsg      guibg=none
+  hi Whitespace      guibg=none guibg=none
+  hi WildMenu        guibg=none
+  hi lCursor         guibg=none
+
+  hi Boolean guifg=#f49b15
+  hi Character guibg=none guifg=#777777 gui=italic,underline,bold
+  hi Comment guifg=#555555
+  hi Conditional guifg=#f49b15 gui=bold
+  hi Constant guifg=none
+  hi Debug guifg=none
+  hi Define guifg=#f49b15
+  hi Error  guifg=#ff0000 guibg=none
+  hi Exception guifg=#f49b15
+  hi Float guifg=#f49b15
+  hi Number guifg=#f49b15
+  hi Function guifg=#f49b15 gui=bold
+  hi Ignore guifg=none
+  hi Include guifg=none
+  hi Keyword guifg=#f49b15 gui=bold
+  hi Label guifg=#f49b15
+  hi Macro guifg=none
+  hi PreCondit guifg=none
+  hi PreProc guifg=none
+  hi Repeat guifg=#f49b15 gui=bold
+  hi Special guibg=#171a1b guifg=#777777 gui=italic
+  hi SpecialComment guifg=none
+  hi Statement guifg=#f49b15
+  hi StorageClass guifg=#f49b15 gui=bold
+  hi String guibg=none guifg=#777777 gui=italic,underline,bold
+  hi Structure guifg=#f49b15 gui=bold
+  hi Todo guibg=#171a1b guifg=none gui=bold
+  hi Typedef guifg=none
+  hi Underlined guifg=none
+  hi Type guifg=#f49b15
+  hi Operator guifg=#f49b15 gui=bold
+  hi Identifier guifg=none
+  hi qfFileName guibg=none
+  hi qfLineNr guibg=none
+  let g:limelight_conceal_guifg='#444444'
+
+  let g:gitgutter_sign_added = '▶ '
+  let g:gitgutter_sign_modified = '▪ '
+  let g:gitgutter_sign_removed = '◀ '
+  let g:gitgutter_sign_removed_first_line = '◀ '
+  let g:gitgutter_sign_modified_removed = '▪ '
+
+  hi GitGutterAdd guifg=#f49b15 gui=italic
+  hi GitGutterChange guifg=#f49b15
+  hi GitGutterDelete guifg=#f49b15
+endfunction
+
 
 let g:theme_toggle = 1
 function! ToggleTheme()
-	if (g:theme_toggle == 0)
-		call DarkTheme()
-		let g:theme_toggle = 1
-	else
+  if (g:theme_toggle == 0)
+    call DarkTheme()
+    let g:theme_toggle = 1
+  elseif (g:theme_toggle == 1)
     call LightTheme()
-		let g:theme_toggle = 0
-	endif
-
+    let g:theme_toggle = 2
+  else
+    call BlackTheme()
+    let g:theme_toggle = 0
+  endif
 endfunction
 
 hi SpellCap guibg=none guifg=#ff0000 gui=none
@@ -412,3 +508,6 @@ hi SpellRare guibg=none guifg=#ff0000 gui=none
 hi GitGutterAdd guifg=#98971a
 hi GitGutterChange guifg=#458588
 hi GitGutterDelete guifg=#cc241d
+
+
+call BlackTheme()

@@ -14,7 +14,7 @@ function fuck () {
 }
 
 export SHELL
-export PATH=$HOME/bin:$HOME/.config/guix/current/bin:$PATH:$HOME/git/github/scratch/zig/zig-cache/bin
+export PATH=$HOME/bin:$HOME/.config/guix/current/bin:$PATH:$HOME/vcs/github/scratch/zig/zig-cache/bin
 export EDITOR=nvim
 export GUIX_PACKAGE_PATH=$HOME/vcs/github/packages
 export PROMPT_COMMAND='history -a'
@@ -43,21 +43,14 @@ RED=$(echo -e "\x1b[31m")
 GREEN=$(echo -e "\x1b[32m")
 YELLOW=$(echo -e "\x1b[33m")
 BLUE=$(echo -e "\x1b[34m")
-if [ -n "$GUIX_ENVIRONMENT" ]
-then
-    PS1="\u@\h \w [env] λ "
-else
-  PS1="\w λ "
-fi
+
+PS1="\w λ "
 
 alias :q='exit'
 alias speak='flite -voice $FLITEMYCROFT -f'
-alias ls='ls -p --color=auto'
+alias alsamixer='alsamixer -g'
+alias ls='ls -p --color=never'
 alias ll='ls -l'
-alias grep='grep --color=auto'
-alias watch='watch -c'
-alias crep='grep --color=always'
-alias vga='xrandr --output VGA-1 --auto'
 alias recon='sudo -E guix system reconfigure $HOME/config.scm -v3'
 alias config="$EDITOR $HOME/config.scm"
 alias note='nvim ~/.note'
@@ -73,17 +66,22 @@ alias qgmlwb='setxkbmap us'
 alias dict='dico -d WordNet'
 
 export CGO_ENABLE=0
-export TESSDATA_PREFIX="$HOME/git/third/tessdata"
-export FLITEMYCROFT="$HOME/git/third/FliteVoices/eng-GBR-male;mycroft.flitevox"
+export TESSDATA_PREFIX="$HOME/vcs/third/tessdata"
+export FLITEMYCROFT="$HOME/vcs/third/FliteVoices/eng-GBR-male;mycroft.flitevox"
 
-
-res()
+touchpad()
 {
-  nvim ~/git/github/resources/res
-  pushd ~/git/github/resources/
-  git add res
-  zig build commit
-  popd
+  pad=$(xinput --list | grep Touchpad | sed 's/.*id=\([0-9][0-9]*\).*/\1/')
+  case $1 in
+    "on")
+      xinput --enable $pad
+      ;;
+    "off")
+      xinput --disable $pad
+      ;;
+    *)
+      echo Usage: touchpad [on|off]
+  esac
 }
 
 
@@ -99,14 +97,14 @@ speakclip()
 
 speakpdf()
 {
-  F=$(readlink -f $1)
-  cache=$(sha256sum $F | sed 's/ .*/.ogg/')
+  F=$(readlink -f "$1")
+  cache=$(sha256sum "${F}" | sed 's/ .*/.ogg/')
   if [ -e "$HOME/.cache/voice/${cache}" ]; then
     mpv --save-position-on-quit "$HOME/.cache/voice/${cache}"
   else
     scratch=$(mktemp -d -t tts-XXXXXXXXXXXXXXXXX)
     pushd $scratch
-    pdftoppm $F -o tmp
+    pdftoppm "$F" -o tmp
     ls *.ppm | while read -r l; do tesseract $l "${l}" -l eng+spa; done
     cat *.txt > out.txt
     flite -voice $FLITEMYCROFT -f out.txt -o "${cache}.wav"
@@ -121,7 +119,7 @@ speakpdf()
 speaktext()
 {
   F=$(readlink -f $1)
-  cache=$(sha256sum $F | sed 's/ .*/.ogg/')
+  cache=$(sha256sum "${F}" | sed 's/ .*/.ogg/')
   if [ -e "$HOME/.cache/voice/${cache}" ]; then
     mpv --save-position-on-quit "$HOME/.cache/voice/${cache}"
   else
@@ -149,7 +147,7 @@ tmp(){
 
 s()
 {
-  lynx "https://duckduckgo.com/lite/search?q=$(echo $@ | sed 's/ /%20/g')"
+  links "https://duckduckgo.com/lite/search?q=$(echo $@ | sed 's/ /%20/g')"
 }
 
 suspend()
@@ -257,7 +255,7 @@ radio()
             mpv "http://lainon.life:8000/everything.ogg"
             ;;
         *)
-            echo "idk"
+            echo idk
             ;;
     esac
 }
@@ -302,6 +300,9 @@ pi900() {
     "httpd")
       ssh "root@192.168.10.$1" -C "/etc/init.d/S50lighttpd $3"
       ;;
+    "reboot")
+      ssh "root@192.168.10.$1" -C "reboot"
+      ;;
     "send")
       scp "$3" "root@192.168.10.$1:/var/www1/$4"
       ;;
@@ -316,7 +317,7 @@ pi900() {
       ;;
     "install")
       scp "$HOME/.ssh/id_rsa.pub" "root@192.168.10.$1:/tmp/"
-      ssh "root@192.168.10.$1" 'mkdir ~/.ssh && cat /tmp/id_rsa.pub >> ~/.ssh/authorized_keys'
+      ssh "root@192.168.10.$1" 'mkdir -p ~/.ssh && cat /tmp/id_rsa.pub >> ~/.ssh/authorized_keys'
       ;;
       *)
       echo "wat"
