@@ -7,6 +7,7 @@
              (tau packages solvespace)
              (tau packages fonts)
              (tau packages zig)
+             (tau packages haskell)
              (guix packages)
              (guix utils)
              (nongnu packages linux))
@@ -16,7 +17,7 @@
   dbus pm mcron vpn)
 
 (use-package-modules
-  vim tmux suckless version-control terminals figlet web linux
+  vim suckless version-control terminals figlet web linux
   admin chromium web-browsers bittorrent haskell python gimp
   inkscape kde graphics xdisorg image-viewers compton file
   compression pv shellutils mpd video audio speech rsync wine
@@ -24,18 +25,18 @@
   virtualization python-xyz package-management pdf tor w3m
   ocr haskell-xyz libreoffice man gcc tex fonts fontutils
   graphviz javascript games wm engineering elm text-editors
-  telegram pkg-config sdl)
+  telegram pkg-config sdl debug ncurses gnupg)
 
 (define garbage-collector-job #~(job "5 8 * * *" "guix gc -F 10G"))
 
 (define shell-packages
-  (list tmux
-        asciinema
+  (list asciinema
         zpaq
         htop
         pkg-config
         figlet
         perf
+        gnupg pinentry
         jq
         xxd
         acpi lm-sensors
@@ -44,12 +45,13 @@
         pv
         picocom
         git
+        ncurses
         fzy))
 
 (define media-packages
   (list mpv ffmpeg
         cava
-        sdl2 sdl-image
+        sdl2 sdl2-image
         alsa-utils
         flite
         sox))
@@ -78,7 +80,7 @@
   (list neovim neovim-gitgutter neovim-tabular neovim-limelight
         neovim-lastplace neovim-ale neovim-rainbow neovim-elm
         neovim-deoplete neovim-pandoc-syntax neovim-clang-format
-        neovim-zig))
+        neovim-zig neovim-ctrlp))
 
 (define game-packages
   (list bsd-games
@@ -107,6 +109,8 @@
 (define desktop-packages
   (list kitty
         telegram-cli
+        paperview
+        xcb-util xcb-util-wm xcb-util-keysyms
         telegram-desktop
         (package
           (inherit sent)
@@ -118,7 +122,7 @@
                     (lambda _
                       (substitute* "config.def.h"
                         (("000000") "ffffff")
-                        (("FFFFFF") "1d2021"))
+                        (("FFFFFF") "000000"))
                       #t)))))))
         (package
           (inherit dwm)
@@ -132,7 +136,8 @@
                         (("MODKEY Mod1Mask") "MODKEY Mod4Mask")
                         (("const int showbar.*") "const int showbar = 0;")
                         (("st\", NULL") "kitty\", NULL")
-                        (("005577") "000000"))
+                        (("SchemeNorm.*") "SchemeNorm] = { \"#000000\", \"#000000\", \"#000000\" },")
+                        (("SchemeSel.*") "SchemeSel] = { \"#000000\", \"#000000\", \"#000000\" },"))
                       #t)))))))
         dmenu
         redshift
@@ -154,7 +159,7 @@
   (list zathura zathura-pdf-poppler zathura-ps zathura-djvu
         poppler
         tesseract-ocr
-        ghc-pandoc ghc-pandoc-citeproc ; ghc-pandoc-crossref
+        ghc-pandoc ghc-pandoc-citeproc ghc-pandoc-crossref
         libreoffice
         man-pages gnu-c-manual
         texlive
@@ -219,11 +224,6 @@
 
       (service wpa-supplicant-service-type)
 
-      (service qemu-binfmt-service-type
-               (qemu-binfmt-configuration
-                 (platforms (lookup-qemu-platforms "aarch64" "arm"))
-                 (guix-support? #t)))
-
       (service dnsmasq-service-type
                (dnsmasq-configuration
                  (no-resolv? #t)
@@ -265,7 +265,7 @@
       (theme
         (grub-theme
           (inherit (grub-theme))
-          (image (local-file "artwork/gnu-gold.png"))))
+          (image (local-file "artwork/void.png"))))
       (keyboard-layout keyboard-layout)))
 
   (mapped-devices

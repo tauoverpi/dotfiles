@@ -29,11 +29,6 @@ then
     return
 fi
 
-if [ -z $TMUX ]
-then
-  tmux
-fi
-
 # Source the system-wide file.
 source /etc/bashrc
 
