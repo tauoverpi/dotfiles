@@ -72,6 +72,11 @@ let g:gitgutter_sign_removed = '▍ '
 let g:gitgutter_sign_removed_first_line = '▍ '
 let g:gitgutter_sign_modified_removed = '▍ '
 
+" SEARCH ONLY
+" nm hh <NOP>
+" nm jj <NOP>
+" nm kk <NOP>
+" nm ll <NOP>
 nm <S-h> <C-w><
 nm <S-j> <C-w>-
 nm <S-k> <C-w>+
@@ -182,6 +187,19 @@ au BufWrite * call CleanFile()
 au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown.pandoc
 
 " Theme
+
+au BufEnter *.py call matchadd('Comment', '^.*log.debug.*$')
+au BufEnter *.py call matchadd('Comment', '^.*log.notice.*$')
+au BufEnter *.py call matchadd('Comment', '^.*log.info.*$')
+au BufEnter *.py call matchadd('Comment', '^.*log.warn.*$')
+au BufEnter *.py call matchadd('Comment', '^.*log.err.*$')
+au BufEnter *.py call matchadd('Comment', '^.*log.alert.*$')
+au BufEnter *.py call matchadd('Comment', '^.*log.crit.*$')
+au BufEnter *.py call matchadd('Comment', '^.*log.emerg.*$')
+au BufEnter * call matchadd('Note', 'NOTE')
+au BufEnter * call matchadd('Note', 'NOTE:')
+au BufEnter * call matchadd('Todo', 'TODO:')
+au BufEnter * call matchadd('Todo', 'TODO')
 
 function! LightTheme()
   "hi ColorColumn     guibg=#ffffff
@@ -343,7 +361,7 @@ function! DarkTheme()
 
   hi Boolean guifg=#eeeeee
   hi Character guifg=#eeeeee
-  hi Comment guifg=#222222
+  hi Comment guifg=#555555
   hi Conditional guifg=#98971a gui=bold
   hi Constant guifg=#98971a
   hi Debug guifg=#aaaaaa
@@ -366,7 +384,8 @@ function! DarkTheme()
   hi StorageClass guifg=#ffffff gui=bold
   hi String guibg=#222222 guifg=#aaaaaa gui=italic
   hi Structure guifg=#458588 gui=bold
-  hi Todo guibg=#458588 guifg=#ffffff gui=bold
+  hi Todo guifg=#d79921 guibg=none gui=bold
+  hi Note guifg=#d79921 gui=bold
   hi Typedef guifg=#aaaaaa
   hi Underlined guifg=#aaaaaa
   hi Type guifg=#458588
@@ -458,13 +477,13 @@ function! BlackTheme()
   hi PreCondit guifg=none
   hi PreProc guifg=none
   hi Repeat guifg=#f49b15 gui=bold
-  hi Special guibg=#171a1b guifg=#777777 gui=italic
+  hi Special guibg=none guifg=#777777 gui=italic
   hi SpecialComment guifg=none
   hi Statement guifg=#f49b15
   hi StorageClass guifg=#f49b15 gui=bold
   hi String guibg=none guifg=#777777 gui=italic,underline,bold
   hi Structure guifg=#f49b15 gui=bold
-  hi Todo guibg=#171a1b guifg=none gui=bold
+  hi Todo guibg=none guifg=none gui=bold
   hi Typedef guifg=none
   hi Underlined guifg=none
   hi Type guifg=#f49b15
@@ -510,4 +529,4 @@ hi GitGutterChange guifg=#458588
 hi GitGutterDelete guifg=#cc241d
 
 
-call BlackTheme()
+call DarkTheme()

@@ -25,7 +25,7 @@
   virtualization python-xyz package-management pdf tor w3m
   ocr haskell-xyz libreoffice man gcc tex fonts fontutils
   graphviz javascript games wm engineering elm text-editors
-  telegram pkg-config sdl debug ncurses gnupg)
+  telegram pkg-config sdl debug ncurses gnupg gnome check llvm)
 
 (define garbage-collector-job #~(job "5 8 * * *" "guix gc -F 10G"))
 
@@ -39,6 +39,7 @@
         gnupg pinentry
         jq
         xxd
+        unittest-cpp
         acpi lm-sensors
         tree file
         unzip zip
@@ -80,10 +81,11 @@
   (list neovim neovim-gitgutter neovim-tabular neovim-limelight
         neovim-lastplace neovim-ale neovim-rainbow neovim-elm
         neovim-deoplete neovim-pandoc-syntax neovim-clang-format
-        neovim-zig neovim-ctrlp))
+        neovim-zig neovim-ctrlp neovim-termdbg))
 
 (define game-packages
   (list bsd-games
+        fortune-mod
         chess gnugo))
 
 (define web-packages
@@ -103,6 +105,7 @@
 
 (define language-packages
   (list zig-0.8-dev
+        clang-toolchain
         elm-compiler
         wabt))
 
@@ -158,8 +161,9 @@
 (define document-packages
   (list zathura zathura-pdf-poppler zathura-ps zathura-djvu
         poppler
+        librsvg
         tesseract-ocr
-        ghc-pandoc ghc-pandoc-citeproc ghc-pandoc-crossref
+        ghc-pandoc ghc-pandoc-citeproc ghc-pandoc-crossref ghc-pandoc-filter-graphviz
         libreoffice
         man-pages gnu-c-manual
         texlive
@@ -179,6 +183,8 @@
   (firmware (list amdgpu-firmware iwlwifi-firmware))
   (locale "en_GB.utf8")
   (timezone "Europe/Stockholm")
+  (kernel-arguments
+    (list "i8042.reset" "i8042.nomux" "i8042.nopnp" "i8042.noloop"))
   (keyboard-layout
     (keyboard-layout "us" "altgr-intl"))
   (host-name "tuxedo")
@@ -265,7 +271,7 @@
       (theme
         (grub-theme
           (inherit (grub-theme))
-          (image (local-file "artwork/void.png"))))
+          (image (local-file "artwork/z-1920x1080.png"))))
       (keyboard-layout keyboard-layout)))
 
   (mapped-devices

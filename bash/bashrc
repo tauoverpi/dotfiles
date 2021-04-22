@@ -14,7 +14,7 @@ function fuck () {
 }
 
 export SHELL
-export PATH=$HOME/bin:$HOME/.config/guix/current/bin:$PATH:$HOME/vcs/github/scratch/zig/zig-cache/bin
+export PATH=$HOME/bin:$HOME/.config/guix/current/bin:$PATH:$HOME/vcs/github/scratch/zig/zig-cache/bin:$HOME/vcs/github/zangle/zig-cache/bin
 export EDITOR=nvim
 export GUIX_PACKAGE_PATH=$HOME/vcs/github/packages
 export PROMPT_COMMAND='history -a'
@@ -46,7 +46,7 @@ alias speak='flite -voice $FLITEMYCROFT -f'
 alias alsamixer='alsamixer -g'
 alias ls='ls -p --color=never'
 alias ll='ls -l'
-alias recon='sudo -E guix system reconfigure $HOME/config.scm -v3'
+alias recon='sudo -E guix system reconfigure $HOME/config.scm -v4'
 alias config="$EDITOR $HOME/config.scm"
 alias note='nvim ~/.note'
 alias cnote='nvim ~/.cass'
@@ -59,6 +59,8 @@ alias todo='nvim ~/.todo'
 alias qwerty='xmodmap $HOME/dotfiles/qgmlwb.xkb'
 alias qgmlwb='setxkbmap us'
 alias dict='dico -d WordNet'
+alias big='xrandr --output HDMI-A-0 --above eDP --mode 3440x1440 --rate 50; feh --bg-scale artwork/z-1920x1080.png artwork/z-3440x1440.png'
+alias radio='zig run ~/vcs/github/dotfiles/scripts/radio.zig --'
 
 export CGO_ENABLE=0
 export TESSDATA_PREFIX="$HOME/vcs/third/tessdata"
@@ -234,26 +236,7 @@ music()
   mpc playl | nl | fzy | awk '{print $1}' | xargs mpc play
 }
 
-radio()
-{
-    case $1 in
-        "cyberia")
-            mpv "http://lainon.life:8000/cyberia.ogg"
-            ;;
-        "cafe")
-            mpv "http://lainon.life:8000/cafe.ogg"
-            ;;
-        "swing")
-            mpv "http://lainon.life:8000/swing.ogg"
-            ;;
-        "everything")
-            mpv "http://lainon.life:8000/everything.ogg"
-            ;;
-        *)
-            echo idk
-            ;;
-    esac
-}
+
 
 mu() {
   local v=() t=$(stty -g)
