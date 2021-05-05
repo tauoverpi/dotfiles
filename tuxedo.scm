@@ -10,6 +10,7 @@
              (tau packages haskell)
              (guix packages)
              (guix utils)
+             (nongnu system linux-initrd)
              (nongnu packages linux))
 
 (use-service-modules
@@ -25,7 +26,8 @@
   virtualization python-xyz package-management pdf tor w3m
   ocr haskell-xyz libreoffice man gcc tex fonts fontutils
   graphviz javascript games wm engineering elm text-editors
-  telegram pkg-config sdl debug ncurses gnupg gnome check llvm)
+  telegram pkg-config sdl debug ncurses gnupg gnome check llvm
+  game-development elf libusb)
 
 (define garbage-collector-job #~(job "5 8 * * *" "guix gc -F 10G"))
 
@@ -45,6 +47,7 @@
         unzip zip
         pv
         picocom
+        bluez
         git
         ncurses
         fzy))
@@ -81,10 +84,12 @@
   (list neovim neovim-gitgutter neovim-tabular neovim-limelight
         neovim-lastplace neovim-ale neovim-rainbow neovim-elm
         neovim-deoplete neovim-pandoc-syntax neovim-clang-format
-        neovim-zig neovim-ctrlp neovim-termdbg))
+        neovim-zig neovim-ctrlp neovim-termdbg kakoune))
 
 (define game-packages
   (list bsd-games
+        godot
+        0ad
         fortune-mod
         chess gnugo))
 
@@ -98,7 +103,8 @@
         links))
 
 (define debugging-packages
-  (list gdb
+  (list gdb rr patchelf
+        python-pytest python
         valgrind
         diffoscope
         strace))
@@ -180,7 +186,8 @@
 
 (operating-system
   (kernel (@@ (nongnu packages linux) linux))
-  (firmware (list amdgpu-firmware iwlwifi-firmware))
+  (firmware (list amdgpu-firmware iwlwifi-firmware ibt-hw-firmware))
+  (initrd microcode-initrd)
   (locale "en_GB.utf8")
   (timezone "Europe/Stockholm")
   (kernel-arguments
@@ -194,7 +201,8 @@
                   (group "users")
                   (home-directory "/home/tau")
                   (supplementary-groups
-                    '("wheel" "netdev" "audio" "video" "kvm" "dialout" "disk")))
+                    '("wheel" "netdev" "audio" "video" "kvm" "dialout" "disk"
+                      "lp")))
                 %base-user-accounts))
 
   (packages
@@ -252,6 +260,10 @@
                  (auto-enable? #t)))
       (service alsa-service-type)
       (dbus-service)
+
+      (service qemu-binfmt-service-type
+        (qemu-binfmt-configuration
+          (platforms (lookup-qemu-platforms "aarch64" "arm"))))
 
       (simple-service 'crontab
                       mcron-service-type
